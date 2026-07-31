@@ -1,0 +1,114 @@
+version: '3.9'
+
+services:
+
+  mongodb:
+    image: mongo:7
+    container_name: krishimitraai-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: krishimitraai
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  neo4j:
+    image: neo4j:5
+    container_name: krishimitraai-neo4j
+    restart: unless-stopped
+    ports:
+      - "7474:7474"   # Browser UI
+      - "7687:7687"   # Bolt protocol
+    volumes:
+      - neo4j_data:/data
+    environment:
+      NEO4J_AUTH: neo4j/krishimitraai123
+      NEO4J_PLUGINS: '["apoc"]'
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:7474 || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+
+  ml-service:
+    build:
+      context: ./ml-service
+      dockerfile: Dockerfile
+    container_name: krishimitraai-ml
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./ml-service:/app
+      - models_cache:/app/models
+      # Persist ChromaDB vector store across container restarts
+      - chroma_data:/app/knowledge_base/chroma_db
+      - ./ml-service/knowledge_base/documents:/app/knowledge_base/documents:ro
+    environment:
+      OLLAMA_BASE_URL: http://host.docker.internal:11434
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    command: >
+      sh -c "python knowledge_base/ingest.py && uvicorn main:app --host 0.0.0.0 --port 8000 --reload"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8000/health || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: krishimitraai-api
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    env_file:
+      - .env
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      ml-service:
+        condition: service_healthy
+    command: node server.js
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:5000/health || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+
+  frontend:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: krishimitraai-web
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./web/src:/app/src
+      - ./web/public:/app/public
+    environment:
+      VITE_API_URL: http://localhost:5000/api
+      VITE_ML_URL: http://localhost:8000
+    depends_on:
+      - backend
+    command: npm run dev -- --host 0.0.0.0
+
+volumes:
+  mongo_data:
+  neo4j_data:
+  models_cache:
+  # Named volume so ChromaDB embeddings survive container restarts
+  chroma_data:

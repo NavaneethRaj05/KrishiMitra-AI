@@ -1,0 +1,80 @@
+Crop Disease Management Guide — ICAR/KVK Reference
+
+TOMATO DISEASES
+
+1. Early Blight (Alternaria solani)
+Symptoms: Small brown spots with concentric rings on lower leaves, surrounded by yellow halo. Spots enlarge and merge, causing leaf drop. Spreads upward.
+Cause: Fungal pathogen Alternaria solani, favored by warm (24-29°C) humid conditions.
+Chemical Control: Mancozeb 75% WP at 2.5 g/L water, or Chlorothalonil 75% WP at 2g/L. Spray every 7-10 days.
+Organic Control: Neem oil 1500 PPM at 5ml/L, or Trichoderma viride 5g/L. Apply in evening.
+Prevention: Use certified disease-free seeds, practice crop rotation (avoid solanaceous crops for 2 years), maintain plant spacing, avoid overhead irrigation.
+
+2. Late Blight (Phytophthora infestans)
+Symptoms: Water-soaked dark brown lesions on leaves and stems with white fungal growth on undersides. Fruits develop firm brown rot. Spreads very rapidly in cool humid weather.
+Cause: Oomycete Phytophthora infestans. Favored by cool (10-25°C) humid conditions.
+Chemical Control: Metalaxyl + Mancozeb 72% WP at 2.5g/L, or Cymoxanil + Mancozeb. Spray immediately at first appearance.
+Organic Control: Copper-based fungicide (Copper hydroxide) at 3g/L. Bordeaux mixture 1%.
+Prevention: Avoid late evening irrigation, remove infected plant debris, use resistant varieties (Arka Rakshak, PKM-1).
+
+3. Fusarium Wilt (Fusarium oxysporum f.sp. lycopersici)
+Symptoms: Yellowing of lower leaves, wilting during hot part of day, eventual plant collapse. Brown discoloration of vascular tissue visible when stem is cut.
+Control: Soil drenching with Carbendazim 50% WP at 1g/L. Trichoderma viride 4g/kg seed treatment for prevention.
+Prevention: Grafting tomato on wilt-resistant rootstocks, crop rotation, soil solarization.
+
+4. Leaf Mosaic Virus (Tobacco Mosaic Virus - TMV)
+Symptoms: Mosaic pattern of light and dark green patches on leaves, leaf distortion, stunted growth.
+Control: No direct chemical cure. Control aphid vectors with Imidacloprid 17.8 SL at 0.3 ml/L. Rogue out infected plants.
+Prevention: Use TMV-resistant varieties. Control insects early. Wash hands with soap after handling infected plants.
+
+RICE DISEASES
+
+1. Rice Blast (Magnaporthe oryzae)
+Symptoms: Diamond-shaped lesions with gray centers and brown borders on leaves. Neck rot causes panicle to break and fall. Most devastating rice disease worldwide.
+Chemical Control: Tricyclazole 75% WP at 0.6g/L or Isoprothiolane 40% EC at 1.5ml/L. Apply at boot leaf stage.
+Organic Control: Silicon-based fertilizers increase blast resistance. Pseudomonas fluorescens 5g/L spray.
+Prevention: Balanced fertilization (avoid excess nitrogen), use blast-resistant varieties (MTU 7029, Jyothi, IR 64), maintain optimum plant spacing.
+
+2. Brown Spot (Helminthosporium oryzae)
+Symptoms: Oval or circular brown spots on leaves and glumes. Spots have yellow halo. Indicates nutrient stress (particularly potassium deficiency).
+Control: Mancozeb 75% WP at 2g/L. Correct potassium deficiency with MOP 25 kg/ha.
+Prevention: Balanced fertilization, use certified seeds, treat seeds with Carboxin 37.5% + Thiram 37.5% at 3g/kg.
+
+3. Bacterial Leaf Blight (Xanthomonas oryzae)
+Symptoms: Water-soaked yellow stripes on leaf margins progressing to straw-yellow or white. Spreads downward. Kresek phase causes seedling death.
+Control: No effective curative fungicide. Spray Copper Oxychloride 50% WP at 3g/L. Avoid excess nitrogen.
+Prevention: Use resistant varieties, treat seeds with bleaching powder 25g/10L, avoid transplanting from infected nurseries.
+
+WHEAT DISEASES
+
+1. Yellow/Stripe Rust (Puccinia striiformis)
+Symptoms: Yellow-orange pustules arranged in stripes along leaf veins. More common at high altitudes and cooler temperatures.
+Chemical Control: Propiconazole 25% EC at 0.1% spray, or Tebuconazole 25.9% EC. Apply at first appearance.
+Prevention: Use resistant varieties (K 307, PBW 343, HD 2781), timely sowing to avoid high disease pressure period.
+
+2. Loose Smut (Ustilago tritici)
+Symptoms: Grains replaced by black powdery mass of smut spores. Entire ear head affected.
+Control: Seed treatment with Vitavax Power (Carboxin + Thiram) 3g/kg seed before sowing.
+Prevention: Use certified disease-free seed every season.
+
+COTTON DISEASES
+
+1. Fusarium/Verticillium Wilt
+Symptoms: Yellowing and browning of leaves starting from margins, wilting, death of plants. Brown vascular discoloration.
+Control: Seed treatment with Carbendazim 2g/kg. Soil drench with Carbendazim + Thiram.
+Prevention: Crop rotation with non-host crops, use wilt-resistant Bt cotton hybrids.
+
+2. Leaf Curl Virus (Cotton Leaf Curl Disease - CLCuD)
+Symptoms: Upward or downward curling of leaves, thickening of veins, development of leaf-like structures (enations) on underside.
+Control: Control whitefly vector with Imidacloprid 17.8 SL at 0.5 ml/L or Thiamethoxam 25 WG at 0.3g/L.
+Prevention: Use CLCuD-tolerant varieties, destroy infected plants, remove weed hosts.
+
+GENERAL IPM (INTEGRATED PEST MANAGEMENT) PRINCIPLES
+1. Monitor fields regularly (twice a week)
+2. Record pest populations and keep spray diary
+3. Use Economic Threshold Levels (ETL) to decide when to spray
+4. Prefer biological control agents (Trichoderma, Pseudomonas, Beauveria bassiana)
+5. Use resistant varieties as first defense
+6. Alternate fungicide/insecticide groups to prevent resistance
+7. Read and follow label instructions carefully
+8. Wear protective equipment when spraying
+9. Do not spray within 7 days of harvest (pre-harvest interval)

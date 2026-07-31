@@ -1,0 +1,125 @@
+{
+  "home": {
+    "greeting_morning": "శుభోదయం, {{name}}",
+    "greeting_afternoon": "నమస్కారం, {{name}}",
+    "greeting_evening": "శుభ సాయంత్రం, {{name}}",
+    "search_placeholder": "వ్యవసాయం గురించి ఏదైనా అడగండి…",
+    "trending_title": "{{district}} లో ఈరోజు ట్రెండింగ్ అంశాలు",
+    "recent_title": "మునుపటి సంభాషణను కొనసాగించండి",
+    "seasonal_nudge": "{{crop}} · {{season}} కాలం యొక్క వారం {{week}}",
+    "hero_eyebrow": "ఖచ్చితమైన వ్యవసాయ AI · ఆఫ్‌లైన్ సేవ · బహుభాషా",
+    "hero_title": "మీ వ్యవసాయం గురించి ఏదైనా అడగండి",
+    "hero_sub": "ICAR మార్గదర్శకాలు, తెగుళ్ల గుర్తింపు, మార్కెట్ ధరలను మీ భాషలో పొందండి",
+    "choose_language": "🗣️ భాషను ఎంచుకోండి",
+    "prompt_paddy_blast": "వరి అగ్గితెగులు నివారణ",
+    "prompt_tomato_price": "{{district}} మార్కెట్‌లో నేటి టమోటా ధర",
+    "prompt_rabi_crops": "నల్లరేగడి నేలలకు అనుకూల రబీ పంటలు",
+    "prompt_urea_dosage": "ఎకరాకు యూరియా మోతాదు"
+  },
+  "search": {
+    "offline_banner": "ఆఫ్‌లైన్ మోడ్ — స్థానిక సమాచారం నుండి సమాధానం",
+    "source_icar": "ICAR",
+    "source_kvk": "KVK",
+    "source_niphm": "NIPHM",
+    "follow_up_hint": "తదుపరి ప్రశ్న అడగండి…",
+    "typing": "KrishiMitra AI ఆలోచిస్తోంది…"
+  },
+  "voice": {
+    "tap_to_record": "మాట్లాడటానికి నొక్కండి",
+    "recording": "వింటోంది…",
+    "language_detected": "గుర్తించిన భాష: {{language}}",
+    "quality_noise": "శబ్దం: {{level}}",
+    "quality_clarity": "స్పష్టత: {{level}}",
+    "command_hint_photo": "కెమెరా తెరవడానికి 'photo' అని చెప్పండి"
+  },
+  "auth": {
+    "welcome_title": "KrishiMitra AI",
+    "welcome_sub": "వ్యవసాయ జ్ఞానం. మీ భాషలో.",
+    "enter_phone": "మీ మొబైల్ నంబర్ నమోదు చేయండి",
+    "enter_otp": "{{phone}} కి పంపిన OTPని నమోదు చేయండి",
+    "setup_title": "మీ భూమి వివరాలు తెలపండి",
+    "setup_sub": "ఇది KrishiMitra AI మీకు ఖచ్చితమైన మరియు స్థానిక సమాధానాలు అందించడానికి సహాయపడుతుంది"
+  },
+  "tabs": {
+    "history": "చరిత్ర",
+    "settings": "సెట్టింగులు"
+  },
+  "home_alerts": {
+    "high_risk": "⚠️ వరి అగ్గితెగులు ముప్పు ఎక్కువ",
+    "humidity_warn": "ఈ వారం {{district}} లో తేమ 82% ఉంది. వరి అగ్గితెగులు సోకే ప్రమాదం ఎక్కువగా ఉంది.",
+    "action_guideline": "ముందు జాగ్రత్త పంట చికిత్స మార్గదర్శకాల కోసం ఇక్కడ నొక్కండి →"
+  },
+  "crops": {
+    "Paddy": "వరి",
+    "Wheat": "గోధుమ",
+    "Cotton": "ప్రత్తి",
+    "Sugarcane": "చెరకు",
+    "Maize": "మొక్కజొన్న",
+    "Vegetables": "కూరగాయలు",
+    "Pulses": "పప్పుధాన్యాలు",
+    "Tomato": "టమోటా"
+  },
+  "states": {
+    "Karnataka": "కర్ణాటక",
+    "Maharashtra": "మహారాష్ట్ర"
+  },
+  "districts": {
+    "Mandya": "మండ్య",
+    "Hassan": "హాసన్"
+  },
+  "home_trending": {
+    "paddy_blast": "వరి అగ్గితెగులు నివారణ",
+    "tomato_price": "మైసూర్ మార్కెట్ టమోటా ధర",
+    "pm_kisan": "పీఎం-కిసాన్ విడత తేదీ",
+    "cotton_pest": "ఈ వారం ప్రత్తి తెగుళ్లు"
+  },
+  "sidebar": {
+    "new_search": "కొత్త శోధన",
+    "recent_threads": "ఇటీవలి శోధనలు",
+    "no_recent_threads": "ఇటీవలి శోధనలు లేవు",
+    "farm_profile": "మీ వ్యవసాయ ప్రొఫైల్",
+    "tap_to_edit": "ప్రొఫైల్ మార్చడానికి నొక్కండి",
+    "log_out": "లాగ్ అవుట్",
+    "clear_recent": "అన్నీ తొలగించు",
+    "clear_confirm": "మీరు ఇటీవలి శోధనలన్నింటినీ తొలగించాలనుకుంటున్నారా?",
+    "acres": "{{count}} ఎకరాలు"
+  },
+  "answer": {
+    "krishimitra_answer": "✦ కృషిమిత్ర సమాధానం",
+    "high_confidence": "✓ అధిక విశ్వసనీయత",
+    "shap_title": "📊 ఈ నిర్ధారణ ఎందుకు? (SHAP వివరణ)",
+    "immediate_action": "⚠️ తక్షణ చర్య:",
+    "control": "నివారణ",
+    "est_cost": "అంచనా ఖర్చు",
+    "generation_explainer": "ఈ సమాధానం ఎలా తయారు చేయబడింది?"
+  },
+  "shap": {
+    "humidity": "తేమ శాతం",
+    "season": "కాలం/ఋతువు",
+    "location": "ప్రాంతం",
+    "soil_type": "నేల రకం",
+    "temperature": "ఉష్ణోగ్రత"
+  },
+  "onboarding": {
+    "welcome": "KrishiMitra AI కి స్వాగతం",
+    "welcome_sub": "సరియైన పరిష్కారాల కోసం మీ వ్యవసాయ వివరాలను నమోదు చేయండి.",
+    "step_location": "ప్రాంతం వివరాలు",
+    "step_crops": "పండించే పంటలు",
+    "step_soil": "నేల ఎంపిక",
+    "step_land": "భూమి & నీరు",
+    "your_name": "మీ పేరు",
+    "state": "రాష్ట్రం",
+    "district": "జిల్లా",
+    "block": "మండలం / గ్రామం",
+    "select_crops": "మీరు పండించే పంటలను ఎంచుకోండి",
+    "select_crops_sub": "సంబంధిత పంటలను ఎంచుకోండి.",
+    "select_soil": "నేల రకాన్ని ఎంచుకోండి",
+    "select_soil_sub": "నేల రకం నీటి యాజమాన్యం మరియు ఎరువుల మోతాదును నిర్ణయిస్తుంది.",
+    "land_water": "భూమి విస్తీర్ణం & నీటి వనరులు",
+    "land_acres": "భూమి విస్తీర్ణం (ఎకరాలలో)",
+    "irrigation": "ముఖ్య నీటిపారుదల వనరు",
+    "back": "వెనుకకు",
+    "continue": "కొనసాగించండి",
+    "finish": "పూర్తి చేయండి"
+  }
+}

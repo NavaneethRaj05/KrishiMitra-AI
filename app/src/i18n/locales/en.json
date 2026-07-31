@@ -1,0 +1,127 @@
+{
+  "home": {
+    "greeting_morning": "Good morning, {{name}}",
+    "greeting_afternoon": "Good afternoon, {{name}}",
+    "greeting_evening": "Good evening, {{name}}",
+    "search_placeholder": "Ask anything about farming…",
+    "trending_title": "Trending today in {{district}}",
+    "recent_title": "Continue where you left off",
+    "seasonal_nudge": "{{crop}} · Week {{week}} of {{season}}",
+    "hero_eyebrow": "Precision agriculture AI · Works offline · Multilingual",
+    "hero_title": "Ask anything about your farm",
+    "hero_sub": "Search ICAR guidelines, diagnose diseases, get market prices — in your language",
+    "choose_language": "🗣️ Choose Language",
+    "prompt_paddy_blast": "Paddy blast disease treatment",
+    "prompt_tomato_price": "Tomato price in {{district}} mandi today",
+    "prompt_rabi_crops": "Best rabi crops for black soil",
+    "prompt_urea_dosage": "Urea dosage per acre"
+  },
+  "search": {
+    "offline_banner": "Offline mode — answer from local knowledge",
+    "source_icar": "ICAR",
+    "source_kvk": "KVK",
+    "source_niphm": "NIPHM",
+    "follow_up_hint": "Ask a follow-up…",
+    "typing": "KrishiMitra AI is thinking…"
+  },
+  "voice": {
+    "tap_to_record": "Tap to start speaking",
+    "recording": "Listening…",
+    "language_detected": "Detected: {{language}}",
+    "quality_noise": "Noise: {{level}}",
+    "quality_clarity": "Clarity: {{level}}",
+    "command_hint_photo": "Say 'photo' to open camera"
+  },
+  "auth": {
+    "welcome_title": "KrishiMitra AI",
+    "welcome_sub": "Farming intelligence. Your language.",
+    "enter_phone": "Enter your phone number",
+    "enter_otp": "Enter the OTP sent to {{phone}}",
+    "setup_title": "Tell us about your farm",
+    "setup_sub": "This helps KrishiMitra AI give you accurate, local answers"
+  },
+  "tabs": {
+    "history": "History",
+    "settings": "Settings"
+  },
+  "home_alerts": {
+    "high_risk": "⚠️ HIGH BLAST RISK",
+    "humidity_warn": "Humidity is 82% in {{district}} this week. High risk of Paddy Blast disease.",
+    "action_guideline": "Tap to get preventive crop treatment guidelines →"
+  },
+  "crops": {
+    "Paddy": "Paddy",
+    "Wheat": "Wheat",
+    "Cotton": "Cotton",
+    "Sugarcane": "Sugarcane",
+    "Maize": "Maize",
+    "Vegetables": "Vegetables",
+    "Pulses": "Pulses",
+    "Tomato": "Tomato"
+  },
+  "states": {
+    "Karnataka": "Karnataka",
+    "Maharashtra": "Maharashtra"
+  },
+  "districts": {
+    "Mandya": "Mandya",
+    "Hassan": "Hassan",
+    "Nashik": "Nashik",
+    "Pune": "Pune"
+  },
+  "home_trending": {
+    "paddy_blast": "Paddy blast treatment",
+    "tomato_price": "Tomato price Mysore mandi",
+    "pm_kisan": "PM-KISAN installment date",
+    "cotton_pest": "Cotton pest this week"
+  },
+  "sidebar": {
+    "new_search": "New search",
+    "recent_threads": "Recent threads",
+    "no_recent_threads": "No recent threads",
+    "farm_profile": "Your farm profile",
+    "tap_to_edit": "Tap to edit profile",
+    "log_out": "Log Out",
+    "clear_recent": "Clear All",
+    "clear_confirm": "Are you sure you want to delete all recent search threads?",
+    "acres": "{{count}} acres"
+  },
+  "answer": {
+    "krishimitra_answer": "✦ KrishiMitra Answer",
+    "high_confidence": "✓ High confidence",
+    "shap_title": "📊 Why this diagnosis? (SHAP explanation)",
+    "immediate_action": "⚠️ Immediate action:",
+    "control": "Control",
+    "est_cost": "Est. cost",
+    "generation_explainer": "How was this answer generated?"
+  },
+  "shap": {
+    "humidity": "Humidity",
+    "season": "Season",
+    "location": "Location",
+    "soil_type": "Soil type",
+    "temperature": "Temperature"
+  },
+  "onboarding": {
+    "welcome": "Welcome to KrishiMitra AI",
+    "welcome_sub": "Let's configure your farming context for highly tailored AI solutions.",
+    "step_location": "Location Details",
+    "step_crops": "Crops Grown",
+    "step_soil": "Soil Selection",
+    "step_land": "Land & Water",
+    "your_name": "Your Name",
+    "state": "State",
+    "district": "District",
+    "block": "Block / Taluk / Village",
+    "select_crops": "Select Crops You Grow",
+    "select_crops_sub": "Select all that apply. This filters crop-specific diseases and mandi prices.",
+    "select_soil": "Select Your Soil Type",
+    "select_soil_sub": "Soil type affects irrigation schedules and fertilizer dosages.",
+    "land_water": "Land Size & Water Source",
+    "land_acres": "Land Size (in Acres)",
+    "irrigation": "Primary Irrigation Source",
+    "back": "Back",
+    "continue": "Continue",
+    "finish": "Complete Setup"
+  }
+}

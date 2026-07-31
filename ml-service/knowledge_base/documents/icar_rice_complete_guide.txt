@@ -1,0 +1,181 @@
+ICAR COMPREHENSIVE PADDY (RICE) DISEASE AND CULTIVATION GUIDE
+
+SOURCE: Indian Council of Agricultural Research (ICAR-CRRI), Cuttack
+AUTHORITY: ICAR-National Rice Research Institute, Directorate of Rice Research, Hyderabad
+
+=============================================================
+RICE BLAST DISEASE (Magnaporthe oryzae)
+=============================================================
+
+OVERVIEW: Most destructive disease of rice worldwide. Can cause 30-100% yield loss.
+
+TYPES AND SYMPTOMS:
+Leaf Blast:
+- Diamond-shaped grey-white lesions with brown borders
+- Lesions have narrow pointed ends (eye-shaped / spindle-shaped)
+- Center of lesion is grey-white; margin is dark brown to reddish-brown
+- Severe infection: entire leaf dies; plants look burnt
+
+Neck/Panicle Blast:
+- Brown or black lesion at neck of panicle (just below grain head)
+- Affected panicle breaks at neck and hangs down (neck rot)
+- Grain filling stops — panicle turns white and sterile
+- Most damaging stage: occurs at flowering
+
+Node Blast:
+- Dark brown-black lesion at stem nodes
+- Infected node breaks; plant falls over
+
+FAVORABLE CONDITIONS:
+- Temperature: 20-28°C (optimal 25°C)
+- Relative Humidity: above 90%, especially overnight dew
+- Excess nitrogen application (increases soft, succulent tissue)
+- Cool cloudy weather for 3+ consecutive days
+
+CHEMICAL CONTROL (per litre water):
+- Tricyclazole 75% WP: 0.6 g/litre (systemic, most effective)
+- Isoprothiolane 40% EC: 1.5 ml/litre (systemic, also prevents sheath blight)
+- Tebuconazole 25.9% EC: 1.0 ml/litre
+- Propiconazole 25% EC: 1.0 ml/litre (good for leaf blast)
+- Carbendazim 50% WP: 1.0 g/litre (preventive)
+
+SPRAY TIMING: At tillering stage AND at panicle initiation (50% heading)
+SPRAY INTERVAL: 10-14 days during disease season
+
+BIOLOGICAL CONTROL:
+- Pseudomonas fluorescens (Pf-1): 5 g/litre foliar spray (3-4 applications)
+- Seed treatment with Pseudomonas fluorescens 10 g/kg seed
+- Trichoderma viride: 4 g/kg seed + 2.5 kg/acre soil application
+
+MANAGEMENT:
+- Drain field water for 3-4 days to reduce canopy humidity
+- Reduce nitrogen top dressing during blast-favorable weather
+- Avoid planting in low-lying, shaded, foggy areas
+- BLAST-RESISTANT VARIETIES: BPT 5204 (Samba Mahsuri), Jyothi, IR-64, Swarna-Sub1, MTU-7029
+
+=============================================================
+RICE BROWN SPOT (Cochliobolus miyabeanus)
+=============================================================
+
+SYMPTOMS:
+- Round to oval dark brown lesions with yellow halo
+- Lesions have white-grey center in severe cases
+- Appears on leaves, leaf sheaths, and glumes
+- Common in nutrient-deficient fields (especially potassium)
+- Associated with drought stress and silicon deficiency
+
+CHEMICAL CONTROL:
+- Mancozeb 75% WP: 2.5 g/litre
+- Zineb 75% WP: 2.5 g/litre
+- Edifenphos 50% EC: 1.0 ml/litre
+
+MANAGEMENT:
+- Potassium fertilization critical — apply MOP at 20 kg K2O/acre
+- Silicon application: 300-400 kg/acre slag (if available)
+- Drain and irrigate alternately to reduce stress
+- Treat seeds with Thiram or Captan 3 g/kg before sowing
+
+=============================================================
+SHEATH BLIGHT (Rhizoctonia solani)
+=============================================================
+
+SYMPTOMS:
+- Oval/elliptical water-soaked lesions on leaf sheaths
+- Lesion center: light green to white, bordered by dark brown margin
+- Lesions coalesce, sheaths and leaves die
+- Spreads up to flag leaf during epidemic; sclerotia (small brown balls) on affected tissue
+
+FAVORABLE CONDITIONS: Dense planting, high humidity, high nitrogen, continuous flooding.
+
+CHEMICAL CONTROL:
+- Hexaconazole 5% EC: 2.0 ml/litre (most commonly recommended)
+- Propiconazole 25% EC: 1.0 ml/litre
+- Validamycin 3% L: 2.5 ml/litre (specific to sheath blight)
+- Isoprothiolane 40% EC: 1.5 ml/litre
+
+MANAGEMENT:
+- Reduce plant density — wider spacing (20x15cm)
+- Split nitrogen application — avoid excess urea
+- Drain field periodically
+- Biocontrol: Pseudomonas fluorescens 5 g/litre, 2-3 sprays
+
+=============================================================
+BACTERIAL BLIGHT (Xanthomonas oryzae pv. oryzae)
+=============================================================
+
+SYMPTOMS:
+- Water-soaked wave-like margins along leaf edges
+- Yellowing and drying from leaf tips/margins (leaf scorch)
+- Exudate (bacterial ooze) dries as droplets
+- Kresek symptom: seedlings wilt and die at transplanting stage (severe form)
+- Yellow droplets on fresh cut ends
+
+FAVORABLE CONDITIONS: High humidity, strong winds, heavy rain, flood irrigation.
+
+MANAGEMENT:
+- Use RESISTANT VARIETIES: IR-64, Jaya, Pusa Basmati-1, Swarna-Sub1
+- Spray Copper oxychloride 50% WP: 3 g/litre OR Streptocycline 0.1g + Copper oxychloride 3g/litre
+- Avoid flood irrigation; do not work in wet fields
+- Balanced fertilization — avoid excess nitrogen
+
+=============================================================
+PADDY STEM BORER (Scirpophaga incertulas)
+=============================================================
+
+SYMPTOMS:
+- Dead heart: central tiller wilts and dries up at tillering stage
+- White ear: panicle emerges empty/sterile
+- Holes in stems, frass (excreta) inside stem
+
+CHEMICAL CONTROL:
+- Chlorpyrifos 20% EC: 2.5 ml/litre
+- Monocrotophos 36% SL: 1.5 ml/litre (restricted use)
+- Cartap hydrochloride 50% SP: 1.5 g/litre
+- Fipronil 0.3% GR: 8 kg/acre (granule application to water)
+
+BIOLOGICAL CONTROL:
+- Trichogramma japonicum: 1 lakh eggs/acre (egg parasitoid, 2-3 releases at 10-day intervals)
+- Scirpophaga NPV + Bt combination
+
+=============================================================
+PADDY FERTILIZER SCHEDULE (per acre)
+=============================================================
+
+TOTAL NPK REQUIREMENT:
+- Nitrogen (N): 40-50 kg
+- Phosphorus (P): 24-30 kg
+- Potassium (K): 16-20 kg
+
+APPLICATION:
+- Basal (before transplanting): DAP 50 kg + MOP 13 kg + Urea 22 kg
+- 1st Top Dress (30 days after transplanting / active tillering): Urea 33 kg
+- 2nd Top Dress (55-60 days after transplanting / panicle initiation): Urea 33 kg + MOP 13 kg
+
+ZINC MANAGEMENT (Very Important in Rice):
+- Zinc deficiency very common in paddy — symptoms: stunted seedlings, brown rust-like spots
+- Apply Zinc Sulfate (ZnSO4): 10 kg/acre as basal
+- Foliar spray: 0.5% ZnSO4 solution at 30 and 50 days after transplanting
+- Seedling dipping in 2% ZnO before transplanting (in zinc-deficient soils)
+
+SILICON APPLICATION:
+- 300-400 kg calcium silicate per acre (strengthens cell wall, reduces blast)
+
+=============================================================
+RICE CROP CALENDAR — INDIA
+=============================================================
+
+KHARIF (Main season): June-July planting; Harvest October-November
+RABI (Short duration): November-December; Harvest February-March (coastal areas)
+
+RECOMMENDED VARIETIES:
+- Karnataka: BPT-5204 (Samba Mahsuri), Jyothi, MTU-1010, Kaveri (IR-36)
+- Andhra Pradesh/Telangana: MTU-7029, Tellahamsa, BPT-5204
+- Tamil Nadu: CO-51, ADT-45, CR Dhan 310
+- Kerala: Uma, Jyothi, Ptb-33
+- Punjab/Haryana (Basmati): Pusa Basmati-1509, 1121, HBC-19
+
+WATER MANAGEMENT:
+- Maintain 3-5 cm standing water during tillering
+- Drain field for 3-4 days at panicle initiation (reduces sheath blight, blast)
+- Final drainage: 15-20 days before harvest
+- Alternate Wetting and Drying (AWD) method: saves 25-30% water without yield loss

@@ -1,0 +1,125 @@
+{
+  "home": {
+    "greeting_morning": "காலை வணக்கம், {{name}}",
+    "greeting_afternoon": "மதிய வணக்கம், {{name}}",
+    "greeting_evening": "மாலை வணக்கம், {{name}}",
+    "search_placeholder": "விவசாயம் பற்றி ஏதேனும் கேளுங்கள்…",
+    "trending_title": "{{district}} இல் இன்றைய முக்கிய தேடல்கள்",
+    "recent_title": "முந்தைய உரையாடல்கள்",
+    "seasonal_nudge": "{{crop}} · {{season}} பருவத்தின் வாரம் {{week}}",
+    "hero_eyebrow": "துல்லிய விவசாய AI · ஆஃப்லைன் சேவை · பன்மொழி",
+    "hero_title": "உங்கள் பண்ணையைப் பற்றி எது வேண்டுமானாலும் கேளுங்கள்",
+    "hero_sub": "ICAR வழிகாட்டுதல்கள், நோய் கண்டறிதல், சந்தை விலைகளை உங்கள் மொழியில் பெறுங்கள்",
+    "choose_language": "🗣️ மொழியைத் தேர்ந்தெடுக்கவும்",
+    "prompt_paddy_blast": "நெல் குலை நோய் சிகிச்சை",
+    "prompt_tomato_price": "{{district}} மண்டியில் இன்றைய தக்காளி விலை",
+    "prompt_rabi_crops": "களிமண் நிலத்திற்கு ஏற்ற பயிர்கள்",
+    "prompt_urea_dosage": "ஏக்கருக்கு யூரியா அளவு"
+  },
+  "search": {
+    "offline_banner": "ஆஃப்லைன் பயன்முறை — உள்ளூர் அறிவு மூலம் பதில்",
+    "source_icar": "ICAR",
+    "source_kvk": "KVK",
+    "source_niphm": "NIPHM",
+    "follow_up_hint": "அடுத்த கேள்வி கேட்க…",
+    "typing": "KrishiMitra AI யோசிக்கிறது…"
+  },
+  "voice": {
+    "tap_to_record": "பேசத் தொடங்க தட்டவும்",
+    "recording": "கேட்கிறது…",
+    "language_detected": "கண்டறியப்பட்ட மொழி: {{language}}",
+    "quality_noise": "சத்தம்: {{level}}",
+    "quality_clarity": "தெளிவு: {{level}}",
+    "command_hint_photo": "கேமராவைத் திறக்க 'photo' என்று சொல்லவும்"
+  },
+  "auth": {
+    "welcome_title": "KrishiMitra AI",
+    "welcome_sub": "விவசாய அறிவு. உங்கள் மொழியில்.",
+    "enter_phone": "உங்கள் கைபேசி எண்ணை உள்ளிடவும்",
+    "enter_otp": "{{phone}} எண்ணிற்கு அனுப்பப்பட்ட OTP-ஐ உள்ளிடவும்",
+    "setup_title": "உங்கள் பண்ணையைப் பற்றி கூறவும்",
+    "setup_sub": "இது KrishiMitra AI உங்களுக்குத் துல்லியமான மற்றும் உள்ளூர் பதில்களை வழங்க உதவும்"
+  },
+  "tabs": {
+    "history": "வரலாறு",
+    "settings": "அமைப்புகள்"
+  },
+  "home_alerts": {
+    "high_risk": "⚠️ நெல் குலை நோய் அதிக ஆபத்து",
+    "humidity_warn": "இந்த வாரம் {{district}} இல் ஈரப்பதம் 82% ஆக உள்ளது. நெல் குலை நோய் ஏற்பட அதிக வாய்ப்புள்ளது.",
+    "action_guideline": "முன்னெச்சரிக்கை பயிர் சிகிச்சை வழிகாட்டுதல்களைப் பெற தட்டவும் →"
+  },
+  "crops": {
+    "Paddy": "நெல்",
+    "Wheat": "கோதுமை",
+    "Cotton": "பருத்தி",
+    "Sugarcane": "கரும்பு",
+    "Maize": "சோளம்",
+    "Vegetables": "காய்கறிகள்",
+    "Pulses": "பருப்பு வகைகள்",
+    "Tomato": "தக்காளி"
+  },
+  "states": {
+    "Karnataka": "கர்நாடகா",
+    "Maharashtra": "மகாராஷ்டிரா"
+  },
+  "districts": {
+    "Mandya": "மண்டியா",
+    "Hassan": "ஹாசன்"
+  },
+  "home_trending": {
+    "paddy_blast": "நெல் குலை நோய் சிகிச்சை",
+    "tomato_price": "மைசூர் மண்டி தக்காளி விலை",
+    "pm_kisan": "பிஎம்-கிசான் தவணை தேதி",
+    "cotton_pest": "இந்த வார பருத்தி பூச்சி"
+  },
+  "sidebar": {
+    "new_search": "புதிய தேடல்",
+    "recent_threads": "முந்தைய தேடல்கள்",
+    "no_recent_threads": "சமீபத்திய தேடல்கள் இல்லை",
+    "farm_profile": "உங்கள் பண்ணை சுயவிவரம்",
+    "tap_to_edit": "சுயவிவரத்தை மாற்ற தட்டவும்",
+    "log_out": "வெளியேறு",
+    "clear_recent": "அனைத்தையும் நீக்கு",
+    "clear_confirm": "அனைத்து சமீபத்திய தேடல்களையும் நீக்க வேண்டுமா?",
+    "acres": "{{count}} ஏக்கர்"
+  },
+  "answer": {
+    "krishimitra_answer": "✦ கிருஷிமித்ரா பதில்",
+    "high_confidence": "✓ அதிக நம்பகத்தன்மை",
+    "shap_title": "📊 இந்த நோய் கண்டறிதல் ஏன்? (SHAP விளக்கம்)",
+    "immediate_action": "⚠️ உடனடி நடவடிக்கை:",
+    "control": "கட்டுப்பாடு",
+    "est_cost": "மதிப்பிடப்பட்ட செலவு",
+    "generation_explainer": "இந்த பதில் எவ்வாறு உருவாக்கப்பட்டது?"
+  },
+  "shap": {
+    "humidity": "ஈரப்பதம்",
+    "season": "பருவம்",
+    "location": "இடம்",
+    "soil_type": "மண் வகை",
+    "temperature": "வெப்பநிலை"
+  },
+  "onboarding": {
+    "welcome": "KrishiMitra AI -க்கு வரவேற்கிறோம்",
+    "welcome_sub": "துல்லியமான தீர்வுகளுக்கு உங்கள் பண்ணை விவரங்களை உள்ளிடவும்.",
+    "step_location": "இருப்பிட விவரங்கள்",
+    "step_crops": "வளர்க்கப்படும் பயிர்கள்",
+    "step_soil": "மண் தேர்வு",
+    "step_land": "நிலம் & நீர்",
+    "your_name": "உங்கள் பெயர்",
+    "state": "மாநிலம்",
+    "district": "மாவட்டம்",
+    "block": "வட்டாரம் / கிராமம்",
+    "select_crops": "வளர்க்கும் பயிர்களைத் தேர்ந்தெடுக்கவும்",
+    "select_crops_sub": "பொருந்தக்கூடிய பயிர்களைத் தேர்ந்தெடுக்கவும்.",
+    "select_soil": "மண் வகையைத் தேர்ந்தெடுக்கவும்",
+    "select_soil_sub": "மண் வகை பாசனம் மற்றும் உர அளவை தீர்மானிக்கிறது.",
+    "land_water": "நிலத்தின் அளவு & நீர் ஆதாரம்",
+    "land_acres": "நில அளவு (ஏக்கரில்)",
+    "irrigation": "முக்கிய பாசன ஆதாரம்",
+    "back": "பின்னால்",
+    "continue": "தொடரவும்",
+    "finish": "நிறைவு செய்"
+  }
+}

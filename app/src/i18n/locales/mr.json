@@ -1,0 +1,119 @@
+{
+  "home": {
+    "greeting_morning": "शुभ सकाळ, {{name}}",
+    "greeting_afternoon": "शुभ दुपार, {{name}}",
+    "greeting_evening": "शुभ संध्याकाळ, {{name}}",
+    "search_placeholder": "शेतीबद्दल काहीही विचारा...",
+    "trending_title": "{{district}} मध्ये आजचे ट्रेंडिंग विषय",
+    "recent_title": "पूर्वीचे संभाषण सुरु ठेवा",
+    "seasonal_nudge": "{{crop}} · {{season}} चा {{week}} वा आठवडा"
+  },
+  "search": {
+    "offline_banner": "ऑफलाइन मोड — स्थानिक माहितीवरून उत्तर",
+    "source_icar": "ICAR",
+    "source_kvk": "KVK",
+    "source_niphm": "NIPHM",
+    "follow_up_hint": "पुढील प्रश्न विचारा...",
+    "typing": "कृषिमाइंड विचार करत आहे..."
+  },
+  "voice": {
+    "tap_to_record": "बोलण्यासाठी टॅप करा",
+    "recording": "ऐकत आहे...",
+    "language_detected": "ओळखलेली भाषा: {{language}}",
+    "quality_noise": "नॉइज: {{level}}",
+    "quality_clarity": "स्पष्टता: {{level}}",
+    "command_hint_photo": "कॅमेरा उघडण्यासाठी 'फोटो' म्हणा"
+  },
+  "auth": {
+    "welcome_title": "KrishiMitra AI",
+    "welcome_sub": "कृषी बुद्धिमत्ता. तुमच्या भाषेत.",
+    "enter_phone": "तुमचा मोबाईल नंबर टाका",
+    "enter_otp": "{{phone}} वर पाठवलेला OTP टाका",
+    "setup_title": "तुमच्या शेताविषयी सांगा",
+    "setup_sub": "यामुळे कृषीमाइंड तुम्हाला अचूक, स्थानिक माहिती देईल"
+  },
+  "tabs": {
+    "history": "इतिहास",
+    "settings": "सेटिंग्ज"
+  },
+  "home_alerts": {
+    "high_risk": "⚠️ उच्च रोगाचा धोका",
+    "humidity_warn": "या आठवड्यात {{district}} मध्ये आर्द्रता ८२% आहे. करपा रोगाचा मोठा धोका आहे.",
+    "action_guideline": "प्रतिबंधात्मक उपाय पाहण्यासाठी टॅप करा →"
+  },
+  "crops": {
+    "Paddy": "भात",
+    "Wheat": "गहू",
+    "Cotton": "कापूस",
+    "Sugarcane": "ऊस",
+    "Maize": "मका",
+    "Vegetables": "भाज्या",
+    "Pulses": "डाळी",
+    "Tomato": "टोमॅटो"
+  },
+  "states": {
+    "Karnataka": "कर्नाटक",
+    "Maharashtra": "महाराष्ट्र"
+  },
+  "districts": {
+    "Mandya": "मंगळवेढा/मांड्या",
+    "Hassan": "हासन",
+    "Nashik": "नाशिक",
+    "Pune": "पुणे"
+  },
+  "home_trending": {
+    "paddy_blast": "भात पिकावरील करपा रोगाचे उपाय",
+    "tomato_price": "टोमॅटो बाजारभाव आजचे",
+    "pm_kisan": "पीएम किसान हप्त्याची तारीख",
+    "cotton_pest": "कापसावरील किडीचे व्यवस्थापन"
+  },
+  "sidebar": {
+    "new_search": "नवीन शोध",
+    "recent_threads": "पूर्वीचे संभाषण",
+    "no_recent_threads": "कोणतेही नवीन संभाषण नाही",
+    "farm_profile": "तुमची शेती प्रोफाइल",
+    "tap_to_edit": "प्रोफाइल बदलण्यासाठी टॅप करा",
+    "log_out": "लॉग आउट",
+    "clear_recent": "सर्व काढून टाका",
+    "clear_confirm": "तुम्हाला सर्व पूर्वीचे शोध काढून टाकायचे आहेत का?",
+    "acres": "{{count}} एकर"
+  },
+  "answer": {
+    "krishimitra_answer": "✦ कृषिमित्र उत्तर",
+    "high_confidence": "✓ उच्च विश्वासार्हता",
+    "shap_title": "📊 हे निदान का केले? (SHAP स्पष्टीकरण)",
+    "immediate_action": "⚠️ तातडीची कारवाई:",
+    "control": "नियंत्रण",
+    "est_cost": "अंदाजे खर्च",
+    "generation_explainer": "हे उत्तर कसे तयार झाले?"
+  },
+  "shap": {
+    "humidity": "आर्द्रता (हवेतील दमटपणा)",
+    "season": "हंगाम",
+    "location": "स्थान",
+    "soil_type": "मातीचा प्रकार",
+    "temperature": "तापमान"
+  },
+  "onboarding": {
+    "welcome": "कृषिमित्र AI मध्ये आपले स्वागत आहे",
+    "welcome_sub": "योग्य सल्ल्यासाठी आपल्या शेतीची माहिती प्रविष्ट करा.",
+    "step_location": "स्थानाचा तपशील",
+    "step_crops": "घेतली जाणारी पिके",
+    "step_soil": "मातीची निवड",
+    "step_land": "जमीन आणि पाणी",
+    "your_name": "आपले नाव",
+    "state": "राज्य",
+    "district": "जिल्हा",
+    "block": "तालुका / गाव",
+    "select_crops": "आपली पिके निवडा",
+    "select_crops_sub": "उगवणारी पिके निवडा. यामुळे अचूक सल्ला मिळेल.",
+    "select_soil": "मातीचा प्रकार निवडा",
+    "select_soil_sub": "मातीच्या प्रकारावरून सिंचन व खतांचे प्रमाण ठरते.",
+    "land_water": "शेताचा आकार आणि पाण्याचा स्त्रोत",
+    "land_acres": "शेताचा आकार (एकरात)",
+    "irrigation": "सिंचनाचा मुख्य स्त्रोत",
+    "back": "मागे",
+    "continue": "पुढे जा",
+    "finish": "पूर्ण करा"
+  }
+}

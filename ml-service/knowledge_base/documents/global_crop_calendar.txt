@@ -1,0 +1,103 @@
+Global Crop Calendar and Agricultural Advisory
+
+CLIMATE PROFILE CATEGORIES
+Tropical Humid: Annual rainfall 1500-4000mm, Red laterite/alluvial soils, Year-round growing, Temperature 22-35°C.
+Tropical Semi-Arid: Annual rainfall 500-1000mm, Black and red loamy soils, Distinct kharif/rabi seasons, Temperature 20-40°C.
+Temperate: Annual rainfall 400-900mm, Loam to clay soils, Single main growing season, Temperature 5-25°C.
+Mediterranean: Annual rainfall 300-700mm, Clay loam, Winter growing season, Summer drought, Temperature 10-30°C.
+
+KHARIF SEASON (June – November, Tropical South Asia / Sub-Saharan Africa)
+
+Ragi (Finger Millet / Eleusine coracana):
+- Sowing: June 15 – July 15 (monsoon onset)
+- Recommended varieties: GPU-28, MR-6, Indaf-5, VL-149
+- Spacing: 22.5 x 10 cm
+- Seed rate: 10 kg/ha (transplanted), 5 kg/ha (direct seeded)
+- Fertilizer: N:P:K = 100:50:50 kg/ha
+- Irrigation: Rainfed in normal years; supplemental irrigation at panicle initiation
+- Yield: 3-4 tonnes/ha (improved varieties)
+- Key pests: Blast (Pyricularia grisea) — spray Tricyclazole 75% WP 0.6g/L
+
+Rice (Paddy / Oryza sativa):
+- Sowing: June 20 – July 20 (monsoon zones); varies by region
+- Transplanting: 20-25 days old seedlings
+- Recommended varieties: Jyothi, Surekha, IR-64, BPT-5204, IRRI-6, BRRI dhan28 (vary by region)
+- Spacing: 20 x 15 cm
+- Fertilizer: N:P:K = 100:50:50 kg/ha; apply in 3 splits
+- Water management: Maintain 5cm standing water during vegetative phase
+- Yield: 5-6 tonnes/ha
+
+Maize (Zea mays):
+- Sowing: June 15 – July 10 (kharif); February-March (spring)
+- Recommended varieties: KHDH-9, NK-6240, Pioneer 3396, DKC varieties
+- Spacing: 60 x 20 cm
+- Fertilizer: N:P:K = 150:75:75 kg/ha
+- Irrigation: 6-7 irrigations; critical stages: knee-high, tasseling, grain filling
+- Yield: 7-8 tonnes/ha (hybrids)
+
+Sorghum (Jowar / Sorghum bicolor):
+- Sowing: June-July (kharif)
+- Varieties: CSH-16, SPV-669, Maldandi (South Asia); IS-3541, Sorghum hybrids (Africa, Americas)
+- Spacing: 45 x 15 cm
+- Fertilizer: N:60, P:30, K:30 kg/ha
+- Yield: 3-4 t/ha (hybrids)
+
+RABI SEASON (November – March, South Asia / Winter crops globally)
+
+Tomato:
+- Transplanting: October 15 – November 30 (tropical rabi); March-May (temperate spring)
+- Best varieties: Arka Rakshak, COTH-3, Naveen; local hybrids adapted to region
+- Spacing: 60 x 45 cm (stakes required for indeterminate varieties)
+- Temperature requirement: 15–25°C (night) is ideal for fruit set
+- Disease management: Spray copper oxychloride 3g/L preventively
+
+Potato (Solanum tuberosum):
+- Planting: September – November (tropical highlands); March-April (temperate zones)
+- Varieties: Kufri Jyoti, Kufri Sindhuri (South Asia); Atlantic, Russet Burbank (Americas, Europe)
+- Seed rate: 2000-2500 kg/ha (cut tubers, 30-40g each)
+- Spacing: 60 x 20 cm
+- Fertilizer: N:P:K = 120:80:100 kg/ha
+- Late blight is major disease — spray Metalaxyl + Mancozeb every 7-10 days
+
+Wheat (Triticum aestivum):
+- Sowing: October-November (South Asia); October-December (temperate zones)
+- Varieties: HD-2967, PBW-343, GW-496 (South Asia); Winter Red, SRW varieties (global)
+- Seed rate: 100-125 kg/ha
+- Spacing: 22.5 cm row-to-row
+- Fertilizer: N:P:K = 120:60:40 kg/ha
+- Irrigation: Crown root initiation, tillering, jointing, flowering, grain fill (5 critical stages)
+- Yield: 4-5 t/ha irrigated, 2-3 t/ha rainfed
+
+PERENNIAL CROPS
+
+Coconut (Cocos nucifera):
+- Planting: June-July or September-October
+- Varieties: Tall (West Coast Tall, East Coast Tall), Hybrid (COD x WCT), MATAG
+- Spacing: 7.5 x 7.5 m (triangular)
+- Fertilizer: 1 kg N, 0.5 kg P, 2 kg K per palm per year in 3 splits
+- Irrigation: 40-45 litres/palm/day in summer months
+
+Banana (Musa spp.):
+- Varieties: Grand Naine, Robusta, Nendran, Cavendish
+- Planting: Year-round in tropical zones
+- Spacing: 1.8 x 1.5 m (tissue culture plants)
+- Fertilizer: 200 g N + 60 g P + 300 g K per plant per year
+- Irrigation: Drip preferred, 10-15 L/plant/day
+- Yield: 25-40 t/ha
+
+SOIL HEALTH MANAGEMENT
+- Green manure crops: Sunhemp, Dhaincha, Crotalaria — incorporate at 45 days
+- Vermicompost application: 2-4 tonnes/ha improves soil organic matter
+- Lime application for acidic soils (pH < 5.5): 2-4 tonnes/ha
+- Soil testing: Recommended every 3 years at local soil testing lab or KVK/extension office
+
+INTEGRATED PEST MANAGEMENT (IPM)
+- Pheromone traps for fall armyworm monitoring in maize: 5/ha
+- Trichogramma egg parasitoid cards: 1 lakh/ha for lepidopteran pests
+- Yellow sticky traps for thrips and whitefly: 25/ha
+- Neem-based products: NSKE 5% spray for sucking pests
+- Trichoderma viride: 2.5 kg/ha (soil application) for soil-borne pathogens
+
+ADVISORY NOTE
+Recommendations should be adapted to local climate, soil type, and variety availability.
+Contact your nearest agricultural extension office, KVK, or Ministry of Agriculture for region-specific guidance.

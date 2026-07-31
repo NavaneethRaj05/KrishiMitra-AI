@@ -1,0 +1,79 @@
+Fertilizer and Plant Nutrition Guide for Indian Farmers
+
+UNDERSTANDING NPK
+Nitrogen (N): Essential for vegetative growth, leaf development, and green color. Deficiency causes yellowing of older leaves first. Sources: Urea (46% N), Ammonium Sulphate (21% N), DAP (18% N).
+Phosphorus (P): Essential for root development, flowering, and fruit set. Deficiency causes purple/red coloration of leaves and poor root growth. Sources: DAP (46% P2O5), Single Superphosphate - SSP (16% P2O5), Triple Superphosphate - TSP (46% P2O5).
+Potassium (K): Essential for disease resistance, fruit quality, and water regulation. Deficiency causes brown leaf margins. Sources: MOP/Muriate of Potash (60% K2O), SOP/Sulphate of Potash (50% K2O).
+
+MICRONUTRIENTS
+Zinc (Zn): Deficiency causes khaira disease in rice — white/brown spots on new leaves. Apply Zinc Sulphate 25 kg/ha as basal dose.
+Boron (B): Critical for fruit set, pollen germination. Deficiency in cauliflower causes hollow stem. Apply Borax 10 kg/ha.
+Iron (Fe): Deficiency causes yellowing between leaf veins (interveinal chlorosis) starting from young leaves. Apply Ferrous Sulphate 25 kg/ha or foliar spray.
+Sulphur (S): Promotes protein synthesis and oil content (important for oilseeds and onion). Apply Gypsum/SSP.
+
+CROP-SPECIFIC FERTILIZER RECOMMENDATIONS
+
+TOMATO (Karnataka)
+Basal: DAP 125 kg/ha + MOP 75 kg/ha + FYM/compost 25 t/ha
+Top dressing:
+- 30 DAT: Urea 75 kg/ha + MOP 40 kg/ha
+- 60 DAT: Urea 75 kg/ha
+Foliar: 0.5% MgSO4 + 0.5% ZnSO4 at fruit development stage
+Total: N:180 P:90 K:120 kg/ha
+
+RICE (Paddy) - High yielding varieties
+Basal: DAP 100 kg/ha + MOP 50 kg/ha + ZnSO4 25 kg/ha
+First top dressing (7-10 DAT): Urea 50 kg/ha
+Second top dressing (panicle initiation): Urea 50 kg/ha + MOP 25 kg/ha
+Total: N:120 P:60 K:60 kg/ha
+
+RAGI (Karnataka)
+Basal: DAP 50 kg/ha + MOP 25 kg/ha + FYM 10 t/ha
+Top dressing (20-25 DAT): Urea 60 kg/ha
+Total: N:40 P:30 K:25 kg/ha
+
+MAIZE
+Basal: DAP 150 kg/ha + MOP 100 kg/ha + FYM 15 t/ha
+Top dressing (3-4 leaf stage): Urea 100 kg/ha
+Top dressing (tasseling): Urea 65 kg/ha
+Total: N:150 P:75 K:75 kg/ha
+
+WHEAT
+Basal: DAP 150 kg/ha + MOP 75 kg/ha + FYM 10 t/ha
+First irrigation top dressing: Urea 110 kg/ha
+Second irrigation: Urea 55 kg/ha
+Total: N:120 P:60 K:40 kg/ha
+
+COTTON (Bt Hybrids)
+Basal: DAP 100 kg/ha + MOP 75 kg/ha + FYM 10 t/ha
+Top dressing (30 DAT): Urea 65 kg/ha
+Top dressing (60 DAT): Urea 65 kg/ha + MOP 50 kg/ha
+Total: N:120 P:60 K:90 kg/ha
+
+ORGANIC FERTILIZERS
+Vermicompost: 2-4 t/ha. Improves soil structure, adds micronutrients, enhances beneficial microbial activity.
+Farm Yard Manure (FYM): 10-25 t/ha. Apply 3-4 weeks before sowing for maximum benefit.
+Green Manure: Dhaincha (Sesbania), Sunhemp. Incorporate at flowering stage (45-50 days). Adds 40-80 kg N/ha.
+Biofertilizers: 
+- Rhizobium inoculant for pulse crops (200g/kg seed)
+- Azospirillum for cereals (600g/ha)
+- PSB (Phosphate Solubilizing Bacteria) 600g/ha with half dose of phosphatic fertilizer
+
+SOIL TESTING AND INTERPRETATION
+Conduct soil test every 2-3 years. Sample from 0-15 cm depth from 10-15 spots per field.
+pH interpretation: Below 5.5 = acidic (add lime), 5.5-7.5 = optimal, above 7.5 = alkaline (add gypsum/sulphur).
+Organic Carbon (OC): Low < 0.5%, Medium 0.5-0.75%, High > 0.75%. Add FYM to improve OC.
+Nitrogen: Low < 280 kg/ha, Medium 280-560 kg/ha, High > 560 kg/ha.
+
+FOLIAR NUTRITION (Quick Fix for Deficiencies)
+Urea: 1-2% solution for quick nitrogen supply during crop stress
+DAP: 2% solution for phosphorus and nitrogen
+MgSO4: 0.5% for magnesium deficiency
+ZnSO4: 0.5% + 0.25% lime for zinc deficiency
+Boric acid: 0.2% for boron deficiency during flower initiation
+
+FERTIGATION SCHEDULE (Drip Irrigation)
+Split fertilizer into 10-12 doses over crop period
+Use water-soluble fertilizers: 19:19:19 NPK, 13:0:45, 0:0:50
+Always do fertigation after 30 minutes of plain water and end with plain water flush
+pH of fertigation water: 5.5-6.5 is ideal

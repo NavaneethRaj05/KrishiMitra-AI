@@ -1,0 +1,43 @@
+INTEGRATED PEST MANAGEMENT (IPM) GUIDE — NCIPM, NEW DELHI
+
+INTRODUCTION
+Integrated Pest Management (IPM) is a science-based approach that combines multiple pest management strategies to keep pest populations below economically damaging levels while minimising risks to human health, the environment, and non-target organisms. IPM does not eliminate all pests — it manages them to acceptable levels.
+
+IPM PRINCIPLES
+1. Prevention: Use resistant varieties, crop rotation, sanitation, and proper plant spacing to prevent pest build-up.
+2. Monitoring: Regular scouting (field visits) to identify pest species, counts, and natural enemies. Do not spray based on calendar — spray based on pest population thresholds.
+3. Decision: Compare observed pest populations with Economic Threshold Levels (ETLs). Spray only when ETL is crossed.
+4. Intervention: Use biological controls first; cultural controls second; chemical controls as last resort and with least harmful products.
+
+COMMON PESTS AND MANAGEMENT BY CROP
+
+RICE PESTS
+Stem borer (Scirpophaga incertulas): Causes 'dead heart' in vegetative stage and 'white ear' at maturity. ETL: 5% dead hearts at vegetative, 1 white ear/m² at reproductive stage. Management: Clip and destroy infested nursery shoots. Remove 'dead hearts'. Pheromone traps (5/ha). Biological: Trichogramma japonica (egg parasitoid) @ 1 lakh/ha at egg mass stage. Chemical (if ETL crossed): Chlorpyrifos 20% EC @ 2.5 mL/L or Fipronil 0.3% GR @ 20 kg/ha.
+
+Brown Planthopper (Nilaparvata lugens): Feeds on phloem sap, causes 'hopper burn' (circular patches of dried plants). ETL: 10–15 hoppers per hill. Management: Grow resistant varieties (IR 64, MTU 1010). Drain field intermittently. Avoid excessive nitrogen. Preserve natural enemies (spiders). Chemical: Buprofezin 25% SC @ 1 mL/L or Imidacloprid 17.8% SL @ 0.25 mL/L. Never use pyrethroids — they cause BPH resurgence.
+
+Leaf folder (Cnaphalocrocis medinalis): Folds leaf longitudinally and feeds inside. ETL: 10% leaf folding at vegetative, 5% at reproductive stage. Management: Conserve natural enemies. Pheromone traps. Chemical: Chlorpyrifos or Profenophos.
+
+TOMATO PESTS
+Helicoverpa armigera (Fruit borer): Most serious pest; larvae bore into fruits. ETL: 1 larva/plant or 5% damaged fruits. Management: Pheromone traps (5/ha) for monitoring. Remove and destroy infested fruits. Intercrop with marigold (trap crop). Biological: Bacillus thuringiensis (Bt) @ 1 kg/ha at 1st–2nd instar larvae, Helicoverpa NPV (Nuclear Polyhedrosis Virus) @ 250 LE/ha. Chemical: Emamectin benzoate 5% SG @ 0.4 g/L or Spinosad 45% SC @ 0.3 mL/L.
+
+Whitefly (Bemisia tabaci): Vector for Tomato Yellow Leaf Curl Virus (TYLCV). ETL: 10 adult whiteflies per 3 leaves. Management: Yellow sticky traps (15/ha). Reflective mulch to repel whiteflies. Destroy infected plants immediately. Neem oil 2% spray. Chemical: Thiamethoxam 25% WG @ 0.3 g/L. Avoid continuous use of neonicotinoids.
+
+COTTON PESTS
+Bollworms (Helicoverpa, Spodoptera, Pink bollworm): ETL: 5 egg masses or 10 larvae/100 plants. Management: Pheromone traps. Bt cotton (naturally resistant to Helicoverpa). Trichogramma parasitoids. HaNPV for Helicoverpa. Chemical: Spinosad 45% SC @ 0.3 mL/L or Indoxacarb 14.5% SC @ 0.75 mL/L.
+
+GENERAL CHEMICAL PESTICIDE GUIDELINES
+1. Rotate pesticide groups (different modes of action) to prevent resistance.
+2. Apply at recommended dose — never increase dose.
+3. Use proper protective equipment (PPE): gloves, mask, goggles, full-sleeved clothing.
+4. Spray in the morning or evening (not midday).
+5. Observe pre-harvest intervals (PHI) strictly — residues are dangerous.
+6. Never mix pesticides unless label-approved. Some mixtures are toxic.
+7. Store pesticides in original containers, locked, away from children and food.
+8. Dispose of empty containers by triple rinsing; puncture and bury — never burn.
+
+BIOLOGICAL CONTROL AGENTS SUMMARY
+- Trichogramma spp.: Egg parasitoid for caterpillar pests. Release 1–2 lakh/ha, 2–3 times.
+- Chrysoperla carnea: General predator of aphids, mites, small caterpillars. Release 50,000 eggs/ha.
+- Trichoderma: Soil-borne disease control (see soil health guide).
+- NPV viruses: Specific to Helicoverpa (HaNPV), Spodoptera (SpNPV). Apply in evening, no UV exposure.

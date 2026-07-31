@@ -1,0 +1,125 @@
+{
+  "home": {
+    "greeting_morning": "ಶುಭೋದಯ, {{name}}",
+    "greeting_afternoon": "ಶುಭ ಮಧ್ಯಾಹ್ನ, {{name}}",
+    "greeting_evening": "ಶುಭ ಸಂಜೆ, {{name}}",
+    "search_placeholder": "ಕೃಷಿ ಬಗ್ಗೆ ಏನನ್ನಾದರೂ ಕೇಳಿ…",
+    "trending_title": "{{district}} ನಲ್ಲಿ ಇಂದು ಟ್ರೆಂಡಿಂಗ್",
+    "recent_title": "ಇತ್ತೀಚಿನ ಸಂಭಾಷಣೆಗಳು",
+    "seasonal_nudge": "{{crop}} · {{season}} ನ ವಾರ {{week}}",
+    "hero_eyebrow": "ನಿಖರ ಕೃಷಿ AI · ಆಫ್‌ಲೈನ್ ಕೆಲಸ · ಬಹುಭಾಷಾ",
+    "hero_title": "ನಿಮ್ಮ ಕೃಷಿಯ ಬಗ್ಗೆ ಏನನ್ನಾದರೂ ಕೇಳಿ",
+    "hero_sub": "ICAR ಮಾರ್ಗಸೂಚಿಗಳು, ರೋಗನಿರ್ಣಯ, ಮಾರುಕಟ್ಟೆ ಬೆಲೆಗಳನ್ನು ನಿಮ್ಮ ಭಾಷೆಯಲ್ಲಿ ಪಡೆಯಿರಿ",
+    "choose_language": "🗣️ ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ",
+    "prompt_paddy_blast": "ಭತ್ತದ ಬ್ಲಾಸ್ಟ್ ರೋಗದ ಚಿಕಿತ್ಸೆ",
+    "prompt_tomato_price": "{{district}} ಮಾರುಕಟ್ಟೆಯಲ್ಲಿ ಇಂದಿನ ಟೊಮೆಟೊ ಬೆಲೆ",
+    "prompt_rabi_crops": "ಕಪ್ಪು ಮಣ್ಣಿಗೆ ಸೂಕ್ತ ರಬಿ ಬೆಳೆಗಳು",
+    "prompt_urea_dosage": "ಎಕರೆಗೆ ಯೂರಿಯಾ ಪ್ರಮಾಣ"
+  },
+  "search": {
+    "offline_banner": "ಆಫ್‌ಲೈನ್ ಮೋಡ್ — ಸ್ಥಳೀಯ ಜ್ಞಾನದಿಂದ ಉತ್ತರ",
+    "source_icar": "ICAR",
+    "source_kvk": "KVK",
+    "source_niphm": "NIPHM",
+    "follow_up_hint": "ಮುಂದಿನ ಪ್ರಶ್ನೆ ಕೇಳಿ…",
+    "typing": "ಕೃಷಿಮಿತ್ರ AI ಯೋಚಿಸುತ್ತಿದೆ…"
+  },
+  "voice": {
+    "tap_to_record": "ಮಾತನಾಡಲು ಟ್ಯಾಪ್ ಮಾಡಿ",
+    "recording": "ಆಲಿಸಲಾಗುತ್ತಿದೆ…",
+    "language_detected": "ಗುರುತಿಸಿದ ಭಾಷೆ: {{language}}",
+    "quality_noise": "ಶಬ್ದ: {{level}}",
+    "quality_clarity": "ಸ್ಪಷ್ಟತೆ: {{level}}",
+    "command_hint_photo": "ಕ್ಯಾಮೆರಾ ತೆರೆಯಲು 'ಫೋಟೋ' ಎಂದು ಹೇಳಿ"
+  },
+  "auth": {
+    "welcome_title": "KrishiMitra AI",
+    "welcome_sub": "ನಿಮ್ಮ ಭಾಷೆಯಲ್ಲಿ ಕೃಷಿ ಜ್ಞಾನ.",
+    "enter_phone": "ನಿಮ್ಮ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ",
+    "enter_otp": "{{phone}} ಗೆ ಕಳುಹಿಸಿದ OTP ನಮೂದಿಸಿ",
+    "setup_title": "ನಿಮ್ಮ ಜಮೀನಿನ ಬಗ್ಗೆ ತಿಳಿಸಿ",
+    "setup_sub": "ಇದು ಕೃಷಿಮಿತ್ರ AI ಗೆ ಸರಿಯಾದ ಉತ್ತರ ನೀಡಲು ಸಹಾಯ ಮಾಡುತ್ತದೆ"
+  },
+  "tabs": {
+    "history": "ಇತಿಹಾಸ",
+    "settings": "ಸಂಯೋಜನೆಗಳು"
+  },
+  "home_alerts": {
+    "high_risk": "⚠️ ಬ್ಲಾಸ್ಟ್ ರೋಗದ ಹೆಚ್ಚಿನ ಅಪಾಯ",
+    "humidity_warn": "{{district}} ನಲ್ಲಿ ಈ ವಾರ ತೇವಾಂಶ 82% ಆಗಿದೆ. ಭತ್ತದ ಬ್ಲಾಸ್ಟ್ ರೋಗದ ಅಪಾಯವಿದೆ.",
+    "action_guideline": "ಮುನ್ನೆಚ್ಚರಿಕೆ ಮಾರ್ಗಸೂಚಿಗಳನ್ನು ಪಡೆಯಲು ಟ್ಯಾಪ್ ಮಾಡಿ →"
+  },
+  "crops": {
+    "Paddy": "ಭತ್ತ",
+    "Wheat": "ಗೋಧಿ",
+    "Cotton": "ಹತ್ತಿ",
+    "Sugarcane": "ಕಬ್ಬು",
+    "Maize": "ಮೆಕ್ಕೆಜೋಳ",
+    "Vegetables": "ತರಕಾರಿ",
+    "Pulses": "ಬೇಳೆಕಾಳು",
+    "Tomato": "ಟೊಮೆಟೊ"
+  },
+  "states": {
+    "Karnataka": "ಕರ್ನಾಟಕ",
+    "Maharashtra": "ಮಹಾರಾಷ್ಟ್ರ"
+  },
+  "districts": {
+    "Mandya": "ಮಂಡ್ಯ",
+    "Hassan": "ಹಾಸನ"
+  },
+  "home_trending": {
+    "paddy_blast": "ಭತ್ತದ ಬ್ಲಾಸ್ಟ್ ರೋಗ ಚಿಕಿತ್ಸೆ",
+    "tomato_price": "ಮೈಸೂರು ಮಾರುಕಟ್ಟೆಯಲ್ಲಿ ಟೊಮೆಟೊ ಬೆಲೆ",
+    "pm_kisan": "PM-KISAN ಕಂತಿನ ದಿನಾಂಕ",
+    "cotton_pest": "ಈ ವಾರದ ಹತ್ತಿ ಕೀಟ ನಿಯಂತ್ರಣ"
+  },
+  "sidebar": {
+    "new_search": "ಹೊಸ ಹುಡುಕಾಟ",
+    "recent_threads": "ಇತ್ತೀಚಿನ ಸಂಭಾಷಣೆಗಳು",
+    "no_recent_threads": "ಇತ್ತೀಚಿನ ಸಂಭಾಷಣೆಗಳಿಲ್ಲ",
+    "farm_profile": "ನಿಮ್ಮ ಕೃಷಿ ವಿವರಣೆ",
+    "tap_to_edit": "ವಿವರ ಎಡಿಟ್ ಮಾಡಲು ಟ್ಯಾಪ್ ಮಾಡಿ",
+    "log_out": "ಲಾಗ್ ಔಟ್",
+    "clear_recent": "ಎಲ್ಲವನ್ನೂ ಅಳಿಸಿ",
+    "clear_confirm": "ನೀವು ಎಲ್ಲಾ ಇತ್ತೀಚಿನ ಹುಡುಕಾಟಗಳನ್ನು ಅಳಿಸಲು ಬಯಸುವಿರಾ?",
+    "acres": "{{count}} ಎಕರೆ"
+  },
+  "answer": {
+    "krishimitra_answer": "✦ ಕೃಷಿಮಿತ್ರ ಉತ್ತರ",
+    "high_confidence": "✓ ಹೆಚ್ಚಿನ ವಿಶ್ವಾಸಾರ್ಹತೆ",
+    "shap_title": "📊 ಈ ರೋಗನಿರ್ಣಯ ಏಕೆ? (SHAP ವಿವರಣೆ)",
+    "immediate_action": "⚠️ ತಕ್ಷಣದ ಕ್ರಮ:",
+    "control": "ನಿಯಂತ್ರಣ",
+    "est_cost": "ಅಂದಾಜು ವೆಚ್ಚ",
+    "generation_explainer": "ಈ ಉತ್ತರವನ್ನು ಹೇಗೆ ಪಡೆಯಲಾಗಿದೆ?"
+  },
+  "shap": {
+    "humidity": "ತೇವಾಂಶ",
+    "season": "ಋತು",
+    "location": "ಸ್ಥಳ",
+    "soil_type": "ಮಣ್ಣಿನ ಮಾದರಿ",
+    "temperature": "ತಾಪಮಾನ"
+  },
+  "onboarding": {
+    "welcome": "ಕೃಷಿಮಿತ್ರ AI ಗೆ ಸ್ವಾಗತ",
+    "welcome_sub": "ನಿಮಗಾಗಿ ಸೂಕ್ತ ಕೃಷಿ ಪರಿಹಾರಗಳನ್ನು ನೀಡಲು ಕೃಷಿ ವಿವರಗಳನ್ನು ಹೊಂದಿಸೋಣ.",
+    "step_location": "ಸ್ಥಳ ವಿವರಗಳು",
+    "step_crops": "ಬೆಳೆಯುವ ಬೆಳೆಗಳು",
+    "step_soil": "ಮಣ್ಣಿನ ಆಯ್ಕೆ",
+    "step_land": "ಜಮೀನು ಮತ್ತು ನೀರು",
+    "your_name": "ನಿಮ್ಮ ಹೆಸರು",
+    "state": "ರಾಜ್ಯ",
+    "district": "ಜಿಲ್ಲೆ",
+    "block": "ತಾಲೂಕು / ಗ್ರಾಮ",
+    "select_crops": "ನೀವು ಬೆಳೆಯುವ ಬೆಳೆಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ",
+    "select_crops_sub": "ಅನ್ವಯವಾಗುವ ಬೆಳೆಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ. ಇದು ಬೆಳೆ ಆಧಾರಿತ ಪರಿಹಾರ ನೀಡುತ್ತದೆ.",
+    "select_soil": "ನಿಮ್ಮ ಮಣ್ಣಿನ ಪ್ರಕಾರ ಆಯ್ಕೆಮಾಡಿ",
+    "select_soil_sub": "ಮಣ್ಣಿನ ಪ್ರಕಾರವು ನೀರಾವರಿ ಮತ್ತು ಗೊಬ್ಬರದ ಪ್ರಮಾಣವನ್ನು ನಿರ್ಧರಿಸುತ್ತದೆ.",
+    "land_water": "ಜಮೀನಿನ ಪ್ರಮಾಣ ಮತ್ತು ನೀರಾವರಿ",
+    "land_acres": "ಜಮೀನಿನ ಪ್ರಮಾಣ (ಎಕರೆಗಳಲ್ಲಿ)",
+    "irrigation": "ಮುಖ್ಯ ನೀರಾವರಿ ಮೂಲ",
+    "back": "ಹಿಂದಕ್ಕೆ",
+    "continue": "ಮುಂದುವರಿಸಿ",
+    "finish": "ಪೂರ್ಣಗೊಳಿಸಿ"
+  }
+}

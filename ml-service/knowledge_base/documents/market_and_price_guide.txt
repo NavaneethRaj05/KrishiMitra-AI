@@ -1,0 +1,76 @@
+Agricultural Market Prices and Marketing Guide for Karnataka Farmers
+
+UNDERSTANDING APMC (AGRICULTURAL PRODUCE MARKET COMMITTEE)
+APMC markets (mandis) are regulated markets where farmers bring their produce for auction. Buyers (traders, processors) bid for produce. A licensed commission agent (arhatia) facilitates the sale and charges 1-2% commission. Karnataka has 157 APMC markets and 353 sub-markets.
+
+MINIMUM SUPPORT PRICES (MSP) 2024-25
+The Government of India announces MSP to protect farmers from price crashes.
+- Paddy (Common): Rs. 2,300/quintal
+- Ragi: Rs. 3,846/quintal
+- Maize: Rs. 2,225/quintal
+- Tur (Arhar): Rs. 7,550/quintal
+- Moong: Rs. 8,682/quintal
+- Urad: Rs. 7,400/quintal
+- Groundnut: Rs. 6,783/quintal
+- Sunflower seed: Rs. 7,280/quintal
+- Soyabean: Rs. 4,892/quintal
+- Cotton (Medium): Rs. 7,521/quintal
+- Wheat: Rs. 2,275/quintal
+- Jowar: Rs. 3,371/quintal
+Farmers can sell to government procurement agencies (FCI, NAFED, Karnataka State Cooperative Marketing Federation - KSCMF) at MSP when market prices fall below MSP.
+
+TYPICAL MARKET PRICES (HASSAN AND NEARBY APMCs — 2024 SEASONAL)
+Note: Prices vary significantly by season and quality.
+Tomato: Rs. 1,000-4,000/quintal (peaks in summer when supply falls)
+Ragi: Rs. 3,500-4,500/quintal
+Paddy (Fine): Rs. 2,200-2,800/quintal
+Maize: Rs. 1,600-2,200/quintal
+Potato (A-grade): Rs. 1,200-2,000/quintal
+Onion: Rs. 500-2,500/quintal (highly volatile)
+Coconut: Rs. 10-22/nut
+Arecanut (Rashi): Rs. 300-600/kg (highly profitable, 30-50 kg/palm/year)
+Coffee (Arabica parchment): Rs. 12,000-18,000/quintal
+Coffee (Robusta cherry): Rs. 8,000-14,000/quintal
+Ginger (fresh): Rs. 3,000-8,000/quintal
+Turmeric: Rs. 5,000-15,000/quintal
+
+WHERE TO CHECK CURRENT PRICES
+1. Agmarknet (agmarknet.gov.in) — official APMC price portal, updated daily
+2. eNAM portal (enam.gov.in) — for participating mandis
+3. Krishimarata app (Karnataka) — for real-time mandi prices
+4. SMS service: SMS "KPRICE <commodity> <market>" to 51969
+5. IFFCO Kisan app
+6. Kisan Suvidha app
+
+PRICE FORECASTING AND MARKET INTELLIGENCE
+Price cycles for major crops:
+Tomato: Peaks in May-June (summer) and September-October (post-monsoon), drops in December-February (peak supply from Kolar and Hassan).
+Onion: Prices low during Kharif harvest (Oct-Dec), high in May-July (lean season). Karnataka onion mostly exported to Maharashtra and North India.
+Potato: Low prices in February-March during harvest season, higher in July-September.
+Arecanut: Prices relatively stable due to high demand and slow production growth. Festival seasons push prices up.
+
+HOW TO GET BETTER PRICES
+1. Grading and sorting: Grade produce into A, B, C quality. A-grade fetches 20-40% premium.
+2. Clean packaging: Use clean gunny bags or crates. Damaged packaging lowers perceived quality.
+3. Sell at peak hours: Most mandis have peak activity 8am-12pm when more buyers are present.
+4. Join FPO (Farmer Producer Organization): Collective selling gives bargaining power. Karnataka has 300+ FPOs.
+5. Storage and timing: Store grains (ragi, maize) for 2-3 months post-harvest to get 20-30% better price. Use WDRA-registered warehouses and get warehouse receipts for pledge loans.
+6. Direct marketing: Sell to supermarkets (More, Reliance Fresh) or HOPCOMS (Horticulture Producers Cooperative Marketing and Processing Society) directly.
+7. Value addition: Dried tomatoes, ragi flour, coffee powder, coconut oil — fetch 2-5x higher value.
+8. e-NAM: Register and participate in electronic auctions to reach pan-India buyers.
+9. Export: Karnataka mango, coffee, and fresh ginger are exported. Contact APEDA (Agricultural and Processed Food Products Export Development Authority).
+
+KISAN RAILWAY AND FREIGHT SUBSIDY
+50% freight subsidy on horticulture produce transport by rail. Minimum consignment: 10 quintal. Book through nearest railway goods shed. Reduces transportation cost for distant markets.
+
+COLD STORAGE AND WAREHOUSING
+Potato: Store at 2-4°C, 90-95% humidity. Cold chain available at KSCMF and private warehouses.
+Onion: Store in well-ventilated, dry godowns. Do not store wet onions.
+Tomato: Short shelf life (7-10 days at ambient). Evaporative cool chambers (zero energy cool chambers) extend shelf life to 3 weeks.
+Cost of cold storage: Rs. 200-400/quintal per month.
+
+AGRI-ENTREPRENEUR OPPORTUNITIES IN KARNATAKA
+1. Custom Hiring Centre (CHC) for farm machinery — subsidy of 40-80% under SMAM scheme
+2. Rural Godown construction — NHB and NABARD subsidy of 25-33.33%
+3. Primary processing unit (grading, cleaning) — subsidy under PMKVY and NHM
+4. Organic certification — PKVY scheme covers cost of PGS/third-party certification

@@ -1,0 +1,89 @@
+Global Agriculture Crop Guide — Agro-Climatic Zones and Crop Management
+
+AGRO-CLIMATIC ZONES (WORLDWIDE)
+
+Tropical Humid Zone: Rainfall 1500-4000mm, high humidity, year-round warmth. Crops: Rice, Maize, Cassava, Banana, Coconut, Sugarcane, Rubber, Tea, Coffee, Cardamom.
+Tropical Semi-Arid Zone: Rainfall 500-1000mm, black or red loamy soils. Crops: Sorghum, Pearl Millet, Pigeon Pea, Cotton, Groundnut, Sunflower.
+Tropical Arid Zone: Rainfall below 500mm, sandy and loamy soils. Crops: Pearl Millet, Drought-tolerant Sorghum, Cowpea, Moth Bean.
+Sub-Tropical Humid Zone: Rainfall 900-2000mm, alluvial and red soils. Crops: Wheat, Rice, Maize, Soybean, Sugarcane, Vegetables.
+Sub-Tropical Semi-Arid Zone: Rainfall 500-900mm, black and red soils. Crops: Wheat, Barley, Chickpea, Mustard, Cotton.
+Temperate Zone: Rainfall 500-1200mm, moderate temperatures. Crops: Wheat, Barley, Potatoes, Oats, Sunflower, Rapeseed.
+Mediterranean Zone: Rainfall 400-800mm, wet winters, dry summers. Crops: Wheat, Barley, Olives, Grapes, Citrus, Lentils.
+Equatorial Rainforest Zone: Rainfall >2000mm, evergreen. Crops: Cacao, Rubber, Oil Palm, Banana, Cassava.
+
+FINGER MILLET (RAGI) — Major dryland cereal
+Best varieties: GPU-45, GPU-67, Indaf-5, MR-6, Indaf-9 (90-100 days). VL-149, PR-202 (high altitude).
+Sowing time: June-July (main season), September-October (rabi under irrigation).
+Seed rate: Direct sowing 10 kg/ha, Transplanting 5 kg/ha (nursery method).
+Spacing: 30 x 10 cm for transplanted, 22.5 x 10 cm for line sowing.
+Fertilizer: N:40, P:20, K:20 kg/ha. Apply FYM 10 t/ha before sowing.
+Irrigation: 5-6 irrigations. Critical stages: tillering, panicle initiation, grain filling.
+Harvest: 100-115 days. Yield: 2.5-3.5 t/ha irrigated, 1.5-2 t/ha rainfed.
+Common diseases: Blast (Pyricularia), Downy Mildew. Treat seed with Thiram 4g/kg.
+
+PADDY (RICE) — Global staple crop
+Best varieties: Jaya, IR-36, Sona Masuri (BPT-5204), Rajendra Bhagwa, MTU 7029, IRRI varieties, local high-yielding varieties.
+Transplanting time: Based on monsoon onset in tropical zones; May-July in South Asia.
+Nursery: 25-30 kg seed/ha for transplanting nursery of 1000 sq.m.
+Spacing: 20 x 15 cm. Seedling age: 25-30 days.
+Fertilizer: N:120, P:60, K:60 kg/ha. Split nitrogen in 3 doses.
+Water management: Maintain 5cm standing water during vegetative stage. Drain at maturity.
+Yield: SRI method 6-8 t/ha, conventional 4-5 t/ha.
+
+TOMATO — Major commercial vegetable crop
+Best varieties: Arka Rakshak (hybrid, disease resistant), Arka Vikas, CO-3, US-440, Rashmi. Local varieties suitable for climate.
+Planting time: Year-round under irrigation, preferring mild temperatures (15-30°C).
+Nursery: 500 sq.m nursery for 1 ha. 400g seed required. Transplant at 4-5 leaf stage.
+Spacing: 60 x 45 cm or 75 x 60 cm for staked.
+Fertilizer: N:180, P:90, K:120 kg/ha. Apply Calcium Boron spray at flowering.
+Training: Use stakes and string; keep 2-3 main stems only (pinching side branches).
+Irrigation: Drip preferred. Irrigate every 3-5 days in summer, 7-10 days in winter.
+Yield: 40-60 t/ha (hybrid), 25-35 t/ha (open pollinated).
+Harvest: Begins 60-75 days after transplanting. Harvest at green mature or breaker stage for distant markets.
+
+POTATO — Rabi/cool season crop
+Best varieties: Kufri Chandramukhi, Kufri Jyoti, Kufri Badshah, Kufri Sindhuri (South Asia). Atlantic, Russet Burbank (global).
+Seed rate: 1500-2000 kg/ha of seed tubers (30-40g size).
+Planting: Cut tubers with 2-3 eyes. Treat with Carbendazim 2g/kg before planting.
+Spacing: 60 x 20 cm.
+Fertilizer: N:180, P:90, K:120 kg/ha. Apply 50% N+full P+K at planting. Remaining N at earthing up.
+Earthing up: Do at 30 and 45 DAP to prevent greening of tubers.
+Irrigation: Light frequent irrigation every 7-10 days. Avoid waterlogging.
+Harvest: 90-100 days after planting. Allow skin to set (2 weeks before harvest, withhold irrigation).
+Yield: 20-25 t/ha.
+
+COCONUT CULTIVATION (Tropical coastal and humid regions)
+Varieties: Tall — West Coast Tall, East Coast Tall. Hybrid — Chandra Sankara, Kera Sankara. MATAG (Philippines), PB-121 (Malaysia).
+Planting time: June-July or September-October (monsoon onset period).
+Planting material: 9-12 month old seedlings with 6+ leaves and single straight tap root.
+Spacing: 7.5 x 7.5 m or 8 x 8 m (triangular). 156 palms/ha.
+Fertilizer per palm per year: N:500g, P:320g, K:1200g + 50 kg FYM. Apply twice (pre- and post-monsoon).
+Irrigation: 40-50 liters/palm/day in summer. Drip irrigation saves 30-40% water.
+Common pests: Rhinoceros beetle, red palm weevil. Control with naphthalene balls in crown leaf axils.
+Yield: 80-100 nuts/palm/year after 7 years of planting.
+
+COFFEE CULTIVATION (Highland tropical regions)
+Arabica: Shade-loving, altitude 600-1600m, rainfall 1500-2000mm. Varieties: Selection 795, S.1934, Cauvery, Typica, Bourbon.
+Robusta: Tolerates more sun and lower altitude (500-1000m). Varieties: S.274, CxR, Conillon.
+Shade trees: Silver oak (Grevillea robusta), Erythrina. Maintain 40-50% shade.
+Planting: 2 x 2 m for Arabica (2500 plants/ha), 2.7 x 2.7 m for Robusta.
+Fertilizer per plant per year: Arabica N:40g P:15g K:25g + 15 kg compost. Robusta: N:60g P:20g K:40g.
+Common diseases: Coffee Leaf Rust (CLR) — spray Copper oxychloride 3g/L. White Stem Borer — apply Chlorpyrifos.
+Harvest: Arabica — October-January. Robusta — November-February. Handpick red ripe cherries.
+
+WHEAT — Winter/Rabi cereal
+Best varieties: HD-2967, GW-496, K-307, WH-542, PBW-343, Sonalika (South Asia). Winter wheat varieties for temperate zones.
+Sowing: October-November (South Asia), October-December (Mediterranean/temperate).
+Seed rate: 100-125 kg/ha.
+Spacing: Row-to-row 22.5 cm.
+Fertilizer: N:120, P:60, K:40 kg/ha.
+Irrigation: 4-5 critical irrigations (crown root initiation, tillering, jointing, flowering, grain fill).
+Yield: 4-5 t/ha irrigated, 2-3 t/ha rainfed.
+
+MAIZE (CORN) — Universal food/feed crop
+Best varieties: KHDH-9, Pioneer 3396, NK-6240, DKC varieties (global hybrids).
+Sowing: June-July (kharif), February-March (spring/summer crop under irrigation).
+Spacing: 60 x 20 cm.
+Fertilizer: N:150, P:75, K:75 kg/ha.
+Irrigation: 6-7 irrigations; critical stages: knee-high, tasseling, grain filling.
+Yield: 7-8 t/ha (hybrids), 4-5 t/ha (composites).

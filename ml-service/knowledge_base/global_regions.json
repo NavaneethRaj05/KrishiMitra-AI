@@ -1,0 +1,114 @@
+{
+  "regions": [
+    {
+      "name": "Central Highlands",
+      "country": "Kenya",
+      "lat": -0.4218,
+      "lon": 36.9510,
+      "agro_zone": "Highland Equatorial (Humid)",
+      "typical_soil": "Nitisols (Red Volcanic)",
+      "major_crops": ["coffee", "tea", "maize", "potato", "beans"],
+      "avg_rainfall_mm": 1200,
+      "nearest_kvk": "KALRO Embu Research Centre"
+    },
+    {
+      "name": "Rift Valley",
+      "country": "Kenya",
+      "lat": -0.3030,
+      "lon": 36.0800,
+      "agro_zone": "Equatorial Semi-Arid",
+      "typical_soil": "Andosols (Volcanic Ash)",
+      "major_crops": ["maize", "wheat", "barley", "horticulture"],
+      "avg_rainfall_mm": 950,
+      "nearest_kvk": "KALRO Njoro Centre"
+    },
+    {
+      "name": "Mato Grosso",
+      "country": "Brazil",
+      "lat": -12.6817,
+      "lon": -55.8953,
+      "agro_zone": "Tropical Savanna (Cerrado)",
+      "typical_soil": "Ferralsols (Latosols)",
+      "major_crops": ["soybean", "corn", "cotton", "rice"],
+      "avg_rainfall_mm": 1500,
+      "nearest_kvk": "EMBRAPA Agrossilvipastoril"
+    },
+    {
+      "name": "Mekong Delta",
+      "country": "Vietnam",
+      "lat": 10.0260,
+      "lon": 105.7840,
+      "agro_zone": "Tropical Monsoon",
+      "typical_soil": "Fluvisols (Alluvial)",
+      "major_crops": ["rice", "banana", "coconut", "mango", "citrus"],
+      "avg_rainfall_mm": 1800,
+      "nearest_kvk": "Mekong Delta Development Research Institute"
+    },
+    {
+      "name": "Central Plains",
+      "country": "Thailand",
+      "lat": 14.2061,
+      "lon": 100.4858,
+      "agro_zone": "Tropical Wet-Dry",
+      "typical_soil": "Acrisols (Clayey-Alluvial)",
+      "major_crops": ["rice", "sugarcane", "maize", "cassava"],
+      "avg_rainfall_mm": 1300,
+      "nearest_kvk": "National Agricultural Extension Office (Ayutthaya)"
+    },
+    {
+      "name": "Central Luzon",
+      "country": "Philippines",
+      "lat": 15.4828,
+      "lon": 120.7120,
+      "agro_zone": "Tropical Maritime",
+      "typical_soil": "Vertisols (Clayey)",
+      "major_crops": ["rice", "maize", "sugarcane", "onion", "vegetables"],
+      "avg_rainfall_mm": 2000,
+      "nearest_kvk": "PhilRice Central Experiment Station"
+    },
+    {
+      "name": "Punjab Province",
+      "country": "Pakistan",
+      "lat": 31.1704,
+      "lon": 72.7097,
+      "agro_zone": "Subtropical Arid to Semi-Arid",
+      "typical_soil": "Aridisols (Alluvial)",
+      "major_crops": ["wheat", "cotton", "rice", "sugarcane", "maize"],
+      "avg_rainfall_mm": 450,
+      "nearest_kvk": "Ayub Agricultural Research Institute (Faisalabad)"
+    },
+    {
+      "name": "Central Punjab",
+      "country": "Pakistan",
+      "lat": 31.5204,
+      "lon": 74.3587,
+      "agro_zone": "Semi-Arid Irrigated Plains",
+      "typical_soil": "Alluvial Silt Loam",
+      "major_crops": ["wheat", "rice", "sugarcane", "potato", "maize"],
+      "avg_rainfall_mm": 600,
+      "nearest_kvk": "Punjab Agricultural Extension (Lahore)"
+    },
+    {
+      "name": "Central Region",
+      "country": "Uganda",
+      "lat": 0.3156,
+      "lon": 32.5786,
+      "agro_zone": "Humid Equatorial",
+      "typical_soil": "Ferralsols (Sandy Loam)",
+      "major_crops": ["banana", "maize", "coffee", "cassava", "sweet potato"],
+      "avg_rainfall_mm": 1300,
+      "nearest_kvk": "National Agricultural Research Organisation (Kawanda)"
+    },
+    {
+      "name": "Central Valley",
+      "country": "United States",
+      "lat": 37.3688,
+      "lon": -120.5980,
+      "agro_zone": "Mediterranean",
+      "typical_soil": "Xerolls (Loamy-Silty)",
+      "major_crops": ["almond", "grapes", "tomato", "cotton", "citrus"],
+      "avg_rainfall_mm": 350,
+      "nearest_kvk": "UC Cooperative Extension (Merced)"
+    }
+  ]
+}

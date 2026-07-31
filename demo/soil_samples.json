@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "label": "Hassan Red Soil — Ragi farm",
+    "description": "Typical red laterite soil from Hassan taluk, suitable for ragi cultivation",
+    "N": 40,
+    "P": 38,
+    "K": 35,
+    "temperature": 22.5,
+    "humidity": 75,
+    "ph": 5.8,
+    "rainfall": 180,
+    "expected_crop": "ragi",
+    "notes": "Low NPK, acidic pH, medium rainfall — classic ragi conditions"
+  },
+  {
+    "id": 2,
+    "label": "Mysore Black Soil — Cotton farm",
+    "description": "Black cotton soil from Mysore district, ideal for cotton and maize",
+    "N": 65,
+    "P": 45,
+    "K": 80,
+    "temperature": 28.0,
+    "humidity": 65,
+    "ph": 7.8,
+    "rainfall": 120,
+    "expected_crop": "cotton",
+    "notes": "High K, alkaline pH, semi-arid — cotton/maize belt"
+  },
+  {
+    "id": 3,
+    "label": "Coastal Alluvial — Rice farm",
+    "description": "High-fertility alluvial soil with high moisture, ideal for paddy",
+    "N": 90,
+    "P": 42,
+    "K": 43,
+    "temperature": 26.0,
+    "humidity": 88,
+    "ph": 6.5,
+    "rainfall": 220,
+    "expected_crop": "rice",
+    "notes": "Balanced NPK, neutral pH, high rainfall + humidity — textbook rice conditions"
+  }
+]

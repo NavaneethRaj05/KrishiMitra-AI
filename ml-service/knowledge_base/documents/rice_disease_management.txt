@@ -1,0 +1,75 @@
+Rice Disease Management Guide — ICAR
+
+RICE BLAST (Pyricularia oryzae / Magnaporthe oryzae)
+
+The most devastating rice disease worldwide. Can cause 10-100% yield loss.
+
+Symptoms:
+- Leaf blast: Diamond-shaped lesions with grey center and brown margins
+- Neck blast: Infected panicle neck turns brown, causing panicle to fall (broken neck)
+- Node blast: Blackening of nodes, plant breaks at infected node
+
+Favourable conditions:
+- Temperature: 24–28°C
+- High humidity (>90%)
+- Excessive nitrogen fertilization
+- Night temperature below 20°C combined with high humidity
+
+Management:
+Chemical control:
+- Tricyclazole 75% WP: 0.6g per liter water — spray at first sign
+- Propiconazole 25% EC: 1ml per liter water
+- Carbendazim 50% WP: 1g per liter water
+- Preventive spray interval: every 10-12 days during susceptible stage
+
+Cultural control:
+- Use resistant varieties: Jyothi, IR-64, BPT-5204
+- Balanced nitrogen application — split into 3 doses
+- Avoid late evening irrigation that keeps foliage wet overnight
+- Remove and destroy infected plant debris after harvest
+
+BROWN SPOT (Helminthosporium oryzae)
+
+Symptoms: Oval to circular brown spots on leaves, 1-2mm diameter with yellow halo
+
+Management:
+- Spray Mancozeb 75% WP (2g/L) or Hexaconazole 5% EC (1ml/L)
+- Treat seeds with Carbendazim 2g/kg before sowing
+
+BACTERIAL LEAF BLIGHT (Xanthomonas oryzae)
+
+Symptoms: Water-soaked leaf margins turning yellow then white. 
+Kresek phase: Seedling wilting and death.
+
+Management:
+- No effective chemical control for bacterial diseases
+- Use resistant varieties
+- Avoid high nitrogen doses
+- Drain fields when disease appears
+
+SHEATH BLIGHT (Rhizoctonia solani)
+
+Symptoms: Oval lesions on leaf sheath at waterline, spreading upwards
+
+Management:
+- Validamycin 3% L: 2ml/L water
+- Hexaconazole 5% SC: 2ml/L water
+- Avoid excessive N fertilizer
+- Reduce plant density
+
+STEM BORER (Chilo suppressalis, Scirpophaga incertulas)
+
+Symptoms: Dead heart in vegetative stage, white ear in reproductive stage
+
+Management:
+- Pheromone traps: 5/ha for monitoring
+- Release Trichogramma japonicum: 1 lakh/ha, 3 times at 10-day intervals
+- Chemical: Chlorpyriphos 20% EC 2.5ml/L, spray when egg mass hatching begins
+- Collection and destruction of egg masses
+
+INTEGRATED DISEASE MANAGEMENT CALENDAR:
+- At sowing: Seed treatment with Carbendazim + Thiram
+- 20-25 DAT: First preventive spray (Mancozeb) if blast-prone area
+- 35-40 DAT: Apply Trichoderma viride granules for soil diseases
+- Panicle initiation: Critical stage — spray for blast and sheath blight
+- Heading: Spray fungicide if neck blast risk is high

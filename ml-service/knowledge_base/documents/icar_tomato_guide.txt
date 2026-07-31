@@ -1,0 +1,84 @@
+ICAR Tomato Production Guide — Global Reference
+
+INTRODUCTION
+Tomato (Solanum lycopersicum) is one of the most important vegetable crops globally.
+It is grown extensively across South Asia, Southeast Asia, Africa, and Latin America in
+both Kharif/wet (June-September) and Rabi/dry (October-February) seasons.
+
+SOIL AND CLIMATE
+Tomato grows well in well-drained red sandy loam or black loam soils with pH 6.0–7.0. 
+The crop requires a temperature range of 20–32°C. Excessive humidity above 85% promotes 
+fungal diseases. Rainfall of 600–1200 mm annually is suitable.
+
+VARIETIES
+Recommended varieties for tropical/subtropical conditions:
+- Arka Vikas: High yielding, suitable for Kharif/wet season
+- Arka Rakshak: Disease resistant, hybrid, recommended for small farmers
+- COTH-3: Tolerant to early blight and bacterial wilt
+- PKM-1: Good for fresh market, medium duration
+- Pusa Ruby, Roma (suitable for processing)
+- Local hybrids adapted to specific agro-climatic conditions
+
+LAND PREPARATION
+Deep plough the field 2-3 times. Apply 25 tonnes of well-rotted farmyard manure (FYM) 
+per hectare before transplanting. Form raised beds or ridges for better drainage.
+
+NURSERY AND TRANSPLANTING
+Sow seeds in nursery beds at 600g per hectare. Transplant 25-30 day old seedlings at 
+60cm x 45cm spacing (main season) or 45cm x 30cm (short season). Transplant in the 
+evening to reduce transplanting shock.
+
+FERTILIZER MANAGEMENT
+Apply NPK at 120:60:60 kg per hectare as basal dose. Top dress with 40 kg N per hectare 
+at 30 days after transplanting and again at 45 days. Micronutrient spray of 0.5% zinc 
+sulfate at 15 and 30 days after transplanting improves fruit quality.
+
+IRRIGATION
+Irrigate immediately after transplanting. Subsequently irrigate every 4-5 days in summer 
+and 7-10 days in winter. Drip irrigation saves 40% water compared to flood irrigation 
+and reduces foliar disease incidence. Critical irrigation stages: transplanting, flowering, 
+fruit development, and fruit ripening.
+
+DISEASE MANAGEMENT
+
+Early Blight (Alternaria solani):
+Symptoms: Circular brown spots with concentric rings (target-board pattern) on older leaves.
+Management: 
+- Spray Mancozeb 75% WP at 2g/L water at 10-day intervals
+- Remove and destroy infected leaves
+- Avoid overhead irrigation
+- Use resistant varieties like COTH-3
+
+Late Blight (Phytophthora infestans):
+Symptoms: Water-soaked lesions on leaves turning brown-black with white fungal growth.
+Management:
+- Spray Metalaxyl + Mancozeb (Ridomil Gold) at 2.5g/L
+- Improve air circulation by proper spacing
+- Avoid excessive nitrogen application
+
+Fusarium Wilt:
+Symptoms: Yellowing of lower leaves, wilting despite adequate soil moisture, brown 
+discoloration of vascular tissue.
+Management:
+- Use wilt-resistant varieties
+- Soil treatment with Carbendazim 1g/L before transplanting
+- Crop rotation with non-host crops for 3 years
+
+Tomato Leaf Curl Virus:
+Transmitted by whitefly (Bemisia tabaci). Use Imidacloprid 70% WG at 5g per 15L water 
+to control whitefly. Use virus-free seedlings.
+
+PEST MANAGEMENT
+Fruit borer (Helicoverpa armigera): Major pest. Use pheromone traps (5/ha) for monitoring. 
+Spray Spinosad 45% SC at 2.5ml per 10L water or Emamectin benzoate 5% SG at 0.5g/L.
+
+HARVESTING
+Fruits are ready 60-80 days after transplanting depending on variety. Harvest when 
+fruits turn light pink to red. Average yield: 25-30 tonnes per hectare for hybrid varieties, 
+15-20 tonnes for open-pollinated varieties.
+
+MARKET
+Peak production months vary by climate zone: January-March and July-September in tropical areas.
+Sell through local APMC / mandi, online platforms (eNAM in India), or cooperative markets.
+Price range: Rs 500-3000/quintal in India; equivalent local market rates in other countries.
+Check Agmarknet (agmarknet.gov.in) for real-time mandi prices across India.

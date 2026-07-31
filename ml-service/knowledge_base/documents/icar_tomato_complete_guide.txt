@@ -1,0 +1,150 @@
+ICAR COMPREHENSIVE TOMATO DISEASE AND PEST MANAGEMENT GUIDE
+
+SOURCE: Indian Council of Agricultural Research (ICAR), National Institute for Plant Health Management (NIPHM)
+AUTHORITY: ICAR-IARI, Pusa Institute, New Delhi
+
+=============================================================
+TOMATO EARLY BLIGHT (Alternaria solani)
+=============================================================
+
+SYMPTOMS:
+- Dark brown concentric ring spots (target-board pattern) on older, lower leaves
+- Lesions have yellow chlorotic halo around them
+- Lesions enlarge and coalesce, causing complete leaf death
+- Stems may show dark elongated lesions near soil line
+- Fruit develops dark sunken lesions at stem end
+
+CAUSE: Fungal pathogen Alternaria solani. Spreads through infected plant debris, rain splash, and wind.
+FAVORABLE CONDITIONS: Temperature 24-29°C, Relative Humidity above 80%, frequent rains.
+
+CHEMICAL CONTROL (per litre water):
+- Mancozeb 75% WP: 2.5 g/litre (spray every 7-10 days)
+- Chlorothalonil 75% WP: 2.0 g/litre (preventive spray)
+- Iprodione 50% WP: 1.5 g/litre (for severe infection)
+- Azoxystrobin 23% SC: 1.0 ml/litre (systemic fungicide)
+- Difenoconazole 25% EC: 0.5 ml/litre (curative fungicide)
+
+ORGANIC/BIO CONTROL:
+- Trichoderma viride: 4 g/kg seed treatment
+- Bacillus subtilis: 5 g/litre foliar spray
+- Neem Oil (5000 ppm): 5 ml/litre + 1 ml liquid soap, every 5-7 days
+- Copper oxychloride 50% WP: 3 g/litre (copper-based preventive)
+
+MANAGEMENT PRACTICES:
+- Remove and destroy all infected plant debris after harvest
+- Crop rotation: avoid tomato in same field for 2-3 years
+- Use certified disease-free seeds; treat seeds with Thiram 75% WS @ 3g/kg
+- Stake plants properly for air circulation
+- Avoid overhead irrigation — use drip irrigation
+- Plant resistant varieties: Arka Rakshak (IIHR), Pusa Hybrid 1
+
+=============================================================
+TOMATO LATE BLIGHT (Phytophthora infestans)
+=============================================================
+
+SYMPTOMS:
+- Water-soaked, irregular pale green spots rapidly turning dark brown/black on leaves
+- White sporulation (cottony growth) on underside of leaves in humid conditions
+- Lesions appear first on leaf tips and margins
+- Stems show dark brown lesions causing stem collapse
+- Fruits show firm dark brown lesions, rapidly decaying
+
+FAVORABLE CONDITIONS: Temperature 15-21°C, RH above 85%, cool wet weather. Spreads extremely fast.
+
+CHEMICAL CONTROL (per litre water):
+- Metalaxyl 8% + Mancozeb 64% WP: 2.5 g/litre (best for late blight — systemic)
+- Cymoxanil 8% + Mancozeb 64% WP: 3.0 g/litre
+- Dimethomorph 50% WP: 1.5 g/litre
+- Propamocarb 72.2% SL: 1.5 ml/litre
+
+SPRAY INTERVAL: Every 5-7 days during epidemic conditions. Alternate products to prevent resistance.
+WARNING: Do NOT spray during or just before rain. Wait for dry conditions.
+
+ORGANIC CONTROL:
+- Copper oxychloride 50% WP: 3 g/litre (effective preventive)
+- Potassium bicarbonate 0.5%: foliar spray
+- Neem leaf extract: 50g leaf boiled in 1L water, cooled, strained, spray
+
+=============================================================
+TOMATO LEAF CURL VIRUS (ToLCV)
+=============================================================
+
+SYMPTOMS:
+- Upward or downward curling and rolling of leaves
+- Yellowing and thickening of leaf veins
+- Stunted, bushy plant growth
+- Mosaic pattern on leaves
+- Severely infected plants produce no fruit
+
+CAUSE: Begomovirus transmitted by Whitefly (Bemisia tabaci). Cannot be treated — ONLY PREVENTED.
+
+VECTOR CONTROL (Whitefly management):
+- Yellow Sticky Traps: 10-15 per acre (monitor and mass trap)
+- Imidacloprid 17.8% SL: 0.5 ml/litre — spray on whitefly colonies
+- Thiamethoxam 25% WG: 0.5 g/litre
+- Dimethoate 30% EC: 2.0 ml/litre
+- Azadirachtin 0.03% (Neem EC): 5 ml/litre — organic option
+
+INTEGRATED MANAGEMENT:
+- Uproot and destroy severely infected plants immediately to stop spread
+- Plant marigold as border/trap crop to repel whitefly
+- Use silver/reflective mulch to confuse whitefly
+- Install 50-mesh nylon net in nursery to exclude whitefly
+- Resistant varieties: Arka Rakshak, Arka Samrat (IIHR Bangalore)
+
+=============================================================
+TOMATO FRUIT BORER (Helicoverpa armigera)
+=============================================================
+
+SYMPTOMS:
+- Round entry holes on fruits; fruits drop prematurely
+- Caterpillar feeds inside fruit — may enter at calyx end
+- Wilting of growing tips
+
+CHEMICAL CONTROL:
+- Emamectin Benzoate 5% SG: 0.4 g/litre
+- Spinosad 45% SC: 0.3 ml/litre (bio-derived, low toxicity)
+- Chlorpyrifos 20% EC: 2.0 ml/litre (older chemical option)
+- Lambda-cyhalothrin 5% EC: 1.0 ml/litre
+
+BIOLOGICAL CONTROL:
+- Helicoverpa NPV (HaNPV): 250 Larval Equivalents (LE) per acre
+- Bacillus thuringiensis (Bt): 1.0-1.5 kg/acre
+- Pheromone traps: 5-8 per acre (Helilure pheromone) for monitoring
+- Egg parasitoid Trichogramma chilonis: 1 lakh eggs/acre, 2-3 releases
+
+=============================================================
+FERTILIZER SCHEDULE FOR TOMATO
+=============================================================
+
+TOTAL NPK REQUIREMENT (per acre):
+- Nitrogen (N): 60 kg
+- Phosphorus (P): 60 kg
+- Potassium (K): 60 kg
+
+APPLICATION SCHEDULE:
+- Basal (at planting): FYM 10 tonnes/acre + DAP 130 kg + MOP 30 kg + Urea 20 kg
+- 15-20 days after transplanting: Urea 33 kg (first top dress)
+- 30-40 days after transplanting: Urea 33 kg + MOP 70 kg (second top dress)
+- Micronutrients: Borax 10 kg/acre (basal) for flower drop prevention
+
+FOLIAR NUTRITION (for high yield):
+- 00:52:34 (Mono Potassium Phosphate): 5 g/litre at flowering
+- 0:0:50 (SOP): 5 g/litre at fruit development
+- Calcium nitrate: 2 g/litre during fruit setting to prevent Blossom End Rot
+- 13:00:45 (Potassium Nitrate): 5 g/litre at fruit maturity for quality
+
+=============================================================
+CROP CALENDAR FOR TOMATO — INDIA
+=============================================================
+
+KHARIF (Rainy season): June-July planting; Harvest September-November
+RABI (Winter season): October-November planting; Harvest January-March (Best quality season)
+SUMMER season: January-February planting; Harvest April-June
+
+RECOMMENDED VARIETIES BY REGION:
+- Karnataka: Arka Rakshak, Arka Samrat, NS-524
+- Maharashtra: Phule Raja, Vaibhav, Abhinav
+- Andhra Pradesh/Telangana: US-2853, Pusa Ruby
+- Punjab/Haryana: Pusa Hybrid 2, Punjab Kesari
+- Tamil Nadu: PKM-1, CO-3, Arka Saurabh

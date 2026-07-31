@@ -1,0 +1,46 @@
+RICE CULTIVATION GUIDE — ICAR-NRRI CUTTACK
+
+INTRODUCTION
+Rice (Oryza sativa) is the staple food crop of India. It is grown in three seasons: Kharif (June–November), Rabi (November–April), and Zaid (March–June). India produces approximately 120 million tonnes annually. Transplanted paddy is the dominant cultivation method in most rice-growing states.
+
+LAND PREPARATION
+Thoroughly puddle the field 2–3 times after flooding to achieve a mud consistency that suppresses weed germination. Final levelling with a laser leveller saves 25–30% irrigation water. For direct-seeded rice, prepare a firm, well-drained seedbed. Incorporate green manure (Sesbania) or crop residue at last tillage.
+
+SEED SELECTION AND NURSERY MANAGEMENT
+Choose certified seeds of recommended varieties. Soak seeds in water for 24 hours, then incubate wrapped in moist gunny for 24–48 hours until germination. Treat seeds with Carbendazim 2g/kg or Pseudomonas fluorescens 10g/kg to prevent seedling diseases.
+
+Nursery rate: 20–25 kg seed/ha for transplanted rice; 80–100 kg/ha for direct seeding. Raise nursery in well-prepared raised beds (10 cm height, 1.2 m width). Apply Cartap hydrochloride 4G @ 20 kg/ha in nursery at 10 days after sowing (DAS) to control leaf folder and stem borer. Nursery should be 21–25 days old before transplanting.
+
+TRANSPLANTING
+Transplant 2–3 seedlings per hill at 15 × 15 cm spacing for short-duration varieties, 20 × 15 cm for medium-duration varieties. Avoid deep planting — shallow planting at 2–3 cm depth promotes early tillering. Transplant in the afternoon to reduce transplanting stress.
+
+WATER MANAGEMENT
+Maintain 2–5 cm standing water from transplanting through tillering. Drain field 5–7 days before panicle initiation to suppress unproductive tillers (mid-season drainage). Maintain 2–3 cm water during panicle initiation to flowering (most critical stage). Drain 15 days before harvest to allow field to dry.
+
+Alternate wetting and drying (AWD): Allow soil to dry until 15 cm below field surface before re-irrigating. Saves 25–30% water with no yield loss. Use a simple field water tube to monitor water table depth.
+
+FERTILIZER MANAGEMENT
+Apply fertilizers based on soil test. General recommendation for high-yielding varieties:
+- Nitrogen (N): 120 kg/ha split in 3 doses: 40% basal + 30% at active tillering (21 DAT) + 30% at panicle initiation.
+- Phosphorus (P2O5): 40 kg/ha as basal.
+- Potassium (K2O): 40 kg/ha, half basal and half at panicle initiation.
+- Zinc sulphate: 25 kg/ha as basal where zinc deficiency is known.
+
+Urea super granules (USG) placed 5 cm deep at transplanting improve nitrogen use efficiency by 30–40% compared to broadcast urea.
+
+WEED MANAGEMENT
+Critical weed competition period is 0–45 days after transplanting. Apply pre-emergence herbicide (Butachlor 50% EC at 2.5 kg a.i./ha) at 3–5 DAT in 2–3 cm standing water. Follow with one manual weeding at 30–35 DAT. Cono-weeder between rows at 20 and 40 DAT reduces weed pressure in direct-seeded rice.
+
+VARIETY SELECTION
+Short-duration (110–125 days): MTU 1010, IR 64, Pooja
+Medium-duration (130–145 days): Swarna (MTU 7029), Mahsuri, BPT 5204
+Long-duration (>145 days): Jaya, Ratna (for specific ecosystems)
+For rainfed upland: Vandana, Sahbhagi Dhan (drought-tolerant)
+For saline soils: Luna Barial, CST 7-1
+
+HARVESTING
+Harvest when 80–85% grains reach golden yellow colour (moisture content 20–22%). Use combine harvester or power reaper. Thresh within 24 hours of cutting to minimise field losses.
+
+YIELD TARGETS
+Transplanted irrigated paddy: 5–7 t/ha (improved varieties with good management)
+Direct-seeded rainfed paddy: 3–4 t/ha

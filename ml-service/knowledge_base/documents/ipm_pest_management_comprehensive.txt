@@ -1,0 +1,167 @@
+INTEGRATED PEST MANAGEMENT AND CROP PROTECTION GUIDE — INDIA
+
+SOURCE: National Centre for Integrated Pest Management (NCIPM), New Delhi; ICAR-NIPHM, Hyderabad
+AUTHORITY: Ministry of Agriculture, Government of India; ICAR
+
+=============================================================
+IPM PRINCIPLES — INTEGRATED PEST MANAGEMENT
+=============================================================
+
+DEFINITION: IPM is a sustainable approach combining biological, cultural, physical, and chemical tools to minimize economic, health, and environmental risks.
+
+DECISION THRESHOLD — ECONOMIC THRESHOLD LEVEL (ETL):
+- Action is taken only when pest population reaches ETL
+- Spray at ETL — not prophylactically (prevents resistance)
+
+=============================================================
+APHID MANAGEMENT (Aphis gossypii, Myzus persicae, etc.)
+=============================================================
+
+CROPS AFFECTED: Cotton, Vegetables, Potato, Mustard, Wheat
+
+SYMPTOMS:
+- Clusters of small soft-bodied insects on young shoots, underside of leaves
+- Leaves curl, yellow, distort
+- Sticky honeydew secretion → sooty mold (black coating)
+- Ant attendance on colonies
+
+ECONOMIC THRESHOLD: 5-10 aphids/leaf tip OR 15-25% plants infested
+
+CHEMICAL CONTROL:
+- Imidacloprid 17.8% SL: 0.5 ml/litre (systemic, very effective)
+- Thiamethoxam 25% WG: 0.5 g/litre
+- Acetamiprid 20% SP: 0.2 g/litre
+- Dimethoate 30% EC: 2.0 ml/litre (contact + systemic)
+- Monocrotophos 36% SL: 1.5 ml/litre (restricted — only when ETL crossed)
+
+ORGANIC CONTROL:
+- Neem Oil 5000 ppm: 5 ml/litre + 1 ml liquid soap
+- Azadirachtin 0.03%: 5 ml/litre
+- Garlic extract: 50g garlic crushed in 1L water, dilute 10x, spray
+
+BIOLOGICAL CONTROL:
+- Chrysoperla carnea (green lacewing): 50,000 eggs/acre (2 releases)
+- Coccinella septempunctata (ladybird beetle): conserve natural populations
+- Syrphid fly larvae: natural predators
+
+=============================================================
+WHITEFLY MANAGEMENT (Bemisia tabaci)
+=============================================================
+
+CROPS AFFECTED: Cotton, Tomato, Vegetables, Chilli, Bhendi
+
+SIGNIFICANCE: Major virus vector — transmits Leaf Curl Virus in tomato and cotton.
+
+CHEMICAL CONTROL (rotate to prevent resistance):
+- Imidacloprid 17.8% SL: 0.5 ml/litre
+- Diafenthiuron 50% WP: 1.0 g/litre
+- Buprofezin 25% SC: 1.5 ml/litre (IGR — disrupts nymph development)
+- Spiromesifen 22.9% SC: 1.0 ml/litre (effective against nymphs and eggs)
+- Pyriproxyfen 10% EC: 1.0 ml/litre (IGR)
+
+CULTURAL/PHYSICAL:
+- Yellow sticky traps: 10-15 per acre (monitoring + mass trapping)
+- Silver/reflective mulch: 25 micron silver-colored plastic mulch (repels whitefly)
+- 50-mesh nylon net in nursery
+
+=============================================================
+THRIPS MANAGEMENT (Thrips tabaci, Scirtothrips dorsalis)
+=============================================================
+
+CROPS AFFECTED: Onion, Chilli, Cotton, Grapes, Potato
+
+SYMPTOMS:
+- Silver/bronze streaking of leaves
+- Leaf tips rolled with feeding scars
+- Distorted flowers and fruits
+- Onion: leaves turn silvery then die
+
+CHEMICAL CONTROL:
+- Spinosad 45% SC: 0.3 ml/litre (most effective biological insecticide)
+- Fipronil 5% SC: 2.0 ml/litre
+- Lambda-cyhalothrin 5% EC: 1.0 ml/litre
+- Emamectin Benzoate 5% SG: 0.4 g/litre
+
+CULTURAL CONTROL:
+- Blue sticky traps for thrips: 10-15 per acre
+- Drench with Fipronil 5% SC 3 ml/litre for soil-dwelling pupae
+
+=============================================================
+MITE MANAGEMENT (Tetranychus urticae, Tetranychus cinnabarinus)
+=============================================================
+
+CROPS AFFECTED: Chilli, Brinjal, Okra, Grapes, Apple, Rose
+
+SYMPTOMS:
+- Bronze/rust colored leaves; webbing on underside
+- Tiny red/yellow/green mites visible with magnifying glass
+- Leaf distortion and drop in severe cases
+
+CHEMICAL CONTROL (acaricides):
+- Abamectin 1.9% EC: 0.5 ml/litre (highly effective)
+- Dicofol 18.5% EC: 2.5 ml/litre
+- Spiromesifen 22.9% SC: 1.0 ml/litre
+- Propargite 57% EC: 2.0 ml/litre
+- Fenazaquin 10% EC: 2.0 ml/litre (miticide)
+NOTE: Mites develop resistance quickly — rotate acaricides.
+
+BIOLOGICAL:
+- Predatory mites: Neoseiulus californicus, Phytoseiulus persimilis
+
+=============================================================
+STEM BORER MANAGEMENT — GENERAL
+=============================================================
+
+CROPS AFFECTED: Rice (Scirpophaga), Maize, Sugarcane, Jowar
+
+CHEMICAL CONTROL:
+- Cartap hydrochloride 50% SP: 1.5 g/litre OR 8 kg/acre granule in rice
+- Chlorpyrifos 20% EC: 2.5 ml/litre (spray into whorl)
+- Fipronil 0.3% GR: 8 kg/acre (into standing water in rice)
+- Monocrotophos 36% SL: 1.5 ml/litre (into whorl of maize)
+
+BIOLOGICAL CONTROL:
+- Trichogramma japonicum: 1 lakh eggs/acre (egg parasitoid)
+- Cotesia flavipes: Larval parasitoid for sugarcane borer
+- Tetrastichus howardi: Larval parasitoid for stem borers
+
+=============================================================
+FUNGICIDE RESISTANCE MANAGEMENT
+=============================================================
+
+ANTI-RESISTANCE STRATEGIES:
+1. ROTATE fungicide classes: Never use same mode of action twice in a season
+2. MIXTURES: Use pre-mixed multi-site fungicides (e.g., metalaxyl + mancozeb)
+3. ALTERNATION SCHEDULE:
+   - Spray 1: Mancozeb (M3 group — multi-site)
+   - Spray 2: Metalaxyl+Mancozeb (systemic + contact)
+   - Spray 3: Cymoxanil + Mancozeb
+   - Spray 4: Copper oxychloride (M1 — multi-site)
+
+FUNGICIDE GROUPS (by mode of action):
+- MBC group (Carbendazim, Thiophanate-methyl): Risk of resistance — alternate
+- Triazoles (Propiconazole, Tebuconazole, Hexaconazole): Medium risk — rotate
+- Strobilurins (Azoxystrobin, Trifloxystrobin): High risk — never use alone
+- SDHI (Fluxapyroxad, Boscalid): High risk — always in mixture
+- Multi-site (Mancozeb, Chlorothalonil, Copper): LOW risk — backbone of programs
+
+=============================================================
+GOVERNMENT SUBSIDY ON PESTICIDES — INDIA
+=============================================================
+
+SUBSIDY PROGRAMS:
+- NMOOP (National Mission on Oilseeds): 50% subsidy on certified pesticides for oilseed crops
+- Mission for Integrated Development of Horticulture (MIDH): Subsidy on plant protection equipment
+- PM-Krishi Sinchayee Yojana: Subsidy on drip/sprinkler + fertigation
+
+HOW TO APPLY:
+- Visit nearest Krishi Vigyan Kendra (KVK) with land documents
+- Apply through state agriculture department portal
+- Kisan Call Centre: 1800-180-1551 (toll-free, 24x7)
+
+KEY SAFETY RULES:
+- Wear PPE: gloves, mask, boots during spraying
+- Do not spray during hot afternoon hours (evaporation loss, heat stroke risk)
+- Best spray timing: early morning (6-9 AM) or late evening (4-6 PM)
+- Pre-harvest interval (PHI): always observe — do not spray close to harvest
+- Dispose empty containers safely — do not reuse for food/water storage

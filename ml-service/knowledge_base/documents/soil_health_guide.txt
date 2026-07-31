@@ -1,0 +1,44 @@
+SOIL HEALTH MANAGEMENT GUIDE — ICAR-NBSS&LUP
+
+INTRODUCTION
+Healthy soil is the foundation of productive agriculture. Soil health refers to the continued capacity of soil to function as a living ecosystem that sustains plants, animals, and humans. India has 20 major soil types, each with distinct nutritional and physical properties. Soil testing every 3 years is essential for informed fertilizer decisions.
+
+NPK ROLES AND DEFICIENCY SYMPTOMS
+Nitrogen (N): Essential for chlorophyll and protein synthesis. Deficiency causes yellowing (chlorosis) of older leaves first, starting from leaf tips. Crops appear pale yellow-green. Excess nitrogen causes lodging, lush growth susceptible to pests, and delayed maturity. Sources: Urea (46% N), DAP (18% N), ammonium sulphate (21% N).
+
+Phosphorus (P): Critical for root development, flowering, and seed formation. Deficiency causes purplish-red discolouration of leaves (anthocyanin accumulation), especially on undersides. Stunted root system. Phosphorus is least mobile — apply close to the root zone. Sources: DAP (46% P2O5), SSP (16% P2O5), rock phosphate.
+
+Potassium (K): Regulates water use, strengthens cell walls, improves grain quality, and resistance to lodging and diseases. Deficiency causes scorching (marginal burning) of older leaf edges. Grain filling is poor. Sources: MOP/KCl (60% K2O), SOP (50% K2O — preferred for chloride-sensitive crops).
+
+SECONDARY AND MICRONUTRIENTS
+Sulphur (S): Deficiency causes yellowing of young leaves (contrast with N deficiency which affects old leaves). Common in light-textured soils. Apply gypsum (CaSO4) at 250–400 kg/ha or use sulphur-containing fertilizers (SSP, ammonium sulphate).
+
+Zinc (Zn): Most common micronutrient deficiency in India, especially in rice-wheat systems. Symptoms: brown rusty spots on leaves, stunted plants. Apply ZnSO4 at 25 kg/ha as basal every 3 years. Foliar spray: ZnSO4 0.5% + lime 0.25%.
+
+Boron (B): Critical for pollen viability and fruit set. Deficiency causes hollow heart in sunflower, poor pod filling in groundnut, top die-back in cauliflower. Apply borax at 10–15 kg/ha.
+
+Iron (Fe): Deficiency most common in calcareous/alkaline soils. Young leaves turn yellow between green veins (interveinal chlorosis). Apply FeSO4 at 10–20 kg/ha or foliar spray 0.5% FeSO4.
+
+pH MANAGEMENT
+Acidic soils (pH < 6.0): Apply agricultural lime (CaCO3) or dolomite at 1–3 t/ha based on lime requirement test. Lime neutralises acidity and supplies calcium. Wait 2–4 weeks after liming before applying fertilizers. Most crops prefer pH 6.0–7.0.
+
+Alkaline/Sodic soils (pH > 8.5): Apply gypsum (calcium sulphate) at 5–10 t/ha to reclaim. Grow tolerant crops: barley, wheat, mustard. Ensure good drainage. Leach salts with flood irrigation.
+
+ORGANIC MATTER MANAGEMENT
+Target: maintain soil organic carbon (SOC) above 0.5% (ideal >0.75%). Benefits: improved water holding capacity, nutrient retention, biological activity, soil structure. Practices:
+- Add 10–15 tonnes FYM (farmyard manure) per hectare every 2–3 years.
+- Incorporate crop residues (paddy straw, wheat straw) — add 1% extra nitrogen to assist decomposition.
+- Green manuring: Sesbania, dhaincha, sunhemp (50 kg N/ha equivalent).
+- Vermicomposting: produces high-quality compost in 60–90 days. Use rate: 2–3 t/ha.
+
+SOIL TESTING PROCEDURE
+Collect 8–10 soil samples from across the field at 0–15 cm depth using a soil auger or V-shaped cut. Mix all samples, take 500g composite sample. Test for: pH, EC, organic carbon, available N-P-K, and secondary micronutrients. Soil Health Card (Government of India) provides recommendations based on test results. Test every 3 years or after major crop rotation change.
+
+SOIL BIOLOGICAL HEALTH
+Bioinoculants improve nutrient availability:
+- Rhizobium for legumes: fixes 50–100 kg N/ha; treat seeds before sowing.
+- Azospirillum for cereals and other crops: fixes 20–30 kg N/ha; seed treatment or soil application.
+- PSB (Phosphate Solubilising Bacteria): releases bound phosphorus; apply as seed treatment with Rhizobium.
+- Mycorrhizal inoculants: improve phosphorus and water uptake in most crops.
+
+Apply bioinoculants in the evening to avoid UV damage. Do not mix with chemical fungicides.

@@ -1,0 +1,99 @@
+Weather, Climate and Farming Advisory Guide
+
+MONSOON FARMING CALENDAR FOR KARNATAKA
+
+Southwest Monsoon (Kharif Season)
+Onset: Karnataka coast by June 1-5, interior by June 10-15.
+Withdrawal: October.
+Kharif sowing window: June 1 - July 15 for most crops.
+Expected rainfall zones:
+- Coastal/Malnad: 3000-5000mm (Dakshina Kannada, Kodagu, Shivamogga)
+- Northern Karnataka: 500-750mm (Bijapur, Gulbarga)
+- Hassan District: 1000-1300mm
+
+Northeast Monsoon / Rabi Season (October-February)
+Rabi sowing: October-November.
+Provides 10-25% of annual rainfall in interior Karnataka.
+Important for rabi crops, potato, onion, wheat in northern Karnataka.
+
+WEATHER IMPACT ON CROP DECISIONS
+
+High Rainfall (>150mm in 3 days):
+- Stop irrigation immediately
+- Apply drainage channels in field
+- Risk of root rot, Pythium damping off in vegetables
+- Risk of blast in rice during tillering
+- Avoid pesticide spray (wash-off effect)
+- Re-apply fungicides 48 hours after heavy rain
+
+Dry Spell (No rain for 15+ days during Kharif):
+- Irrigate using available water sources
+- Apply anti-transpirants (Kaolin 6% spray) to reduce water stress
+- Mulching with dry crop residues reduces soil moisture loss by 40%
+- Skip fertilizer application until rain/irrigation available
+- Focus on critical stages: flowering and grain filling need moisture most
+
+Temperature Extremes:
+Cold wave (<10°C): Risk to tomato, chilli, banana. Cover with agro-nets. Delay irrigation to morning.
+Heat wave (>42°C): Risk of flower drop in cotton, tomato. Spray 1% KNO3 (potassium nitrate) or 0.5% MgSO4 to reduce heat stress. Irrigate in morning and evening.
+Foggy conditions: Increase disease risk (botrytis, downy mildew). Spray copper-based fungicide preventively.
+
+WEATHER-BASED PEST ALERTS
+High humidity + Warm temperatures (>25°C): 
+- High risk of fungal diseases (blast, blight, downy mildew)
+- Aphid, whitefly population explosion
+- Monitor fields daily; spray preventive fungicide
+
+After prolonged dry spell followed by rain:
+- White grub attack on roots (especially groundnut, sugarcane)
+- Armyworm attack on maize and sorghum
+- Scout fields within 3 days of rain
+
+CROP WEATHER REQUIREMENTS
+
+Paddy (Rice):
+Germination: 20-30°C. Vegetative: 25-35°C. Flowering: 24-30°C (pollen inundation above 35°C or below 17°C).
+Water requirement: 1000-2000mm. Sensitive to waterlogging at seedling stage.
+
+Ragi:
+Optimum temperature: 20-30°C. Drought tolerant but sensitive to frost.
+Rainfall needed: 700-1000mm. Can grow on 500mm with moisture conservation.
+
+Maize:
+Germination: 18-25°C. Flowering: 21-27°C. Sensitive to frost and waterlogging.
+Rainfall: 600-900mm well distributed.
+
+Cotton:
+Optimal: 21-30°C. Sensitive to frost and waterlogging.
+Rainfall: 600-1200mm. Needs dry weather at harvest (October-November).
+
+Tomato:
+Optimal: 21-27°C day, 15-20°C night. Above 35°C causes flower drop.
+Sensitive to frost. Rain during fruit set increases cracking.
+
+Potato:
+Optimum: 15-20°C. Above 30°C inhibits tuber formation. Frost kills foliage.
+Rainfall: 400-600mm during growing season.
+
+HOW TO GET WEATHER FORECASTS
+1. IMD website: mausam.imd.gov.in — 5-day forecast by district
+2. Meghdoot app (IMD) — free, designed for farmers, 5-day forecast with farming advisory
+3. Damini app — lightning alert (important for field workers during thunder)
+4. Kisan Mausam SMS service — SMS "MAUSAM <district>" to 7738299899
+5. DD Chandana and DD Kisan weather bulletins: 6:30 AM and 7:30 PM
+
+RAINFALL MEASUREMENT
+Standard rain gauge: 20mm diameter, read at 8:30 AM daily.
+Apps: Rainlog, IMD rainfall app.
+Simple field gauge: use a measuring cylinder and straight-sided container.
+1mm rainfall = 1 liter of water per square meter = 10,000 liters per hectare.
+
+DROUGHT MANAGEMENT STRATEGIES
+1. Select drought-tolerant varieties: Ragi GPU-45, Groundnut TAG-24, Maize DHMH-107
+2. Deep ploughing before Kharif (25-30 cm) improves water infiltration
+3. Broad bed furrow (BBF) planting for water harvesting on rainfed land
+4. Farm pond construction: 30m x 30m x 3m pond stores 2.7 million liters
+5. Rainwater harvesting: tie ridge method between fields
+6. Micro-irrigation: Drip saves 40-60% water, sprinkler saves 30-40%
+7. Mulching: Black plastic mulch reduces evaporation 60-70%
+8. Contingency crop planning: If monsoon delayed by >4 weeks, switch to short-duration crops (black gram, cowpea 60-70 days) or fodder crops

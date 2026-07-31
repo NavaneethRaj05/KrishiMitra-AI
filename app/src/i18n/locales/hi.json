@@ -1,0 +1,117 @@
+{
+  "home": {
+    "greeting_morning": "शुभ प्रभात, {{name}}",
+    "greeting_afternoon": "शुभ दोपहर, {{name}}",
+    "greeting_evening": "शुभ संध्या, {{name}}",
+    "search_placeholder": "खेती के बारे में कुछ भी पूछें…",
+    "trending_title": "{{district}} में आज के ट्रेंडिंग विषय",
+    "recent_title": "हाल की बातचीत जारी रखें",
+    "seasonal_nudge": "{{crop}} · {{season}} का सप्ताह {{week}}"
+  },
+  "search": {
+    "offline_banner": "ऑफलाइन मोड — स्थानीय ज्ञान से उत्तर",
+    "source_icar": "ICAR",
+    "source_kvk": "KVK",
+    "source_niphm": "NIPHM",
+    "follow_up_hint": "अगला प्रश्न पूछें…",
+    "typing": "कृषिमित्र AI सोच रही है…"
+  },
+  "voice": {
+    "tap_to_record": "बोलने के लिए टैप करें",
+    "recording": "सुन रहा है…",
+    "language_detected": "पहचानी गई भाषा: {{language}}",
+    "quality_noise": "नॉइज़: {{level}}",
+    "quality_clarity": "स्पष्टता: {{level}}",
+    "command_hint_photo": "कैमरा खोलने के लिए 'फोटो' कहें"
+  },
+  "auth": {
+    "welcome_title": "KrishiMitra AI",
+    "welcome_sub": "कृषि बुद्धिमत्ता। आपकी भाषा में।",
+    "enter_phone": "अपना मोबाइल नंबर दर्ज करें",
+    "enter_otp": "{{phone}} पर भेजा गया OTP दर्ज करें",
+    "setup_title": "अपने खेत के बारे में बताएं",
+    "setup_sub": "इससे कृषिमित्र AI आपको सही और स्थानीय उत्तर दे पाएगी"
+  },
+  "tabs": {
+    "history": "इतिहास",
+    "settings": "सेटिंग्स"
+  },
+  "home_alerts": {
+    "high_risk": "⚠️ झुलसा रोग का उच्च जोखिम",
+    "humidity_warn": "{{district}} में इस सप्ताह नमी 82% है। धान के झुलसा रोग का बड़ा खतरा है।",
+    "action_guideline": "रोकथाम के उपाय देखने के लिए टैप करें →"
+  },
+  "crops": {
+    "Paddy": "धान/चावल",
+    "Wheat": "गेहूं",
+    "Cotton": "कपास",
+    "Sugarcane": "गन्ना",
+    "Maize": "मक्का",
+    "Vegetables": "सब्जियां",
+    "Pulses": "दालें",
+    "Tomato": "टमाटर"
+  },
+  "states": {
+    "Karnataka": "कर्नाटक",
+    "Maharashtra": "महाराष्ट्र"
+  },
+  "districts": {
+    "Mandya": "मंग्या/मंड्या",
+    "Hassan": "हसन"
+  },
+  "home_trending": {
+    "paddy_blast": "धान के झुलसा रोग का उपचार",
+    "tomato_price": "टमाटर का मंडी भाव आज का",
+    "pm_kisan": "पीएम किसान किस्त की तारीख",
+    "cotton_pest": "कपास के कीट का नियंत्रण"
+  },
+  "sidebar": {
+    "new_search": "नई खोज",
+    "recent_threads": "हाल की बातचीत",
+    "no_recent_threads": "कोई हाल की बातचीत नहीं",
+    "farm_profile": "आपकी फार्म प्रोफाइल",
+    "tap_to_edit": "प्रोफाइल एडिट करने के लिए टैप करें",
+    "log_out": "लॉग आउट",
+    "clear_recent": "सभी हटाएं",
+    "clear_confirm": "क्या आप सभी हाल की खोजें हटाना चाहते हैं?",
+    "acres": "{{count}} एकड़"
+  },
+  "answer": {
+    "krishimitra_answer": "✦ कृषिमित्र उत्तर",
+    "high_confidence": "✓ उच्च विश्वसनीयता",
+    "shap_title": "📊 यह निदान क्यों? (SHAP स्पष्टीकरण)",
+    "immediate_action": "⚠️ तत्काल कार्रवाई:",
+    "control": "नियंत्रण",
+    "est_cost": "अनुमानित लागत",
+    "generation_explainer": "यह उत्तर कैसे तैयार किया गया?"
+  },
+  "shap": {
+    "humidity": "आर्द्रता (नमी)",
+    "season": "मौसम/ऋतु",
+    "location": "स्थान",
+    "soil_type": "मिट्टी का प्रकार",
+    "temperature": "तापमान"
+  },
+  "onboarding": {
+    "welcome": "कृषिमित्र AI में आपका स्वागत है",
+    "welcome_sub": "सटीक सलाह के लिए अपनी खेती की जानकारी दर्ज करें।",
+    "step_location": "स्थान का विवरण",
+    "step_crops": "उगाई जाने वाली फसलें",
+    "step_soil": "मिट्टी का प्रकार",
+    "step_land": "जमीन और पानी",
+    "your_name": "आपका नाम",
+    "state": "राज्य",
+    "district": "जिला",
+    "block": "ब्लॉक / तहसील / गांव",
+    "select_crops": "अपनी फसलें चुनें",
+    "select_crops_sub": "जो फसलें उगाते हैं उन्हें चुनें। इससे सटीक सलाह मिलेगी।",
+    "select_soil": "मिट्टी का प्रकार चुनें",
+    "select_soil_sub": "मिट्टी के प्रकार से सिंचाई और खाद की मात्रा निर्धारित होती है।",
+    "land_water": "खेत का आकार और पानी का साधन",
+    "land_acres": "खेत का आकार (एकड़ में)",
+    "irrigation": "सिंचाई का मुख्य साधन",
+    "back": "पीछे",
+    "continue": "आगे बढ़ें",
+    "finish": "पूरा करें"
+  }
+}

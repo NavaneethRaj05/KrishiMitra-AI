@@ -1,0 +1,53 @@
+POST HARVEST MANAGEMENT GUIDE — ICAR-CIPHET LUDHIANA
+
+INTRODUCTION
+India loses 15–18% of food grains and 25–40% of fruits and vegetables annually due to poor post-harvest handling. Proper storage, grading, and packaging can recover Rs 90,000 crore worth of food per year. Post-harvest management begins at the field — correct timing of harvest is as important as storage conditions.
+
+HARVESTING AT CORRECT MATURITY
+Cereals: Harvest wheat and rice at 18–22% grain moisture. Avoid harvesting at high moisture (>25%) as it promotes mould. Delayed harvest causes shattering losses. Combine harvesters reduce field losses to 1–2% vs 3–5% for manual harvest.
+
+Vegetables: Harvest in the morning after dew has dried. Most vegetables should be harvested at physiological maturity, not over-ripe. Tomatoes for local market: pink-red stage. For distant markets: green-turning stage. Leafy vegetables: before bolting. Onions: 50% tops down.
+
+Fruits: Mangoes: harvest when specific gravity reaches 1.01–1.02 (float test). Bananas: harvest at 75% filling. Citrus: full colour development. Grapes: 20–24° Brix (sugar content).
+
+FIELD COOLING AND HANDLING
+Temperature management after harvest is critical. Every 10°C reduction in temperature roughly doubles shelf life. Shade harvested produce immediately. Avoid harvesting during peak heat (10 AM–4 PM) for perishables.
+
+Hydrocooling (cold water): Effective for leafy vegetables and cucumbers. Precooling reduces field heat rapidly.
+
+Forced air cooling: Standard for grapes, strawberries, stone fruits. Achieves 90% cooling in 2–4 hours.
+
+GRADING AND SORTING
+Remove diseased, damaged, and undersized produce. Grading improves market value by 15–30%. Hand-grading: sufficient for small quantities. Mechanical graders: available for tomato, potato, onion, mango through horticultural co-operatives.
+
+Grade standards for major commodities (APEDA/AGMARK):
+- Mango: Extra, Grade A (>300g), Grade B (200–300g), Grade C (<200g)
+- Tomato: Grade I (no defects, 57–75 mm), Grade II (minor defects)
+- Onion: 35–50 mm, 50–75 mm, >75 mm grades
+
+PACKAGING
+Primary packaging: Direct contact with produce. Use food-grade materials. Ventilated corrugated boxes for most fruits and vegetables. Perforated polyethylene bags for moisture-sensitive crops. Avoid re-using old packaging (disease carry-over risk).
+
+Modified Atmosphere Packaging (MAP): Reduces oxygen, increases CO2 inside package. Extends shelf life of leafy vegetables by 2–3× at ambient temperature. Available cost-effectively for high-value crops.
+
+CFB (Corrugated Fibre Board) boxes: Standard for export. APEDA specifications required for export produce.
+
+STORAGE SYSTEMS
+Covered storage: Clean, dry warehouse. Stacking on pallets/racks (10 cm off floor). Maintain temperature 10–15°C for most grains. Relative humidity 65–70%. Treat with malathion 0.1% before storage.
+
+Cold storage: Essential for potato (2–4°C, 90–95% RH), apple (0–2°C), grapes (−1°C to 0°C), tomato (10–13°C). Community cold storage available through State Horticulture Departments at rental.
+
+Hermetic storage: Airtight bags (PICS bags, ZeroFly) create low-oxygen atmosphere, effectively controlling storage pests without chemicals. Suitable for grains (wheat, maize, pulses). One-season use typically.
+
+Onion storage: Spread onions in bamboo/wooden structures with good ventilation. Top layer: dry onions. Avoid moisture. Maintain 65–70% RH, 25–35°C. Inspect weekly and remove rotten bulbs.
+
+MINIMISING LOSSES IN TRANSPORT
+Use refrigerated trucks for long-distance transport of perishables. Pre-cool the vehicle before loading. Avoid over-loading. Use vibration-absorbing materials (paddy straw, wood shavings) between layers. Drive during cool hours. Do not mix commodities with different ethylene sensitivities (e.g., apples with cucumbers).
+
+VALUE ADDITION
+Processing reduces waste and improves income:
+- Tomato: ketchup, paste, puree (Rs 25–40/kg raw → Rs 80–120 finished product)
+- Mango: pickle, pulp, juice, aam papad
+- Onion: dehydrated flakes (high export value)
+- Turmeric: polished fingers, powder
+FPO-level mini processing units available under PMFME scheme with 35% government subsidy.

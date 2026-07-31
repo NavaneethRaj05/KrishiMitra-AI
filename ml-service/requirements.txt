@@ -1,0 +1,53 @@
+# Core
+fastapi
+uvicorn[standard]
+pydantic
+python-multipart
+
+# RAG Pipeline
+chromadb
+sentence-transformers
+
+# LLM
+ollama
+
+# Disease Detection (CNN)
+tensorflow>=2.16.1
+Pillow
+
+# Crop Recommendation
+xgboost
+scikit-learn
+shap
+joblib
+
+# Voice / NLP
+openai-whisper
+spacy
+
+# ONNX Export
+skl2onnx
+onnx
+
+# KAG — Neo4j knowledge graph
+neo4j==5.20.0
+
+# AgriPerplexity — web search + reranking
+tavily-python==0.3.3
+beautifulsoup4==4.12.3
+# lxml (Removed to use built-in html.parser and avoid compiler dependency)
+# lxml
+
+rank-bm25==0.2.2
+
+# TTS==0.22.0
+
+
+# Utilities
+numpy
+pandas
+matplotlib
+python-dotenv
+PyPDF2
+httpx
+pymongo

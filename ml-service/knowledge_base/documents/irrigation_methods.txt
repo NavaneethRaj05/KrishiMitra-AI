@@ -1,0 +1,67 @@
+IRRIGATION METHODS FOR INDIAN AGRICULTURE — ICAR-NWPCA
+
+INTRODUCTION
+India uses 80% of its freshwater for agriculture. Efficient irrigation is critical for sustainable food production. Choosing the right irrigation method depends on crop type, soil texture, water availability, topography, and farm economics. Modern precision irrigation can save 30–70% water compared to traditional flood irrigation while maintaining or improving yields.
+
+FLOOD (FURROW / SURFACE) IRRIGATION
+Description: Water applied across the entire field surface or in furrows between crop rows. Most common and traditional method. Suitable for closely-spaced crops (rice, wheat) and fields with uniform slope.
+
+When to use: Puddled paddy fields, fine-textured heavy clay soils with low permeability, fields with good levelling, where water is abundant and cheap.
+
+Water efficiency: 40–60% (40–60% of applied water actually reaches the crop root zone).
+
+Limitations: High water wastage through deep percolation and run-off. Promotes weed growth. Unsuitable for sandy soils. Increases risk of waterlogging and soil compaction. Requires well-levelled fields.
+
+DRIP IRRIGATION
+Description: Water delivered directly to the root zone through a network of pipes, tubes, and emitters at very low flow rates. Highly targeted application — virtually no wastage.
+
+When to use: Orchards, vineyards, vegetables (tomato, cucumber, capsicum, brinjal), sugarcane, cotton, banana, pomegranate, guava. Ideal for undulating terrain, sandy soils, water-scarce regions, high-value crops.
+
+Water efficiency: 85–95%.
+
+Benefits:
+- Reduces water use by 40–50% vs flood irrigation.
+- Fertilizers applied through drip (fertigation) improve nutrient use efficiency by 30–40%.
+- Reduced weed growth between rows.
+- No soil compaction from tractor passages.
+- Better fruit quality and uniformity.
+
+Setup cost: Rs 40,000–80,000/ha depending on system type. Government subsidy available under PMKSY (50–90% subsidy for small/marginal farmers).
+
+Maintenance: Flush laterals weekly. Check and clean emitters monthly. Filter inlet water. Winterise by draining pipes before frost in cold regions.
+
+SPRINKLER IRRIGATION
+Description: Water pumped through pipes and sprayed from rotating or fixed nozzles above or within the crop canopy, simulating rainfall. Suits a wide range of crops and soil types.
+
+When to use: Vegetables, wheat, pulses, groundnut, soybean, oilseeds, fodder crops. Undulating terrain unsuitable for surface irrigation. Sandy loam soils. Germination irrigation for all crops.
+
+Water efficiency: 70–80%.
+
+Types:
+- Portable sprinkler: aluminium pipes, most common for annual crops.
+- Semi-permanent: underground mains with portable laterals.
+- Micro-sprinkler: used in orchards, covers 2–5 m radius, excellent for young trees.
+- Rain-gun sprinkler: covers large area (30–50 m radius), suitable for sugarcane and open field vegetables.
+
+Scheduling: Irrigate during cooler hours (early morning or evening) to minimise evaporation losses. Avoid irrigation during high winds (>15 km/h). Each irrigation should bring soil to field capacity.
+
+DEFICIT IRRIGATION STRATEGY
+Concept: Deliberately apply less water than full crop demand during less sensitive growth stages to save water with minimal yield loss.
+
+For wheat: Maintain full irrigation at crown root initiation, tillering, jointing, and grain filling. Can skip one irrigation at boot stage with <5% yield loss.
+
+For cotton: Full irrigation at squaring to boll development. Allow mild stress at seedling and late boll opening stages.
+
+For rice: Alternate wetting and drying (AWD) — let soil dry 15 cm below surface before re-irrigation. Saves 25–30% water with no yield reduction.
+
+IRRIGATION SCHEDULING — GENERAL GUIDELINES
+Soil moisture-based: Use tensiometers or gravimetric method. Irrigate when soil moisture falls to 50% of available water holding capacity.
+
+Critical stages for major crops:
+- Maize: Knee-high, tasseling, silking, grain filling
+- Cotton: Squaring, flowering, boll development
+- Soybean: Flowering, pod filling
+- Tomato: Flowering, fruit development, maturity
+- Groundnut: Pegging, pod development
+
+Signs of water stress: Wilting in morning, blue-green tint to leaves, reduced growth rate. Act promptly — yield loss begins before visible wilting in many crops.

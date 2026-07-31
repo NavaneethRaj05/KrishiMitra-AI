@@ -1,0 +1,198 @@
+ICAR CROP DISEASE MANAGEMENT — MAIZE, WHEAT, POTATO, COTTON, GROUNDNUT
+
+SOURCE: ICAR-Indian Institute of Maize Research (IIMR), ICAR-IARI, NIPHM
+AUTHORITY: National Centre for Integrated Pest Management (NCIPM), New Delhi
+
+=============================================================
+MAIZE DISEASES
+=============================================================
+
+MAIZE GRAY LEAF SPOT (Cercospora zeina / C. zeae-maydis)
+SYMPTOMS:
+- Long, narrow rectangular lesions confined between leaf veins
+- Lesions: initially yellow-green, becoming tan/grey with yellow halo
+- Lesions run parallel to veins, giving "dried grass blade" appearance
+- Severe infection: entire leaf dies prematurely
+
+FAVORABLE CONDITIONS: Warm (25-30°C), high humidity, cloudy weather, continuous maize cropping.
+
+CHEMICAL CONTROL:
+- Propiconazole 25% EC: 1.0 ml/litre (most effective triazole fungicide)
+- Tebuconazole 25.9% EC: 1.0 ml/litre
+- Azoxystrobin 23% SC + Propiconazole 11.7%: 1.0 ml/litre (combination best)
+- Chlorothalonil 75% WP: 2.0 g/litre (protectant)
+SPRAY TIMING: At tasseling (VT) and silking (R1) stages
+
+BIOLOGICAL CONTROL:
+- Trichoderma asperellum: seed treatment 4 g/kg
+- Pseudomonas fluorescens: foliar spray 5 g/litre
+
+MAIZE COMMON RUST (Puccinia sorghi)
+SYMPTOMS:
+- Circular to elongated brick-red pustules on both leaf surfaces
+- Pustules break open, releasing brick-red powdery spores
+- Severe infection causes early leaf death
+
+CHEMICAL CONTROL:
+- Propiconazole 25% EC: 1.0 ml/litre (triazoles very effective against rust)
+- Tebuconazole 25.9% EC: 1.0 ml/litre
+- Hexaconazole 5% EC: 2.0 ml/litre
+- Mancozeb 75% WP: 2.5 g/litre (protectant)
+SPRAY AT: First appearance of pustules
+
+MAIZE NORTHERN LEAF BLIGHT (Exserohilum turcicum)
+SYMPTOMS:
+- Long cigar-shaped grey-green lesions (5-15 cm long)
+- Lesions turn tan/brown as they age; may have dark borders
+- Start on lower leaves, move upward
+- Distinguishable from gray leaf spot by elongated boat-shaped lesions
+
+CHEMICAL CONTROL: Same as Gray Leaf Spot — propiconazole, tebuconazole, azoxystrobin.
+
+MAIZE FALL ARMYWORM (Spodoptera frugiperda) — HIGH PRIORITY PEST
+SYMPTOMS:
+- Window-pane feeding on young leaves
+- "Pinholes" in leaves progressing to ragged tears
+- Frass (sawdust-like) inside whorl
+- Larva has inverted Y on head, 4 black spots on 8th abdominal segment
+
+CHEMICAL CONTROL (emergency):
+- Emamectin Benzoate 5% SG: 0.4 g/litre (most effective)
+- Spinetoram 11.7% SC: 0.5 ml/litre
+- Chlorantraniliprole 18.5% SC: 0.4 ml/litre (Coragen — premium option)
+- Thiodicarb 75% WP: 1.0 g/litre (stomach poison)
+
+BIOLOGICAL CONTROL:
+- Spodoptera frugiperda NPV (SfNPV): 250 LE/acre (spray at evening)
+- Bacillus thuringiensis (Bt): 1.5 kg/acre
+- Trichogramma pretiosum: 1 lakh eggs/acre
+
+MAIZE FERTILIZER SCHEDULE (per acre):
+- Total NPK: N-60 kg, P-30 kg, K-20 kg
+- Basal: DAP 65 kg + MOP 33 kg + Urea 20 kg
+- 1st Top Dress (25-30 DAS): Urea 43 kg
+- 2nd Top Dress (45-50 DAS): Urea 43 kg
+
+=============================================================
+WHEAT DISEASES
+=============================================================
+
+WHEAT YELLOW RUST (Puccinia striiformis)
+SYMPTOMS:
+- Bright yellow powdery pustules arranged in stripes along leaf veins
+- Yellow stripes run parallel — distinguishable from brown rust's scattered pustules
+- Causes yield loss of 10-70%
+
+FAVORABLE CONDITIONS: Cool temperature 10-15°C, high humidity, heavy dew.
+
+CHEMICAL CONTROL:
+- Propiconazole 25% EC: 1.0 ml/litre (seed to boot stage)
+- Tebuconazole 25.9% EC: 0.5 ml/litre
+- Hexaconazole 5% EC: 2.0 ml/litre
+SPRAY AT: First appearance; repeat after 15 days if needed.
+
+WHEAT BROWN RUST (Puccinia triticina)
+SYMPTOMS:
+- Round-oval orange-brown pustules scattered randomly on upper leaf surface
+- Pustules contain orange-brown uredospores
+- Most common rust of wheat
+
+CHEMICAL CONTROL: Same as yellow rust — propiconazole or tebuconazole.
+
+WHEAT POWDERY MILDEW (Blumeria graminis)
+SYMPTOMS:
+- White powdery patches on upper leaf surface
+- Powdery growth later turns grey-brown
+- Occurs in cool, humid, shaded conditions
+
+CHEMICAL CONTROL:
+- Carbendazim 50% WP: 1.0 g/litre
+- Propiconazole 25% EC: 1.0 ml/litre
+- Sulfex (Wettable Sulphur 80% WP): 3.0 g/litre
+
+WHEAT FERTILIZER SCHEDULE (per acre):
+- Total: N-50 kg, P-25 kg, K-12 kg
+- Basal: DAP 55 kg + MOP 20 kg + Urea 10 kg (at sowing)
+- 1st Top Dress (21 DAS, crown root initiation): Urea 55 kg
+- 2nd Top Dress (42 DAS, jointing stage): Urea 45 kg (if needed)
+
+=============================================================
+POTATO DISEASES
+=============================================================
+
+POTATO LATE BLIGHT (Phytophthora infestans)
+SYMPTOMS:
+- Dark water-soaked lesions on leaves, rapidly turning brown-black
+- White downy sporulation on leaf underside in humid conditions
+- Severe infection: entire field destroyed within 5-7 days
+- Tubers: brown-rot with irregular reddish-brown internal discoloration
+
+FAVORABLE CONDITIONS: Temperature 10-25°C, RH above 90%, cool and wet.
+Most destructive potato disease — caused Irish Famine 1845.
+
+CHEMICAL CONTROL (most important — act FAST):
+- Metalaxyl 8% + Mancozeb 64% WP: 2.5 g/litre (systemic — BEST option)
+- Cymoxanil 8% + Mancozeb 64% WP: 3.0 g/litre
+- Fluopicolide 39.35% SC: 0.3 ml/litre
+- Copper oxychloride 50% WP: 3.0 g/litre (protectant, use preventively)
+SPRAY INTERVAL: Every 5-7 days during high-risk weather.
+
+POTATO EARLY BLIGHT (Alternaria solani)
+SYMPTOMS:
+- Dark brown concentric ring target-board spots (same as tomato early blight)
+- Appears on older lower leaves first
+- Yellow halo around lesion
+
+CHEMICAL CONTROL: Mancozeb 2.5 g/litre OR Chlorothalonil 2.0 g/litre, every 10 days.
+
+=============================================================
+COTTON DISEASES AND PESTS
+=============================================================
+
+COTTON BOLLWORM (Helicoverpa armigera)
+- Most devastating cotton pest
+- Larva feeds on flower buds (squares), flowers, and bolls
+- Entry holes on bolls with frass
+
+CHEMICAL CONTROL:
+- Emamectin Benzoate 5% SG: 0.4 g/litre
+- Spinosad 45% SC: 0.3 ml/litre
+- Chlorantraniliprole 18.5% SC: 0.4 ml/litre
+BIOLOGICAL: HaNPV 250 LE/acre, Trichogramma spp. 1 lakh/acre
+
+COTTON PINK BOLLWORM (Pectinophora gossypiella)
+- Pink larvae inside cotton bolls
+- Causes boll rot and reduced lint quality
+- Pheromone traps (Gossyplure): 5 per acre for monitoring
+
+COTTON WILT (Fusarium oxysporum f.sp. vasinfectum)
+- Sudden wilting; internal vascular discoloration (reddish-brown)
+- Soil-borne — no cure once infected
+- Prevention: Seed treatment with Trichoderma 4 g/kg + Carbendazim 2 g/kg
+- Resistant varieties: NHH-44, Suraj, Bunny BG-II
+
+=============================================================
+GROUNDNUT DISEASES
+=============================================================
+
+TIKKA/CERCOSPORA LEAF SPOT (Cercospora arachidicola & C. personatum)
+SYMPTOMS:
+- Circular dark brown spots on leaves (Tikka = spots)
+- Early leaf spot: brown spots with yellow halo on upper surface
+- Late leaf spot: dark brown spots on lower surface, no halo
+
+CHEMICAL CONTROL:
+- Chlorothalonil 75% WP: 2.0 g/litre
+- Mancozeb 75% WP: 2.5 g/litre
+- Tebuconazole 25.9% EC: 1.0 ml/litre
+SPRAY at 30, 45, 60 and 75 DAS
+
+GROUNDNUT STEM ROT / WHITE MOLD (Sclerotium rolfsii)
+- Water-soaked lesion at stem base, white fluffy growth
+- Small, round, hard brown sclerotia on soil surface
+- Apply Trichoderma viride 2.5 kg/acre + FYM 50 kg mixed 15 days before sowing
+
+GROUNDNUT FERTILIZER SCHEDULE (per acre):
+- Total: N-8 kg, P-16 kg, K-16 kg + Gypsum 100 kg at pegging (most important)
+- Basal: SSP 100 kg + MOP 27 kg
+- Gypsum: 100 kg/acre at pegging stage (critical for pod filling)

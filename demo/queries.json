@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "question": "How much NPK fertilizer should I apply for tomato cultivation?",
+    "language": "en",
+    "expected_answer_keywords": ["NPK", "120:60:60", "kg/ha", "basal", "top dress"],
+    "notes": "Tests ICAR document retrieval. Should cite tomato guide."
+  },
+  {
+    "id": 2,
+    "question": "What are the symptoms and treatment for rice blast disease?",
+    "language": "en",
+    "expected_answer_keywords": ["diamond-shaped", "Tricyclazole", "Carbendazim", "neck blast"],
+    "notes": "Tests rice disease document retrieval."
+  },
+  {
+    "id": 3,
+    "question": "ಟೊಮ್ಯಾಟೊ ಬೆಳೆಯಲ್ಲಿ ಆರಂಭಿಕ ರೋಗ ಹೇಗೆ ನಿಯಂತ್ರಿಸಬಹುದು?",
+    "language": "kn",
+    "expected_answer_keywords": ["Mancozeb", "ಶಿಲೀಂಧ್ರ", "ಸ್ಪ್ರೇ"],
+    "notes": "Kannada language query — tests multilingual RAG."
+  },
+  {
+    "id": 4,
+    "question": "Hassan district mein ragi ki kheti ke liye kya tips hain?",
+    "language": "hi",
+    "expected_answer_keywords": ["GPU-28", "ರಾಗಿ", "Hassan", "Kharif"],
+    "notes": "Hindi query — tests Hindi language response."
+  },
+  {
+    "id": 5,
+    "question": "What is the best crop to grow in black soil during Kharif season in Karnataka?",
+    "language": "en",
+    "expected_answer_keywords": ["cotton", "rice", "soybean", "black soil"],
+    "notes": "Soil + season + region combination query."
+  }
+]

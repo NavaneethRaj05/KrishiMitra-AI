@@ -1,0 +1,170 @@
+COMPREHENSIVE SOIL HEALTH AND CROP RECOMMENDATION GUIDE — INDIA
+
+SOURCE: ICAR-Indian Institute of Soil Science (IISS), Bhopal; Soil Health Mission, GoI
+AUTHORITY: ICAR-NBSS&LUP (National Bureau of Soil Survey and Land Use Planning), Nagpur
+
+=============================================================
+SOIL pH AND CROP SUITABILITY
+=============================================================
+
+STRONGLY ACID (pH 4.5-5.5):
+- Suitable crops: Tea, Coffee, Pineapple, Rubber
+- Problems: Aluminum and Manganese toxicity; Phosphorus fixation
+- Correction: Apply agricultural lime (CaCO3) at 2-4 tonnes/acre to raise pH
+
+MODERATELY ACID (pH 5.5-6.5):
+- Suitable crops: Rice, Maize, Sorghum, Finger Millet (Ragi), Groundnut, Cotton
+- Ideal for most tropical crops
+- Correction: 1-2 tonnes/acre lime if below 5.5
+
+NEUTRAL (pH 6.5-7.5) — IDEAL:
+- Most crops thrive: Wheat, Tomato, Potato, Vegetables, Sugarcane
+- Maximum nutrient availability
+- Maintenance: Organic matter addition (FYM, compost)
+
+MODERATELY ALKALINE (pH 7.5-8.5):
+- Suitable crops: Wheat, Barley, Sugar beet, Mustard
+- Problems: Micronutrient deficiency (Iron, Zinc, Manganese)
+- Correction: Apply sulfur 200 kg/acre, gypsum 400 kg/acre
+
+STRONGLY ALKALINE (pH above 8.5) — SODIC/USAR:
+- Very few crops tolerate: Barley, Rhodes grass
+- Reclamation: Gypsum 2-4 tonnes/acre + leaching
+
+=============================================================
+SOIL TYPE CROP SUITABILITY — INDIA
+=============================================================
+
+RED LATERITE SOIL (Karnataka, Andhra Pradesh, Tamil Nadu, Odisha):
+- Characteristics: Low in nitrogen, phosphorus, organic matter; high iron/aluminum
+- pH: Acidic (5.5-6.5)
+- Best crops: Groundnut, Finger Millet (Ragi), Maize, Cotton, Castor, Sunflower, Coffee, Cashew
+- Management: Apply FYM 5 tonnes/acre annually; lime if pH below 5.5; zinc and boron supplementation
+
+BLACK COTTON SOIL / VERTISOL (Maharashtra, Karnataka northern, Telangana, Madhya Pradesh):
+- Characteristics: High clay content, shrinks in dry, swells in wet; high pH 7.5-8.5
+- Rich in calcium and magnesium; poor in nitrogen and phosphorus
+- Best crops: Cotton, Sorghum (Jowar), Chickpea (Gram), Wheat (Rabi), Soybean
+- Management: Deep plowing before monsoon; gypsum for structure; adequate drainage
+
+ALLUVIAL SOIL (Gangetic Plain — UP, Bihar, Punjab, Haryana, West Bengal):
+- Characteristics: Moderate to high fertility; pH neutral; good water retention
+- Best crops: Wheat, Rice, Sugarcane, Maize, Potato, Vegetables
+- Most productive agricultural soils in India
+- Management: Balanced NPK; organic matter addition; micronutrient monitoring
+
+SANDY LOAM SOIL (Rajasthan, Haryana):
+- Characteristics: Low water retention; quick draining; low organic matter
+- Best crops: Bajra (Pearl Millet), Moth Bean, Cluster Bean (Guar), Sesame, Groundnut
+- Management: Drip irrigation; high organic matter; frequent light irrigation
+
+COASTAL ALLUVIAL SOIL (Kerala, Konkan, Coastal Karnataka):
+- Characteristics: High water table; often acidic; saline in coastal areas
+- Best crops: Coconut, Arecanut, Banana, Rice, Vegetables
+- Management: Raised bed cultivation; salinity management; good drainage
+
+=============================================================
+NITROGEN (N) DEFICIENCY AND MANAGEMENT
+=============================================================
+
+SYMPTOMS OF NITROGEN DEFICIENCY:
+- General yellowing (chlorosis) starting from older lower leaves
+- Plants stunted with thin, pale stems
+- Premature leaf drop
+- Reduced tillering in cereals
+
+NITROGEN SOURCES AND APPLICATION:
+- Urea (46% N): Most common; apply in 2-3 splits to reduce losses
+- DAP (18% N + 46% P): Use as basal fertilizer
+- Ammonium Sulfate (21% N): Good for alkaline soils
+- CAN (26% N): Good for acidic soils
+
+APPLICATION TIPS:
+- Never apply urea in standing water in rice (denitrification loss)
+- Apply urea when soil moisture is adequate; not before rain
+- Neem-coated urea: 10-15% more efficient due to slow release
+- Organic sources: FYM 10 tonnes/acre (provides N + P + K + micronutrients)
+
+=============================================================
+PHOSPHORUS (P) DEFICIENCY AND MANAGEMENT
+=============================================================
+
+SYMPTOMS:
+- Purplish-red discoloration of leaves and stems
+- Dark green leaves that turn bronze/purple
+- Delayed maturity and poor root development
+- Poor grain set in cereals
+
+PHOSPHORUS SOURCES:
+- DAP (46% P2O5): Best P source; apply at basal
+- SSP (16% P2O5): Also contains calcium and sulfur; good for acidic soils
+- Rock Phosphate: For acidic soils only; slow release
+- Bone Meal: Organic source
+
+APPLICATION TIPS:
+- Apply phosphorus as basal (all at planting) — it doesn't move in soil
+- Band placement more efficient than broadcast
+- Avoid applying in alkaline soils with high calcium (P fixation)
+- Mycorrhiza inoculants help in P uptake
+
+=============================================================
+POTASSIUM (K) DEFICIENCY AND MANAGEMENT
+=============================================================
+
+SYMPTOMS:
+- Scorching (burning) of leaf margins, starting with older leaves
+- Weak stems — plants lodge easily
+- Poor quality fruits with reduced sugar content
+- Reduced disease resistance
+
+POTASSIUM SOURCES:
+- MOP/KCl (60% K2O): Most common; cheap; avoid for chloride-sensitive crops
+- SOP (50% K2O): Better for potato, tomato, grapes (no chloride)
+- K2SO4: Good for sulfur-requiring crops
+
+=============================================================
+MICRONUTRIENT DEFICIENCIES
+=============================================================
+
+ZINC DEFICIENCY (Most Common in India):
+- Symptoms: Interveinal chlorosis; white/buff streaks on young leaves; stunted growth
+- Crops affected: Rice, Wheat, Maize, Cotton
+- Correction: Zinc Sulfate (ZnSO4) 21%: 10 kg/acre as basal OR 0.5% foliar spray
+
+BORON DEFICIENCY:
+- Symptoms: Hollow stem in crucifers, empty pods in groundnut, fruit cracking
+- Correction: Borax 10 kg/acre (basal) OR 0.3% Solubor foliar spray
+
+IRON DEFICIENCY (Alkaline soils):
+- Symptoms: Interveinal chlorosis on young leaves; veins remain green
+- Correction: FeSO4 0.5% foliar spray (3-4 applications); acidify soil
+
+=============================================================
+ORGANIC FARMING AND SOIL HEALTH
+=============================================================
+
+FARMYARD MANURE (FYM):
+- Well-decomposed FYM: Apply 10 tonnes/acre annually
+- NPK content: approximately N=0.5%, P=0.25%, K=0.5%
+- Benefits: Improves soil structure, water holding, microbial activity
+
+VERMICOMPOST:
+- Apply 2-4 tonnes/acre
+- NPK content: N=1.5-2.5%, P=1.5-2%, K=1.5-2%
+- Use for high-value vegetables and horticulture
+
+BIOFERTILIZERS:
+- Rhizobium: For pulse crops (seed treatment 200 g/10 kg seed)
+- Azotobacter: For cereals and vegetables (seed treatment 200 g/10 kg)
+- PSB (Phosphate Solubilizing Bacteria): 200 g/10 kg seed
+- Trichoderma: 2.5 kg/acre soil application (biocontrol + growth promotion)
+
+GREEN MANURING:
+- Dhaincha (Sesbania): 45-60 kg/acre; plow down before flowering (45-50 days)
+- Sunn Hemp (Crotalaria): Adds 60-80 kg N/acre; 30 kg seed/acre
+- Cow pea: 30 kg seed/acre; green manure at 45 days
+
+SOIL CARBON IMPROVEMENT:
+- Biochar: 1-2 tonnes/acre (long-term carbon sequestration)
+- Cover crops in fallow period
+- Avoid deep tillage (tractor plow) — use minimum tillage

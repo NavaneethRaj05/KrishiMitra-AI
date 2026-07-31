@@ -1,0 +1,58 @@
+WHEAT DISEASE MANAGEMENT GUIDE — ICAR-IIWBR
+
+INTRODUCTION
+Wheat (Triticum aestivum) is India's second most important cereal crop after rice. Diseases cause yield losses of 10–70% depending on severity and crop growth stage. Early identification and timely management are critical for protecting yield.
+
+LEAF RUST (Brown Rust) — Puccinia triticina
+Symptoms: Small, circular to oval, orange-brown powdery pustules on upper leaf surface. Pustules are scattered randomly and surrounded by yellow halo. Severely infected leaves turn yellow and die prematurely. The disease is most damaging when it occurs before heading.
+
+Cause: Obligate fungal pathogen Puccinia triticina. Spreads through airborne urediniospores. Favoured by moderate temperatures (15–22°C) and high humidity or leaf wetness for 6–8 hours.
+
+Management:
+1. Resistant varieties: HD 2967, GW 322, K 307 show moderate to high resistance.
+2. Seed treatment: Carboxin 37.5% + Thiram 37.5% DS at 2.5 g/kg seed.
+3. Foliar spray: Propiconazole 25% EC at 0.1% (1 mL/L water) at flag leaf stage. Repeat after 15 days if disease persists.
+4. Cultural: Avoid late sowing; early-sown crops escape peak infection period.
+
+POWDERY MILDEW — Blumeria graminis f.sp. tritici
+Symptoms: White powdery growth (mycelium and conidia) on upper leaf surface, later turning grey-brown. Severely infected leaves turn yellow. The disease is most common in cool (15–20°C), humid, cloudy conditions. More prevalent in irrigated areas.
+
+Cause: Obligate biotrophic fungus. Unlike rusts, does not require free water — high humidity (>70%) is sufficient.
+
+Management:
+1. Resistant varieties: NW 1014, HI 8498.
+2. Foliar spray: Triadimefon 25% WP at 0.1% or Propiconazole 25% EC at 0.05–0.1% at first appearance. Apply in evening hours.
+3. Sulphur dust (300 mesh) at 25 kg/ha provides good control.
+4. Avoid excessive nitrogen, which encourages lush growth susceptible to mildew.
+
+LOOSE SMUT — Ustilago tritici
+Symptoms: Entire ear replaced by a mass of dark olive-brown powdery spores (smut sori), enclosed in a thin membrane that ruptures at ear emergence, releasing spores that infect flowers of nearby plants. Infected plants appear normal until ear emergence.
+
+Cause: Internally seed-borne fungus. Spores infect flowers at anthesis, establish in the embryo, and remain dormant until germination.
+
+Management:
+1. Seed treatment is the only effective control. Use systemic fungicides:
+   - Carboxin 37.5% + Thiram 37.5% DS at 2.5 g/kg seed (most effective)
+   - Tebuconazole 25.9% EC at 1.25 mL/kg seed
+2. Hot water seed treatment: Soak seed in cold water for 4 hours, then in hot water at 52°C for 10 minutes. Dry and sow promptly.
+3. Use certified disease-free seed.
+4. Remove and destroy infected plants before sore rupture.
+
+YELLOW (STRIPE) RUST — Puccinia striiformis
+Symptoms: Bright yellow-orange pustules arranged in stripes along leaf veins. Severely infected fields appear yellow from a distance. Cooler temperatures (10–15°C) favour this disease compared to leaf rust.
+
+Cause: Puccinia striiformis f.sp. tritici. Epidemics occur in cool, humid, and cloudy conditions, especially in north-western India (Punjab, Haryana) and hills.
+
+Management:
+1. Grow resistant/tolerant varieties: PBW 343 (some breakdown), HD 2781, WH 1105.
+2. Propiconazole 25% EC at 0.1% spray at first sign; repeat after 15 days.
+3. Early sowing allows crop to escape peak infection periods in December–January.
+
+GENERAL RECOMMENDATIONS
+- Crop rotation with non-cereal crops reduces inoculum build-up.
+- Balanced fertilization: avoid excess nitrogen.
+- Field sanitation: remove and burn crop debris after harvest.
+- Monitor crop weekly from tillering to dough stage.
+- Maintain field drainage to reduce humidity.
+
+Contact your nearest Krishi Vigyan Kendra (KVK) for district-specific variety recommendations and spray schedules.
