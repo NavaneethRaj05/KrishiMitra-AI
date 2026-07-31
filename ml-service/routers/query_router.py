@@ -381,28 +381,63 @@ async def handle_image_query(
     weather = gps_ctx["weather"]
     weather_str = gps_ctx["weather_str"]
     soil_type = gps_ctx["soil_type"]
+    agro_zone = gps_ctx.get("agro_zone", "")
+    season = gps_ctx.get("season", "")
     crop = gps_ctx["crop"]
-    
+
     context_injection = (
         f"\n\n--- PATHOLOGY CONTEXT (GPS-Based) ---\n"
         f"Location: {district}, {state}\n"
+        f"Agro-Climatic Zone: {agro_zone}\n"
+        f"Current Season: {season}\n"
         f"Soil Type: {soil_type}\n"
         f"Assumed Crop: {crop}\n"
         f"Weather: {weather_str}\n"
     )
     system = build_system_prompt(IMAGE_DIAGNOSIS_PROMPT + context_injection, user)
-    
+
     image_bytes = await file.read()
     image_b64 = base64.b64encode(image_bytes).decode()
-    
+
     # 1. Run CNN classification model first (always available)
     diag = await disease_service.classify(image_bytes, crop_context=crop, query=query)
-    
-    # 2. Run LLaVA/Ollama Vision (with CNN-aware guidance)
-    cnn_info_str = f"Classifier preliminary finding: Crop '{diag.get('crop')}', Condition '{diag.get('disease')}' ({diag.get('confidence')}% confidence, Severity: {diag.get('severity')})."
-    user_prompt = f"{query or 'Examine this crop leaf image carefully. Identify the crop and diagnose any disease, pest, or nutrient issue.'}\n\n[Context: {cnn_info_str}]"
-    res = await llm_vision(system, image_b64, user_prompt=user_prompt)
-    
+    detected_crop = diag.get("crop", crop or "plant")
+    detected_disease = diag.get("disease", "unknown condition")
+
+    # 2. Retrieve RAG context for the detected disease (CRITICAL FIX)
+    # Without this, the LLM answers with generic knowledge instead of ICAR-backed treatment protocols
+    image_rag_context = ""
+    rag_chunks = []
+    try:
+        disease_rag_query = f"{detected_crop} {detected_disease} treatment symptoms fungicide dosage"
+        rag_chunks = await chromadb_search(disease_rag_query, soil_type=soil_type, district=district)
+        if rag_chunks:
+            # Take top 3 chunks, trimmed to 150 words each to keep vision context lean
+            rag_parts = []
+            for c in rag_chunks[:3]:
+                words = c["text"].split()
+                text = " ".join(words[:150]) + ("..." if len(words) > 150 else "")
+                rag_parts.append(f"[{c.get('title', 'ICAR Guide')}]: {text}")
+            image_rag_context = "\n\n".join(rag_parts)
+    except Exception as e:
+        logger.warning("Image RAG retrieval failed: %s", e)
+
+    # 3. Run LLaVA/Ollama Vision with CNN finding + RAG knowledge base context
+    cnn_info_str = (
+        f"CNN Classifier: Crop='{detected_crop}', Condition='{detected_disease}' "
+        f"({diag.get('confidence')}% confidence, Severity: {diag.get('severity')})."
+    )
+    rag_section = (
+        f"\n\nKnowledge Base Reference (ground your treatment advice in these ICAR-verified protocols):\n"
+        f"{image_rag_context}"
+    ) if image_rag_context else ""
+
+    user_prompt = (
+        f"{query or 'Examine this crop leaf image carefully. Identify the crop and diagnose any disease, pest, or nutrient issue.'}"
+        f"\n\n[{cnn_info_str}]{rag_section}"
+    )
+    res = await llm_vision(system, image_b64, user_prompt=user_prompt, temperature=0.1)
+
     # Always respect user's preferred language for image diagnosis responses
     preferred_lang = user.get("preferredLanguage", "en")
     detected_lang = "en"
@@ -412,11 +447,11 @@ async def handle_image_query(
         except Exception:
             pass
     target_lang = preferred_lang if preferred_lang not in ("en", "english") else (detected_lang if detected_lang != "en" else "en")
-    
+
     # Auto-translate answer if needed
     translated_answer = translate_fallback_text(res["answer"], target_lang)
-    
-    # 3. Query treatments from Knowledge Graph
+
+    # 4. Query treatments from Knowledge Graph
     kag_treatments = []
     try:
         kag_treatments = kag_service.get_treatments_for_disease(diag["disease"])
@@ -425,11 +460,12 @@ async def handle_image_query(
 
     return {
         "answer": translated_answer,
-        "crop": diag.get("crop"),
-        "disease": diag.get("disease"),
+        "crop": detected_crop,
+        "disease": detected_disease,
         "confidence_score": diag.get("confidence", 90.0) / 100.0,
         "severity": diag.get("severity"),
         "kag_treatments": kag_treatments,
+        "rag_sources": [c.get("title") for c in rag_chunks],
         "location": {"district": district, "state": state, "soil_type": soil_type},
     }
 

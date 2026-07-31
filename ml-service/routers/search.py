@@ -36,6 +36,18 @@ async def search_ask(req: SearchRequest):
     else:
         farmer_context = {}
 
+    # Normalize farmer_context to consistent flat keys so all downstream services
+    # reliably find soil_type, agro_zone, major_crops etc. regardless of nesting
+    soil_obj = farmer_context.get("soil") or {}
+    farmer_context.setdefault("soil_type",    soil_obj.get("soil_type") or farmer_context.get("soil_type", ""))
+    farmer_context.setdefault("agro_zone",    farmer_context.get("agro_zone", ""))
+    farmer_context.setdefault("major_crops",  farmer_context.get("major_crops") or farmer_context.get("major_crops_in_area") or [])
+    farmer_context.setdefault("season",       farmer_context.get("season", ""))
+    farmer_context.setdefault("district",     farmer_context.get("district", ""))
+    farmer_context.setdefault("state",        farmer_context.get("state", ""))
+    farmer_context.setdefault("weather",      farmer_context.get("weather") or {})
+    farmer_context.setdefault("crop",         farmer_context.get("crop") or farmer_context.get("primary_crop", ""))
+
     async def stream():
         async for event in krishi_search_service.stream_answer(
             query=          req.query,
@@ -58,6 +70,7 @@ async def search_ask(req: SearchRequest):
             "Access-Control-Allow-Origin": "*",
         }
     )
+
 
 
 @router.post("")

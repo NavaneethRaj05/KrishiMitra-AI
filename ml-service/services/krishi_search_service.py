@@ -154,51 +154,78 @@ class KrishiSearchService:
             urgency_note = "\n⚠️ URGENCY: The farmer indicated this is urgent. Prioritize immediate actionable steps."
 
         location_info = ""
+        rag_kb_section = ""
         if farmer_context:
             district = farmer_context.get("district", "Unknown")
             state = farmer_context.get("state", "Unknown")
-            soil_type = farmer_context.get("soil", {}).get("soil_type", farmer_context.get("soil_type", "Unknown"))
+            # Normalize soil_type — can be flat key OR nested under soil.soil_type
+            soil_type = (
+                farmer_context.get("soil_type")
+                or farmer_context.get("soil", {}).get("soil_type")
+                or "Unknown"
+            )
             crop = farmer_context.get("crop", "Tomato")
             weather = farmer_context.get("weather", {})
             season = farmer_context.get("season", "Unknown")
-            
+            agro_zone = farmer_context.get("agro_zone", "")
+            major_crops = farmer_context.get("major_crops") or []
+
             weather_str = f"Temp: {weather.get('temperature')}°C, Humidity: {weather.get('humidity')}%, Conditions: {weather.get('description', 'Normal')}"
-            
+
             location_info = (
                 f"\n--- Farmer Location & Weather Context (GPS-based) ---\n"
                 f"Location: {district}, {state}\n"
+                f"Agro-Climatic Zone: {agro_zone}\n"
                 f"Typical Soil Type: {soil_type}\n"
                 f"Primary Crop of Interest: {crop}\n"
+                f"Major Local Crops: {', '.join(major_crops) if major_crops else 'N/A'}\n"
                 f"Current Season: {season}\n"
                 f"Current Weather conditions: {weather_str}\n"
             )
-            # Add heat index and advisory if temperature is high
+            # Add heat index advisory
             temp = weather.get('temperature')
             if temp and isinstance(temp, (int, float)) and temp > 35:
-                location_info += "⚠️ HEAT ALERT: Extremely high temperature detected. Recommend heat-stress mitigation strategies for crop protection and specify frequent watering.\n"
+                location_info += "⚠️ HEAT ALERT: Extremely high temperature. Recommend heat-stress mitigation and frequent watering.\n"
+
+            # Inject RAG KB chunks as a dedicated high-priority section
+            # RAG chunks have already been retrieved and appended to sources;
+            # we pull them back out and give them a dedicated section so the LLM
+            # treats them as primary evidence, not just another web source.
+            kb_chunks = [s for s in sources if getattr(s, 'source', '') == 'Local KB']
+            if kb_chunks:
+                rag_lines = []
+                for i, s in enumerate(kb_chunks[:4], 1):
+                    text = getattr(s, 'full_text', '') or getattr(s, 'excerpt', '')
+                    # Trim to 200 words for token budget
+                    words = text.split()
+                    text = " ".join(words[:200]) + ("..." if len(words) > 200 else "")
+                    rag_lines.append(f"[KB-{i}] {getattr(s, 'title', 'Agricultural Guide')}:\n{text}")
+                rag_kb_section = (
+                    "\n\n--- PRIORITY KNOWLEDGE BASE (ICAR-verified — cite these first) ---\n"
+                    + "\n\n".join(rag_lines)
+                    + "\n---\n"
+                )
 
         return f"""You are KrishiMitraAI, the world's most expert agricultural AI assistant for farmers. You answer any question about farming, crops, soil, diseases, pests, weather, markets, government schemes, irrigation, and organic practices — for any crop and any location worldwide.
 
 QUERY TYPE: {intent_name}{location_info}
-{urgency_note}
-
+{urgency_note}{rag_kb_section}
 CITATION RULES (mandatory):
 - Every factual claim MUST have an inline citation immediately after: [1] or [2][3]
-- Only cite from the numbered sources provided below
-- Multiple sources for one claim: [1][2]
-- Never invent or fabricate citations
+- ICAR Knowledge Base entries [KB-1], [KB-2] etc. are your PRIMARY source — cite them FIRST
+- Only cite from the numbered sources and KB entries provided below
+- Never invent or fabricate citations or dosages not in the sources
 
 ANSWER STRUCTURE:
 Organize your answer in this order: {section_str}
 Use **bold headers** for each section.
 
 ANSWER STYLE:
-- Be practical, specific, and immediately actionable
-- Use simple language that farmers can understand
-- Include quantities, timings, dosages, and methods when available
+- Be practical, specific, and immediately actionable for the farmer's specific location, soil, and weather
+- Include quantities, timings, dosages, and product names when available in the sources
 - Use bullet points for lists
+- NEVER give a generic answer — every sentence must reference the farmer's context
 - If sources conflict, acknowledge it
-- If you cannot find a specific answer in the sources, be honest about it
 
 CONFIDENCE GUIDANCE:
 After your answer, on a new line write exactly:
@@ -611,7 +638,14 @@ Respond entirely in {lang_name}."""
             except Exception as e:
                 logger.warning(f"LLM streaming failed: {e}. Building answer from sources.")
                 from utils.fallback_formatter import format_offline_fallback
-                full_answer = format_offline_fallback(query, sources or [], target_lang=language)
+                # CRITICAL FIX: pass farmer_context as location_context so the fallback
+                # answer is localized with district, soil, weather — not generic
+                full_answer = format_offline_fallback(
+                    query,
+                    sources or [],
+                    target_lang=language,
+                    location_context=farmer_context or {}
+                )
                 # Stream the built answer
                 words = full_answer.split(' ')
                 for wi in range(0, len(words), 3):

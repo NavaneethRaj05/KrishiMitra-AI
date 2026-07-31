@@ -1,4 +1,4 @@
-"""
+﻿"""
 KAG Service — Knowledge Augmented Generation via Neo4j graph queries.
 Complements RAG: RAG handles unstructured document retrieval,
 KAG handles structured relational reasoning
@@ -6,6 +6,7 @@ KAG handles structured relational reasoning
 """
 import logging
 import os
+import time
 from typing import Any, Optional
 
 from neo4j import GraphDatabase
@@ -16,6 +17,11 @@ logger = logging.getLogger("krishimitraai.kag")
 URI  = os.getenv("NEO4J_URI",      "bolt://neo4j:7687")
 USER = os.getenv("NEO4J_USER",     "neo4j")
 PASS = os.getenv("NEO4J_PASSWORD", "krishimitraai123")
+
+# Availability cache — avoid connection hammering when Neo4j is down
+_KAG_AVAILABLE: Optional[bool] = None
+_KAG_LAST_CHECK: float = 0.0
+_KAG_CHECK_TTL: float = 60.0  # re-check every 60 seconds
 
 
 class KAGService:
@@ -32,14 +38,44 @@ class KAGService:
             self._driver.close()
             self._driver = None
 
+    def is_available(self) -> bool:
+        """
+        Returns True if Neo4j is reachable.
+        Result is cached for _KAG_CHECK_TTL seconds to avoid hammering
+        a down server on every single request.
+        """
+        global _KAG_AVAILABLE, _KAG_LAST_CHECK
+        now = time.monotonic()
+        if _KAG_AVAILABLE is not None and (now - _KAG_LAST_CHECK) < _KAG_CHECK_TTL:
+            return _KAG_AVAILABLE
+        try:
+            self._run("RETURN 1 AS ok")
+            _KAG_AVAILABLE = True
+            logger.debug("KAG Neo4j: connection OK")
+        except Exception as e:
+            _KAG_AVAILABLE = False
+            logger.info("KAG Neo4j unavailable (will retry in %ds): %s", int(_KAG_CHECK_TTL), e)
+        _KAG_LAST_CHECK = now
+        return bool(_KAG_AVAILABLE)
+
     def _run(self, query: Any, **params) -> list:
         with self._get_driver().session() as session:
             return [dict(record) for record in session.run(query, **params)]
 
+    def _safe_run(self, query: Any, **params) -> list:
+        """Run a Cypher query, returning [] if Neo4j is unavailable instead of raising."""
+        if not self.is_available():
+            return []
+        try:
+            return self._run(query, **params)
+        except (ServiceUnavailable, Exception) as e:
+            logger.debug("KAG query failed: %s", e)
+            return []
+
     # ──────────────────────────────────────────
     def get_diseases_for_crop(self, crop_name: str) -> list:
         """Return all diseases a crop is vulnerable to."""
-        return self._run(
+        return self._safe_run(
             """
             MATCH (c:Crop {name: $crop})-[:VULNERABLE_TO]->(d:Disease)
             RETURN d.name AS disease, d.type AS type,
@@ -50,7 +86,7 @@ class KAGService:
 
     def get_treatments_for_disease(self, disease_name: str) -> list:
         """Return all treatments for a given disease."""
-        return self._run(
+        return self._safe_run(
             """
             MATCH (d:Disease {name: $disease})-[:TREATED_BY]->(t:Treatment)
             RETURN t.name AS treatment, t.type AS type,
@@ -64,7 +100,7 @@ class KAGService:
     ) -> list:
         """Return crops suited to a climate zone, optionally filtered by soil type."""
         if soil_type:
-            return self._run(
+            return self._safe_run(
                 """
                 MATCH (c:Crop)-[:THRIVES_IN]->(z:ClimateZone {name: $zone})
                 MATCH (c)-[:GROWS_IN]->(s:SoilType {name: $soil})
@@ -76,7 +112,7 @@ class KAGService:
                 zone=climate_zone,
                 soil=soil_type,
             )
-        return self._run(
+        return self._safe_run(
             """
             MATCH (c:Crop)-[:THRIVES_IN]->(z:ClimateZone {name: $zone})
             RETURN c.name AS crop, c.duration_days AS duration,
@@ -95,7 +131,10 @@ class KAGService:
         - treatments for each disease
         Used to enrich RAG context before LLM generation.
         """
-        crop_info = self._run(
+        if not self.is_available():
+            return {"crop": {}, "diseases": []}
+
+        crop_info = self._safe_run(
             """
             MATCH (c:Crop {name: $crop})
             OPTIONAL MATCH (c)-[:GROWS_IN]->(s:SoilType)
@@ -124,7 +163,7 @@ class KAGService:
     ) -> list:
         """Return treatments — optionally only organic ones."""
         filter_clause = "AND t.organic = true" if organic_only else ""
-        return self._run(
+        return self._safe_run(
             f"""
             MATCH (d:Disease {{name: $disease}})-[:TREATED_BY]->(t:Treatment)
             WHERE 1=1 {filter_clause}
@@ -135,15 +174,12 @@ class KAGService:
         )
 
     def health_check(self) -> bool:
-        try:
-            self._run("RETURN 1 AS ok")
-            return True
-        except (ServiceUnavailable, Exception) as e:
-            logger.warning("KAG health check failed: %s", e)
-            return False
+        return self.is_available()
 
     def get_entire_graph(self) -> dict:
         """Fetch all nodes and relationships for visualization."""
+        if not self.is_available():
+            return {"nodes": [], "edges": []}
         try:
             nodes = self._run(
                 """

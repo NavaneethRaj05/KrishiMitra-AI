@@ -134,14 +134,63 @@ class RAGService:
         return query
 
     # ──────────────────────────────────────────
+    def _bm25_rerank(self, query: str, chunks: List[Dict]) -> List[Dict]:
+        """
+        Hybrid BM25 keyword reranking layered on top of semantic scores.
+        Final score = 0.65 × semantic + 0.35 × normalized_bm25
+        This captures exact agrochemical/variety name matches that cosine similarity misses.
+        e.g. 'Tricyclazole 75% WP' or 'Mancozeb' are found even when embedding similarity is low.
+        """
+        if not chunks:
+            return chunks
+        try:
+            from rank_bm25 import BM25Okapi
+            corpus = [c["text"].lower().split() for c in chunks]
+            bm25 = BM25Okapi(corpus)
+            bm25_scores = bm25.get_scores(query.lower().split())
+            # Normalize BM25 to [0, 1]
+            max_bm25 = max(bm25_scores) if max(bm25_scores) > 0 else 1.0
+            for i, chunk in enumerate(chunks):
+                semantic_score = chunk.get("score", 0.5)
+                bm25_norm = float(bm25_scores[i]) / max_bm25
+                chunk["score"] = round(0.65 * semantic_score + 0.35 * bm25_norm, 4)
+            return sorted(chunks, key=lambda x: x["score"], reverse=True)
+        except ImportError:
+            logger.debug("rank_bm25 not available — using semantic-only ranking")
+            return chunks
+        except Exception as e:
+            logger.debug("BM25 rerank failed: %s", e)
+            return chunks
+
+    def _trim_to_budget(self, chunks: List[Dict], max_words_per_chunk: int = 200) -> List[Dict]:
+        """
+        Token budget management: trim each chunk text to max_words_per_chunk words.
+        Prevents context overflow in Ollama's 8K token window when combining
+        RAG + KAG + system prompt + web sources.
+        """
+        trimmed = []
+        for c in chunks:
+            words = c["text"].split()
+            if len(words) > max_words_per_chunk:
+                c = dict(c)  # shallow copy — don't mutate original
+                c["text"] = " ".join(words[:max_words_per_chunk]) + "..."
+            trimmed.append(c)
+        return trimmed
+
+    # ──────────────────────────────────────────
     def retrieve(self, query: str, top_k: int = TOP_K) -> List[Dict]:
-        """Semantic search with query expansion: return top_k most relevant document chunks."""
+        """
+        Hybrid semantic + BM25 retrieval with query expansion and token budget.
+        Pipeline: expand query → semantic embed → ChromaDB → BM25 rerank → trim budget.
+        """
         self._ensure_loaded()
         expanded_query = self._expand_query(query)
         query_embedding = self.embedder.encode([expanded_query]).tolist()
+        # Over-fetch by 2x so BM25 reranking has enough candidates to work with
+        fetch_k = min(top_k * 2, self.collection.count() or top_k)
         results = self.collection.query(
             query_embeddings=query_embedding,
-            n_results=min(top_k, self.collection.count() or top_k),
+            n_results=max(fetch_k, 1),
             include=["documents", "metadatas", "distances"],
         )
         chunks = []
@@ -161,11 +210,15 @@ class RAGService:
                         "source":  src,
                         "title":   meta.get("title", "Agricultural Document"),
                         "excerpt": " ".join(doc.split()[:40]) + "...",
-                        "score":   round(1 - score, 4),  # convert to similarity
+                        "score":   round(1 - score, 4),  # convert cosine distance → similarity
                         "source_type": src_type,
                         "authority_score": auth_score,
                     })
-        return chunks
+
+        # Hybrid rerank using BM25 on top of semantic scores
+        chunks = self._bm25_rerank(query, chunks)
+        # Return top_k after reranking, trimmed to token budget
+        return self._trim_to_budget(chunks[:top_k])
 
     # ──────────────────────────────────────────
     def generate_answer(
