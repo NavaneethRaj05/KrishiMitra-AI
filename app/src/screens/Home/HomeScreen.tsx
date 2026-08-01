@@ -176,14 +176,8 @@ export const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           <View style={styles.webContent}>
             <ScrollView style={{ flex: 1 }} contentContainerStyle={styles.webScrollContent}>
               <View style={styles.heroSection}>
-                <VaaniText size="xs" color={colors.text.tertiary} weight="bold" style={styles.heroEyebrow}>
-                  {t('home.hero_eyebrow')}
-                </VaaniText>
-                <VaaniText size="xl" weight="bold" color={colors.text.primary} style={styles.heroTitle}>
-                  {t('home.hero_title')}
-                </VaaniText>
-                <VaaniText size="sm" color={colors.text.secondary} style={styles.heroSub}>
-                  {t('home.hero_sub')}
+                <VaaniText size="xxl" weight="bold" color={colors.text.primary} style={{ ...styles.heroTitle, fontSize: 32 }}>
+                  KrishiMitra AI
                 </VaaniText>
               </View>
 
@@ -262,23 +256,7 @@ export const HomeScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
                 ))}
               </View>
 
-              <View style={styles.webDivider} />
 
-              {/* Seasonal Alert Card */}
-              <TouchableOpacity
-                onPress={() => handleQuerySubmit(t('home_trending.paddy_blast'))}
-                style={styles.webAlertCard}
-              >
-                <VaaniText size="xs" weight="bold" color={colors.red} style={{ marginBottom: spacing.xs }}>
-                  {t('home_alerts.high_risk')}
-                </VaaniText>
-                <VaaniText size="sm" weight="semibold" color={colors.text.primary} style={{ marginBottom: spacing.xs }}>
-                  {t('home_alerts.humidity_warn', { district: t(`districts.${farmer?.district || 'Mandya'}`) })}
-                </VaaniText>
-                <VaaniText size="xs" color={colors.text.secondary} style={{ textDecorationLine: 'underline' }}>
-                  {t('home_alerts.action_guideline')}
-                </VaaniText>
-              </TouchableOpacity>
             </ScrollView>
           </View>
         </View>

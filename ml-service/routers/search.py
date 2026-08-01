@@ -73,51 +73,7 @@ async def search_ask(req: SearchRequest):
 
 
 
-@router.post("")
-async def search(req: SearchRequest):
-    from services.context_service import context_service
-    from services.search_pipeline import search_pipeline
-    
-    # Auto-detect image_b64 and run disease diagnosis if context not provided
-    image_context = req.image_context
-    if not image_context and req.image_b64:
-        try:
-            from services.disease_service import disease_service
-            import base64
-            
-            # Fetch farmer crop context to guide classification
-            farmer_crop = None
-            try:
-                if req.latitude is not None and req.longitude is not None:
-                    fc = await context_service.get_context_from_gps(req.latitude, req.longitude, req.farmer_id)
-                else:
-                    fc = await context_service.get_context(req.farmer_id)
-                farmer_crop = fc.get("crop")
-            except Exception:
-                pass
 
-            img_bytes = base64.b64decode(req.image_b64)
-            # Run cnn + llava + KAG treatments
-            image_context = await disease_service.full_diagnosis(img_bytes, crop_context=farmer_crop, query=req.query)
-        except Exception:
-            pass
-
-    # Use GPS coordinates if available for location-aware context
-    if req.latitude is not None and req.longitude is not None:
-        farmer_context = await context_service.get_context_from_gps(req.latitude, req.longitude, req.farmer_id)
-    else:
-        farmer_context = await context_service.get_context(req.farmer_id)
-    result = await search_pipeline.run(
-        query=req.query,
-        farmer_context=farmer_context,
-        thread_context=req.conversation,
-        image_context=image_context,
-        language=req.language,
-        online=req.online
-    )
-    if image_context:
-        result["image_context"] = image_context
-    return result
 
 
 @router.get("/trending")

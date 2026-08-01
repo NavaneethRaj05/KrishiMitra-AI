@@ -1,44 +1,88 @@
-export const colors = {
+import { Platform } from 'react-native'
+
+const lightColors = {
   bg: {
-    base:    '#FFFFFF',   // --surface
-    card:    '#F7F9F8',   // --surface2
-    card2:   '#E1F5EE',   // elevated card / --green-light
-    input:   '#FFFFFF',   // input background
-    overlay: 'rgba(0, 0, 0, 0.4)', // modal overlay
+    base:    '#FFFFFF',
+    card:    '#F7F9F8',
+    card2:   '#E1F5EE',
+    input:   '#FFFFFF',
+    overlay: 'rgba(0, 0, 0, 0.4)',
   },
   border: {
-    default: '#E5E8E7',   // --border
+    default: '#E5E8E7',
     strong:  '#D1D5D4',
-    focus:   '#1D9E75',   // --green
+    focus:   '#1D9E75',
   },
   green: {
-    bright: '#1D9E75',   // --green
-    mid:    '#1D9E75',   // button fill
-    dark:   '#085041',   // --green-dark
-    dim:    '#E1F5EE',   // --green-light
+    bright: '#1D9E75',
+    mid:    '#1D9E75',
+    dark:   '#085041',
+    dim:    '#E1F5EE',
   },
   amber: {
-    bright: '#EF9F27',   // --amber
-    dark:   '#633806',   // dark amber for text
-    dim:    '#FAEEDA',   // --amber-light
+    bright: '#EF9F27',
+    dark:   '#633806',
+    dim:    '#FAEEDA',
   },
   sky: {
-    bright: '#534AB7',   // --purple (used for info/sky in secondary features)
-    dim:    '#EEEDFE',   // --purple-light
+    bright: '#534AB7',
+    dim:    '#EEEDFE',
   },
   sand: {
-    bright: '#085041',   // dark green contrast text on light bg
+    bright: '#085041',
     dim:    '#E1F5EE',
   },
   text: {
-    primary:   '#1A2521',  // --text (dark charcoal/green-tinted)
-    secondary: '#4A5D57',  // --text2
-    tertiary:  '#80968F',  // --text3
-    inverse:   '#FFFFFF',  // text on green
+    primary:   '#1A2521',
+    secondary: '#4A5D57',
+    tertiary:  '#80968F',
+    inverse:   '#FFFFFF',
   },
   red:     '#B84040',
   redDim:  '#FFEAEA',
 }
+
+export const colors = Platform.OS === 'web' ? {
+  bg: {
+    base:    'var(--color-bg-base)',
+    card:    'var(--color-bg-card)',
+    card2:   'var(--color-bg-card2)',
+    input:   'var(--color-bg-input)',
+    overlay: 'var(--color-bg-overlay)',
+  },
+  border: {
+    default: 'var(--color-border-default)',
+    strong:  'var(--color-border-strong)',
+    focus:   'var(--color-border-focus)',
+  },
+  green: {
+    bright: 'var(--color-green-bright)',
+    mid:    'var(--color-green-mid)',
+    dark:   'var(--color-green-dark)',
+    dim:    'var(--color-green-dim)',
+  },
+  amber: {
+    bright: 'var(--color-amber-bright)',
+    dark:   'var(--color-amber-dark)',
+    dim:    'var(--color-amber-dim)',
+  },
+  sky: {
+    bright: 'var(--color-sky-bright)',
+    dim:    'var(--color-sky-dim)',
+  },
+  sand: {
+    bright: 'var(--color-sand-bright)',
+    dim:    'var(--color-sand-dim)',
+  },
+  text: {
+    primary:   'var(--color-text-primary)',
+    secondary: 'var(--color-text-secondary)',
+    tertiary:  'var(--color-text-tertiary)',
+    inverse:   'var(--color-text-inverse)',
+  },
+  red:     'var(--color-red)',
+  redDim:  'var(--color-redDim)',
+} : lightColors
 
 export const typography = {
   families: {
@@ -85,7 +129,6 @@ export const radii = {
   full: 999,
 }
 
-import { Platform } from 'react-native'
 
 export const shadows = {
   card: Platform.select({

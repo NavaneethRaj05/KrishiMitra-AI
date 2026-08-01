@@ -11,15 +11,30 @@ interface ThemeState {
   toggleTheme: () => void
 }
 
+const setCssVariables = (obj: any, prefix = '') => {
+  if (typeof document === 'undefined' || !document.documentElement) return
+  for (const key in obj) {
+    if (typeof obj[key] === 'object') {
+      setCssVariables(obj[key], `${prefix}-${key}`)
+    } else {
+      document.documentElement.style.setProperty(`--color${prefix}-${key}`, obj[key])
+    }
+  }
+}
+
 const applyWebTheme = (mode: ThemeMode) => {
   if (typeof document !== 'undefined' && document.body) {
+    // Inject dynamic CSS variables for all colors so static stylesheets update automatically
+    const themeColors = getThemeColors(mode)
+    setCssVariables(themeColors)
+    
     if (mode === 'dark') {
-      document.body.style.backgroundColor = '#0F172A'
-      document.body.style.color = '#F8FAFC'
+      document.body.style.backgroundColor = 'var(--color-bg-base)'
+      document.body.style.color = 'var(--color-text-primary)'
       document.documentElement.classList.add('dark-theme')
     } else {
-      document.body.style.backgroundColor = '#FFFFFF'
-      document.body.style.color = '#1A2521'
+      document.body.style.backgroundColor = 'var(--color-bg-base)'
+      document.body.style.color = 'var(--color-text-primary)'
       document.documentElement.classList.remove('dark-theme')
     }
   }
@@ -47,7 +62,7 @@ export const useThemeStore = create<ThemeState>((set) => {
   }
 })
 
-export const getThemeColors = (mode: ThemeMode) => {
+export function getThemeColors(mode: ThemeMode) {
   if (mode === 'dark') {
     return {
       bg: {
