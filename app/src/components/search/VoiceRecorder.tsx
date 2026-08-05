@@ -3,7 +3,7 @@ import { StyleSheet, View, TouchableOpacity, Modal, Platform } from 'react-nativ
 import Animated, { useSharedValue, useAnimatedStyle, withSpring, withRepeat, withSequence, SharedValue } from 'react-native-reanimated'
 import { X, Mic, CheckCircle } from 'lucide-react-native'
 import { colors, spacing, radii } from '../ui/tokens'
-import { VaaniText } from '../ui/VaaniText'
+import { KrishiMitraAIText } from '../ui/KrishiMitraAIText'
 import { voiceService } from '../../services/voiceService'
 import { t } from '../../i18n'
 import { useAuthStore } from '../../store/useAuthStore'
@@ -202,9 +202,9 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
 
         {/* Language Pill */}
         <View style={styles.langPill}>
-          <VaaniText size="sm" weight="semibold" color={colors.green.bright}>
+          <KrishiMitraAIText size="sm" weight="semibold" color={colors.green.bright}>
             {langDetect}
-          </VaaniText>
+          </KrishiMitraAIText>
         </View>
 
         {/* Waveform Visualizer */}
@@ -218,23 +218,23 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
         <View style={styles.qualityContainer}>
           <View style={styles.qualityPill}>
             <CheckCircle size={12} color={colors.green.bright} />
-            <VaaniText size="xs" color={colors.text.secondary} style={styles.qualityText}>
+            <KrishiMitraAIText size="xs" color={colors.text.secondary} style={styles.qualityText}>
               Noise: {noiseLevel}
-            </VaaniText>
+            </KrishiMitraAIText>
           </View>
           <View style={styles.qualityPill}>
             <CheckCircle size={12} color={colors.green.bright} />
-            <VaaniText size="xs" color={colors.text.secondary} style={styles.qualityText}>
+            <KrishiMitraAIText size="xs" color={colors.text.secondary} style={styles.qualityText}>
               Clarity: {clarity}
-            </VaaniText>
+            </KrishiMitraAIText>
           </View>
         </View>
 
         {/* Live Streaming Transcript */}
         <View style={styles.transcriptContainer}>
-          <VaaniText size="lg" weight="semibold" align="center" style={styles.transcript}>
+          <KrishiMitraAIText size="lg" weight="semibold" align="center" style={styles.transcript}>
             "{transcript || 'Speak now...'}"
-          </VaaniText>
+          </KrishiMitraAIText>
         </View>
 
         {/* Pulse Record Button */}
@@ -245,16 +245,16 @@ export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({
             </TouchableOpacity>
           </Animated.View>
           
-          <VaaniText size="sm" color={colors.text.secondary} style={styles.recordHint}>
+          <KrishiMitraAIText size="sm" color={colors.text.secondary} style={styles.recordHint}>
             Tap to stop · Speak clearly
-          </VaaniText>
+          </KrishiMitraAIText>
         </View>
 
         {/* Voice command suggestion */}
         <View style={styles.hintContainer}>
-          <VaaniText size="xs" color={colors.text.tertiary} align="center">
+          <KrishiMitraAIText size="xs" color={colors.text.tertiary} align="center">
             💡 Say "photo" to open camera
-          </VaaniText>
+          </KrishiMitraAIText>
         </View>
       </View>
     </Modal>

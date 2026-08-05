@@ -67,7 +67,14 @@ class VoiceService:
         self._whisper_loaded = True
         try:
             import whisper
-            self.whisper_model = whisper.load_model("base")
+            # Configurable via WHISPER_MODEL env var.
+            # 'base' works offline but misses agricultural terms (Mancozeb, Alternaria, etc.)
+            # Set WHISPER_MODEL=small or WHISPER_MODEL=medium in .env for better accuracy
+            # with Indian language dialects and crop-specific vocabulary.
+            model_size = os.getenv("WHISPER_MODEL", "base")
+            self.whisper_model = whisper.load_model(model_size)
+            import logging
+            logging.getLogger("krishimitraai").info("✅ Whisper model loaded: %s", model_size)
         except Exception as e:
             import logging
             logging.getLogger("krishimitraai").warning("⚠️  Whisper failed to load: %s", e)

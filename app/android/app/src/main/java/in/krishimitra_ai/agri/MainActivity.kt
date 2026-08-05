@@ -1,4 +1,4 @@
-package `in`.vaani.agri
+package `in`.krishimitra_ai.agri
 
 import android.os.Build
 import android.os.Bundle

@@ -44,7 +44,7 @@ if (getRNMinorVersion() >= 75) {
   }
 }
 
-rootProject.name = 'Vaani'
+rootProject.name = 'KrishiMitra-AI'
 
 dependencyResolutionManagement {
   versionCatalogs {

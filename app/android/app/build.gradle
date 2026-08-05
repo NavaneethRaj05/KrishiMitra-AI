@@ -109,9 +109,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'in.vaani.agri'
+    namespace 'in.krishimitra_ai.agri'
     defaultConfig {
-        applicationId 'in.vaani.agri'
+        applicationId 'in.krishimitra_ai.agri'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

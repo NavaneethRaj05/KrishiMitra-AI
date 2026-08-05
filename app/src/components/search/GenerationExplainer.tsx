@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { ChevronDown, ChevronUp, Cpu, Database, Globe, ArrowRight } from 'lucide-react-native'
 import { colors, spacing, radii } from '../ui/tokens'
-import { VaaniText } from '../ui/VaaniText'
+import { KrishiMitraAIText } from '../ui/KrishiMitraAIText'
 
 interface SourceBreakdown {
   rag: number
@@ -43,9 +43,9 @@ export const GenerationExplainer: React.FC<GenerationExplainerProps> = ({
         style={styles.toggleButton}
         activeOpacity={0.7}
       >
-        <VaaniText size="xs" weight="semibold" color={colors.text.tertiary}>
+        <KrishiMitraAIText size="xs" weight="semibold" color={colors.text.tertiary}>
           How was this answer generated?
-        </VaaniText>
+        </KrishiMitraAIText>
         {expanded ? (
           <ChevronUp size={14} color={colors.text.tertiary} />
         ) : (
@@ -57,72 +57,72 @@ export const GenerationExplainer: React.FC<GenerationExplainerProps> = ({
         <View style={styles.content}>
           {/* Source contribution bars */}
           <View style={styles.breakdownSection}>
-            <VaaniText size="xs" weight="semibold" color={colors.text.secondary} style={styles.sectionLabel}>
+            <KrishiMitraAIText size="xs" weight="semibold" color={colors.text.secondary} style={styles.sectionLabel}>
               Source Contribution
-            </VaaniText>
+            </KrishiMitraAIText>
 
             {/* RAG */}
             <View style={styles.breakdownRow}>
               <View style={styles.breakdownLabel}>
                 <Database size={12} color={colors.green.bright} />
-                <VaaniText size="xs" color={colors.text.secondary} style={styles.breakdownLabelText}>
+                <KrishiMitraAIText size="xs" color={colors.text.secondary} style={styles.breakdownLabelText}>
                   RAG (Local KB)
-                </VaaniText>
+                </KrishiMitraAIText>
               </View>
               <View style={styles.breakdownBarTrack}>
                 <View style={[styles.breakdownBarFill, { width: `${ragPct}%`, backgroundColor: colors.green.bright }]} />
               </View>
-              <VaaniText size="xs" weight="bold" color={colors.green.bright} style={styles.breakdownPct}>
+              <KrishiMitraAIText size="xs" weight="bold" color={colors.green.bright} style={styles.breakdownPct}>
                 {ragPct}%
-              </VaaniText>
+              </KrishiMitraAIText>
             </View>
 
             {/* KAG */}
             <View style={styles.breakdownRow}>
               <View style={styles.breakdownLabel}>
                 <Cpu size={12} color={colors.sky.bright} />
-                <VaaniText size="xs" color={colors.text.secondary} style={styles.breakdownLabelText}>
+                <KrishiMitraAIText size="xs" color={colors.text.secondary} style={styles.breakdownLabelText}>
                   KAG (Graph)
-                </VaaniText>
+                </KrishiMitraAIText>
               </View>
               <View style={styles.breakdownBarTrack}>
                 <View style={[styles.breakdownBarFill, { width: `${kagPct}%`, backgroundColor: colors.sky.bright }]} />
               </View>
-              <VaaniText size="xs" weight="bold" color={colors.sky.bright} style={styles.breakdownPct}>
+              <KrishiMitraAIText size="xs" weight="bold" color={colors.sky.bright} style={styles.breakdownPct}>
                 {kagPct}%
-              </VaaniText>
+              </KrishiMitraAIText>
             </View>
 
             {/* Web */}
             <View style={styles.breakdownRow}>
               <View style={styles.breakdownLabel}>
                 <Globe size={12} color={colors.sand.bright} />
-                <VaaniText size="xs" color={colors.text.secondary} style={styles.breakdownLabelText}>
+                <KrishiMitraAIText size="xs" color={colors.text.secondary} style={styles.breakdownLabelText}>
                   Web Search
-                </VaaniText>
+                </KrishiMitraAIText>
               </View>
               <View style={styles.breakdownBarTrack}>
                 <View style={[styles.breakdownBarFill, { width: `${webPct}%`, backgroundColor: colors.sand.bright }]} />
               </View>
-              <VaaniText size="xs" weight="bold" color={colors.sand.bright} style={styles.breakdownPct}>
+              <KrishiMitraAIText size="xs" weight="bold" color={colors.sand.bright} style={styles.breakdownPct}>
                 {webPct}%
-              </VaaniText>
+              </KrishiMitraAIText>
             </View>
           </View>
 
           {/* Pipeline steps */}
           <View style={styles.pipelineSection}>
-            <VaaniText size="xs" weight="semibold" color={colors.text.secondary} style={styles.sectionLabel}>
+            <KrishiMitraAIText size="xs" weight="semibold" color={colors.text.secondary} style={styles.sectionLabel}>
               Answer Pipeline
-            </VaaniText>
+            </KrishiMitraAIText>
             <View style={styles.pipelineRow}>
               {PIPELINE_STEPS.map((step, i) => (
                 <React.Fragment key={step.label}>
                   <View style={styles.pipelineStep}>
-                    <VaaniText size="sm">{step.icon}</VaaniText>
-                    <VaaniText size="xs" color={colors.text.tertiary} align="center" style={styles.pipelineLabel}>
+                    <KrishiMitraAIText size="sm">{step.icon}</KrishiMitraAIText>
+                    <KrishiMitraAIText size="xs" color={colors.text.tertiary} align="center" style={styles.pipelineLabel}>
                       {step.label}
-                    </VaaniText>
+                    </KrishiMitraAIText>
                   </View>
                   {i < PIPELINE_STEPS.length - 1 && (
                     <ArrowRight size={10} color={colors.text.tertiary} style={styles.pipelineArrow} />
@@ -135,13 +135,13 @@ export const GenerationExplainer: React.FC<GenerationExplainerProps> = ({
           {/* Intent detected */}
           {intent && (
             <View style={styles.intentRow}>
-              <VaaniText size="xs" color={colors.text.tertiary}>
+              <KrishiMitraAIText size="xs" color={colors.text.tertiary}>
                 Detected Intent:
-              </VaaniText>
+              </KrishiMitraAIText>
               <View style={styles.intentBadge}>
-                <VaaniText size="xs" weight="bold" color={colors.sky.bright}>
+                <KrishiMitraAIText size="xs" weight="bold" color={colors.sky.bright}>
                   {intent.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                </VaaniText>
+                </KrishiMitraAIText>
               </View>
             </View>
           )}

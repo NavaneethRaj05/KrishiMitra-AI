@@ -1,4 +1,4 @@
-package `in`.vaani.agri
+package `in`.krishimitra_ai.agri
 
 import android.app.Application
 import android.content.res.Configuration

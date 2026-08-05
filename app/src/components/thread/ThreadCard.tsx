@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
 import { MessageSquare, Calendar, ChevronRight, Sprout, TrendingUp, HelpCircle } from 'lucide-react-native'
 import { colors, spacing, radii } from '../ui/tokens'
-import { VaaniText } from '../ui/VaaniText'
+import { KrishiMitraAIText } from '../ui/KrishiMitraAIText'
 
 interface ThreadCardProps {
   title: string
@@ -38,20 +38,20 @@ export const ThreadCard: React.FC<ThreadCardProps> = ({
       </View>
       
       <View style={styles.content}>
-        <VaaniText size="base" weight="semibold" numberOfLines={1}>
+        <KrishiMitraAIText size="base" weight="semibold" numberOfLines={1}>
           {title}
-        </VaaniText>
+        </KrishiMitraAIText>
         
         <View style={styles.meta}>
           <Calendar size={12} color={colors.text.tertiary} style={styles.metaIcon} />
-          <VaaniText size="xs" color={colors.text.secondary}>
+          <KrishiMitraAIText size="xs" color={colors.text.secondary}>
             {new Date(date).toLocaleDateString()}
-          </VaaniText>
+          </KrishiMitraAIText>
           <View style={styles.separator} />
           <MessageSquare size={12} color={colors.text.tertiary} style={styles.metaIcon} />
-          <VaaniText size="xs" color={colors.text.secondary}>
+          <KrishiMitraAIText size="xs" color={colors.text.secondary}>
             {messageCount} message{messageCount !== 1 ? 's' : ''}
-          </VaaniText>
+          </KrishiMitraAIText>
         </View>
       </View>
 

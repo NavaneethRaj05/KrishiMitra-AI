@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { StyleSheet, View, TouchableOpacity, ScrollView, Alert } from 'react-native'
 import { colors, spacing, radii } from '../../components/ui/tokens'
-import { VaaniText } from '../../components/ui/VaaniText'
-import { VaaniInput } from '../../components/ui/VaaniInput'
-import { VaaniButton } from '../../components/ui/VaaniButton'
+import { KrishiMitraAIText } from '../../components/ui/KrishiMitraAIText'
+import { KrishiMitraAIInput } from '../../components/ui/KrishiMitraAIInput'
+import { KrishiMitraAIButton } from '../../components/ui/KrishiMitraAIButton'
 import { authService } from '../../services/authService'
 import { t } from '../../i18n'
 import { useAuthStore } from '../../store/useAuthStore'
@@ -39,9 +39,9 @@ export const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) =>
     setLoading(false)
     if (res.success) {
       if (res.isNewUser) {
-        navigation.replace('FarmerSetup')
+        navigation.replace('Onboarding')
       } else {
-        navigation.replace('Home')
+        navigation.replace('MainTabs')
       }
     } else {
       Alert.alert('Error', 'Invalid OTP. Enter 123456 to bypass offline.')
@@ -51,17 +51,17 @@ export const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) =>
   return (
     <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
       <View style={styles.card}>
-        <VaaniText size="xl" weight="bold" color={colors.green.bright} style={styles.title}>
+        <KrishiMitraAIText size="xl" weight="bold" color={colors.green.bright} style={styles.title}>
           {t('auth.welcome_title')}
-        </VaaniText>
+        </KrishiMitraAIText>
         
         {step === 'phone' ? (
           <>
-            <VaaniText size="base" color={colors.text.secondary} style={styles.subTitle}>
+            <KrishiMitraAIText size="base" color={colors.text.secondary} style={styles.subTitle}>
               {t('auth.enter_phone')}
-            </VaaniText>
+            </KrishiMitraAIText>
             
-            <VaaniInput
+            <KrishiMitraAIInput
               keyboardType="phone-pad"
               maxLength={10}
               placeholder="e.g. 9876543210"
@@ -70,14 +70,14 @@ export const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) =>
               label="Phone Number"
             />
             
-            <VaaniButton
+            <KrishiMitraAIButton
               title="Send OTP"
               onPress={handleSendOTP}
               loading={loading}
               style={styles.button}
             />
 
-            <VaaniButton
+            <KrishiMitraAIButton
               title="Login with Demo Account"
               variant="secondary"
               onPress={async () => {
@@ -87,9 +87,9 @@ export const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) =>
                 setLoading(false)
                 if (res.success) {
                   if (res.isNewUser || !useAuthStore.getState().isOnboarded) {
-                    navigation.replace('FarmerSetup')
+                    navigation.replace('Onboarding')
                   } else {
-                    navigation.replace('Home')
+                    navigation.replace('MainTabs')
                   }
                 } else {
                   Alert.alert('Error', 'Demo login failed.')
@@ -101,11 +101,11 @@ export const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) =>
           </>
         ) : (
           <>
-            <VaaniText size="base" color={colors.text.secondary} style={styles.subTitle}>
+            <KrishiMitraAIText size="base" color={colors.text.secondary} style={styles.subTitle}>
               {t('auth.enter_otp', { phone })}
-            </VaaniText>
+            </KrishiMitraAIText>
             
-            <VaaniInput
+            <KrishiMitraAIInput
               keyboardType="number-pad"
               maxLength={6}
               placeholder="Enter 6-digit OTP"
@@ -114,7 +114,7 @@ export const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) =>
               label="One-Time PIN"
             />
             
-            <VaaniButton
+            <KrishiMitraAIButton
               title="Verify OTP"
               onPress={handleVerifyOTP}
               loading={loading}
@@ -122,9 +122,9 @@ export const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) =>
             />
 
             <TouchableOpacity onPress={() => setStep('phone')} style={styles.backLink}>
-              <VaaniText size="sm" color={colors.green.bright} align="center">
+              <KrishiMitraAIText size="sm" color={colors.green.bright} align="center">
                 ← Edit phone number
-              </VaaniText>
+              </KrishiMitraAIText>
             </TouchableOpacity>
           </>
         )}

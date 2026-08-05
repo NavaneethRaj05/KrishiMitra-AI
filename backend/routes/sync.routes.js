@@ -90,7 +90,14 @@ router.post('/threads/batch', async (req, res, next) => {
 router.get('/threads', async (req, res, next) => {
   try {
     const { since } = req.query; // ISO timestamp — only fetch threads updated after this
-    const query = { farmer: req.farmer.id };
+
+    // Guard: req.farmer.id may be undefined when using x-internal-key without farmer_id
+    const farmerId = req.farmer?.id
+    if (!farmerId || farmerId === 'undefined') {
+      return res.json({ success: true, data: [] });
+    }
+
+    const query = { farmer: farmerId };
 
     if (since) {
       query.updatedAt = { $gt: new Date(since) };

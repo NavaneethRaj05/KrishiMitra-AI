@@ -25,7 +25,7 @@ const PORT = process.env.PORT || 5000;
 app.use(helmet());
 
 // Secure CORS configuration
-const allowedOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : [];
+const allowedOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : ['http://localhost:5173', 'http://127.0.0.1:5173'];
 app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (mobile apps, curl, etc)
@@ -48,7 +48,7 @@ app.use(cors({
   },
   credentials: true,
 }));
-app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 500 }));
+app.use(rateLimit({ windowMs: 1 * 60 * 1000, max: 100, standardHeaders: true, legacyHeaders: false }));
 
 // ── Body parsing ──
 app.use(express.json({ limit: '15mb' }));  // allow image uploads as base64
@@ -76,7 +76,7 @@ app.get('/', (_req, res) => {
   res.send(`
     <html>
       <head>
-        <title>KrishiMind API Gateway</title>
+        <title>KrishiMitra-AI API Gateway</title>
         <style>
           body { font-family: 'Segoe UI', sans-serif; text-align: center; padding: 50px; background-color: #f7f9fa; color: #2c3e50; }
           h1 { color: #27ae60; }
@@ -88,7 +88,7 @@ app.get('/', (_req, res) => {
         <h1>🌾 KrishiMitraAI Express API Gateway is Running!</h1>
         <p>This is the gateway server proxying requests to MongoDB and the ML service.</p>
         <p>To access the farmer application user interface, please open:</p>
-        <a class="btn" href="http://localhost:8081" target="_blank">Open KrishiMitraAI Web App</a>
+        <a class="btn" href="http://localhost:5173" target="_blank">Open KrishiMitraAI Web App</a>
       </body>
     </html>
   `);

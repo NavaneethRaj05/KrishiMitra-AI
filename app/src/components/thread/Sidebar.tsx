@@ -3,7 +3,7 @@ import { StyleSheet, View, TouchableOpacity, ScrollView, Alert, Platform } from 
 import { Plus, MapPin, Clock, Trash2, LogOut, Sun, Moon } from 'lucide-react-native'
 import { useNavigation } from '@react-navigation/native'
 import { colors, spacing, radii, shadows } from '../ui/tokens'
-import { VaaniText } from '../ui/VaaniText'
+import { KrishiMitraAIText } from '../ui/KrishiMitraAIText'
 import { useAuthStore } from '../../store/useAuthStore'
 import { useThemeStore } from '../../store/useThemeStore'
 import { database } from '../../db/database'
@@ -127,16 +127,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
         {/* New Search Button */}
         <TouchableOpacity onPress={onNewSearchPress} style={styles.newSearchBtn}>
           <Plus size={14} color={colors.text.secondary} />
-          <VaaniText size="sm" color={colors.text.secondary} weight="semibold" style={styles.newSearchText}>
+          <KrishiMitraAIText size="sm" color={colors.text.secondary} weight="semibold" style={styles.newSearchText}>
             {t('sidebar.new_search')}
-          </VaaniText>
+          </KrishiMitraAIText>
         </TouchableOpacity>
 
         {/* Recent Threads Label Row */}
         <View style={styles.recentHeaderRow}>
-          <VaaniText size="xs" weight="bold" color={colors.text.tertiary} style={styles.sectionLabel}>
+          <KrishiMitraAIText size="xs" weight="bold" color={colors.text.tertiary} style={styles.sectionLabel}>
             {t('sidebar.recent_threads')}
-          </VaaniText>
+          </KrishiMitraAIText>
           {recentThreads.length > 0 && (
             <TouchableOpacity onPress={handleClearRecentThreads} style={styles.clearBtn} activeOpacity={0.7}>
               <Trash2 size={12} color={colors.text.tertiary} />
@@ -155,7 +155,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               activeOpacity={0.7}
             >
               <View style={[styles.threadDot, isActive && styles.threadDotActive]} />
-              <VaaniText
+              <KrishiMitraAIText
                 size="sm"
                 color={isActive ? colors.green.dark : colors.text.secondary}
                 weight={isActive ? 'bold' : 'regular'}
@@ -163,76 +163,76 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 style={styles.threadText}
               >
                 {thread.title}
-              </VaaniText>
-              <VaaniText size="xs" color={colors.text.tertiary} style={styles.threadTime}>
+              </KrishiMitraAIText>
+              <KrishiMitraAIText size="xs" color={colors.text.tertiary} style={styles.threadTime}>
                 {getRelativeTime(thread.updatedAt)}
-              </VaaniText>
+              </KrishiMitraAIText>
             </TouchableOpacity>
           )
         })}
 
         {recentThreads.length === 0 && (
-          <VaaniText size="xs" color={colors.text.tertiary} style={styles.emptyText}>
+          <KrishiMitraAIText size="xs" color={colors.text.tertiary} style={styles.emptyText}>
             {t('sidebar.no_recent_threads')}
-          </VaaniText>
+          </KrishiMitraAIText>
         )}
       </ScrollView>
 
       {/* Farm Profile Card & Theme Toggle & Logout Button */}
       <View style={styles.profileSection}>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: spacing.xs }}>
-          <VaaniText size="xs" weight="bold" color={colors.text.tertiary} style={styles.sectionLabel}>
+          <KrishiMitraAIText size="xs" weight="bold" color={colors.text.tertiary} style={styles.sectionLabel}>
             {t('sidebar.farm_profile')}
-          </VaaniText>
+          </KrishiMitraAIText>
           <TouchableOpacity onPress={toggleTheme} style={styles.themeToggleBtn} activeOpacity={0.7}>
             {mode === 'dark' ? <Sun size={14} color="#F59E0B" /> : <Moon size={14} color={colors.text.secondary} />}
           </TouchableOpacity>
         </View>
         
         <TouchableOpacity 
-          onPress={() => navigation.navigate('FarmerSetup')} 
+          onPress={() => navigation.navigate('Settings')} 
           style={styles.farmerCard}
           activeOpacity={0.8}
         >
-          <VaaniText size="sm" weight="bold" color={colors.green.dark}>
+          <KrishiMitraAIText size="sm" weight="bold" color={colors.green.dark}>
             {farmer?.name || 'Farmer'}
-          </VaaniText>
+          </KrishiMitraAIText>
           <View style={styles.metaRow}>
             <MapPin size={11} color={colors.green.dark} style={{ marginRight: 2 }} />
-            <VaaniText size="xs" color={colors.green.dark}>
+            <KrishiMitraAIText size="xs" color={colors.green.dark}>
               {t('districts.' + (farmer?.district || 'Mandya'))}, {t('states.' + (farmer?.state || 'Karnataka'))}
-            </VaaniText>
+            </KrishiMitraAIText>
           </View>
           <View style={styles.tagsContainer}>
             {(farmer?.registeredCrops || ['Paddy']).map((crop, idx) => (
               <View key={idx} style={styles.tag}>
-                <VaaniText size="xs" color={colors.green.dark} weight="semibold">
+                <KrishiMitraAIText size="xs" color={colors.green.dark} weight="semibold">
                   {t('crops.' + crop)}
-                </VaaniText>
+                </KrishiMitraAIText>
               </View>
             ))}
             <View style={styles.tag}>
-              <VaaniText size="xs" color={colors.green.dark} weight="semibold">
+              <KrishiMitraAIText size="xs" color={colors.green.dark} weight="semibold">
                 {farmer?.soilType || 'Sandy soil'}
-              </VaaniText>
+              </KrishiMitraAIText>
             </View>
             <View style={styles.tag}>
-              <VaaniText size="xs" color={colors.green.dark} weight="semibold">
+              <KrishiMitraAIText size="xs" color={colors.green.dark} weight="semibold">
                 {t('sidebar.acres', { count: farmer?.landAcres || 2 })}
-              </VaaniText>
+              </KrishiMitraAIText>
             </View>
           </View>
-          <VaaniText size="xs" color={colors.text.tertiary} style={styles.tapToEdit}>
+          <KrishiMitraAIText size="xs" color={colors.text.tertiary} style={styles.tapToEdit}>
             {t('sidebar.tap_to_edit')}
-          </VaaniText>
+          </KrishiMitraAIText>
         </TouchableOpacity>
 
         {/* Log Out Action */}
         <TouchableOpacity onPress={handleLogout} style={styles.logoutBtn} activeOpacity={0.7}>
           <LogOut size={14} color={colors.text.secondary} />
-          <VaaniText size="sm" color={colors.text.secondary} weight="semibold" style={styles.logoutText}>
+          <KrishiMitraAIText size="sm" color={colors.text.secondary} weight="semibold" style={styles.logoutText}>
             {t('sidebar.log_out')}
-          </VaaniText>
+          </KrishiMitraAIText>
         </TouchableOpacity>
       </View>
     </View>

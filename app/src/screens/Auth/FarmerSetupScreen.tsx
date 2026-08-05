@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import { StyleSheet, View, ScrollView, TouchableOpacity, Alert } from 'react-native'
 import Slider from '@react-native-community/slider'
 import { colors, spacing, radii } from '../../components/ui/tokens'
-import { VaaniText } from '../../components/ui/VaaniText'
-import { VaaniInput } from '../../components/ui/VaaniInput'
-import { VaaniButton } from '../../components/ui/VaaniButton'
+import { KrishiMitraAIText } from '../../components/ui/KrishiMitraAIText'
+import { KrishiMitraAIInput } from '../../components/ui/KrishiMitraAIInput'
+import { KrishiMitraAIButton } from '../../components/ui/KrishiMitraAIButton'
 import { useAuthStore, FarmerContext } from '../../store/useAuthStore'
 import { authService } from '../../services/authService'
 import { getLanguage, getLanguagesList } from '../../i18n'
@@ -69,47 +69,47 @@ export const FarmerSetupScreen: React.FC<{ navigation: any }> = ({ navigation })
     const success = await authService.saveSetup(profile)
     setLoading(false)
     if (success) {
-      navigation.replace('Home')
+      navigation.replace('MainTabs')
     } else {
       Alert.alert('Error', 'Failed to save profile. Proceeding offline.')
       authStore.setFarmer(profile)
-      navigation.replace('Home')
+      navigation.replace('MainTabs')
     }
   }
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <VaaniText size="xl" weight="bold" color={colors.green.bright} style={styles.title}>
+      <KrishiMitraAIText size="xl" weight="bold" color={colors.green.bright} style={styles.title}>
         Set Up Your Farm Profile
-      </VaaniText>
-      <VaaniText size="sm" color={colors.text.secondary} style={styles.subTitle}>
+      </KrishiMitraAIText>
+      <KrishiMitraAIText size="sm" color={colors.text.secondary} style={styles.subTitle}>
         This context helps KrishiMitra AI generate personalized crop, soil, and market recommendations.
-      </VaaniText>
+      </KrishiMitraAIText>
 
       {/* Basic details */}
       <View style={styles.section}>
-        <VaaniInput
+        <KrishiMitraAIInput
           placeholder="Farmer Name"
           value={name}
           onChangeText={setName}
           label="Your Name"
         />
         
-        <VaaniInput
+        <KrishiMitraAIInput
           placeholder="e.g. Karnataka"
           value={state}
           onChangeText={setState}
           label="State"
         />
 
-        <VaaniInput
+        <KrishiMitraAIInput
           placeholder="e.g. Mandya"
           value={district}
           onChangeText={setDistrict}
           label="District"
         />
 
-        <VaaniInput
+        <KrishiMitraAIInput
           placeholder="e.g. Maddur block"
           value={block}
           onChangeText={setBlock}
@@ -119,9 +119,9 @@ export const FarmerSetupScreen: React.FC<{ navigation: any }> = ({ navigation })
 
       {/* Crops select */}
       <View style={styles.section}>
-        <VaaniText size="base" weight="semibold" style={styles.sectionLabel}>
+        <KrishiMitraAIText size="base" weight="semibold" style={styles.sectionLabel}>
           Primary Crops
-        </VaaniText>
+        </KrishiMitraAIText>
         <View style={styles.chipContainer}>
           {CROPS.map((crop) => {
             const isSelected = selectedCrops.includes(crop)
@@ -131,9 +131,9 @@ export const FarmerSetupScreen: React.FC<{ navigation: any }> = ({ navigation })
                 onPress={() => toggleCrop(crop)}
                 style={[styles.chip, isSelected && styles.chipSelected]}
               >
-                <VaaniText size="sm" color={isSelected ? colors.text.inverse : colors.text.secondary}>
+                <KrishiMitraAIText size="sm" color={isSelected ? colors.text.inverse : colors.text.secondary}>
                   {crop}
-                </VaaniText>
+                </KrishiMitraAIText>
               </TouchableOpacity>
             )
           })}
@@ -143,10 +143,10 @@ export const FarmerSetupScreen: React.FC<{ navigation: any }> = ({ navigation })
       {/* Land slider */}
       <View style={styles.section}>
         <View style={styles.row}>
-          <VaaniText size="base" weight="semibold">Farm Size</VaaniText>
-          <VaaniText size="base" weight="bold" color={colors.green.bright}>
+          <KrishiMitraAIText size="base" weight="semibold">Farm Size</KrishiMitraAIText>
+          <KrishiMitraAIText size="base" weight="bold" color={colors.green.bright}>
             {landAcres.toFixed(1)} Acres
-          </VaaniText>
+          </KrishiMitraAIText>
         </View>
         <Slider
           minimumValue={0.5}
@@ -163,9 +163,9 @@ export const FarmerSetupScreen: React.FC<{ navigation: any }> = ({ navigation })
 
       {/* Soil Cards */}
       <View style={styles.section}>
-        <VaaniText size="base" weight="semibold" style={styles.sectionLabel}>
+        <KrishiMitraAIText size="base" weight="semibold" style={styles.sectionLabel}>
           Soil Type
-        </VaaniText>
+        </KrishiMitraAIText>
         <View style={styles.soilGrid}>
           {SOIL_TYPES.map((soil) => {
             const isSelected = soilType === soil.code
@@ -175,13 +175,13 @@ export const FarmerSetupScreen: React.FC<{ navigation: any }> = ({ navigation })
                 onPress={() => setSoilType(soil.code)}
                 style={[styles.soilCard, isSelected && styles.soilCardSelected]}
               >
-                <VaaniText size="xl" style={styles.soilEmoji}>{soil.emoji}</VaaniText>
-                <VaaniText size="sm" weight="semibold" color={isSelected ? colors.green.bright : colors.text.primary}>
+                <KrishiMitraAIText size="xl" style={styles.soilEmoji}>{soil.emoji}</KrishiMitraAIText>
+                <KrishiMitraAIText size="sm" weight="semibold" color={isSelected ? colors.green.bright : colors.text.primary}>
                   {soil.name}
-                </VaaniText>
-                <VaaniText size="xs" color={colors.text.tertiary} align="center" style={styles.soilDesc}>
+                </KrishiMitraAIText>
+                <KrishiMitraAIText size="xs" color={colors.text.tertiary} align="center" style={styles.soilDesc}>
                   {soil.desc}
-                </VaaniText>
+                </KrishiMitraAIText>
               </TouchableOpacity>
             )
           })}
@@ -190,9 +190,9 @@ export const FarmerSetupScreen: React.FC<{ navigation: any }> = ({ navigation })
 
       {/* Irrigation Picker */}
       <View style={styles.section}>
-        <VaaniText size="base" weight="semibold" style={styles.sectionLabel}>
+        <KrishiMitraAIText size="base" weight="semibold" style={styles.sectionLabel}>
           Irrigation Source
-        </VaaniText>
+        </KrishiMitraAIText>
         <View style={styles.irrigationContainer}>
           {IRRIGATION_TYPES.map((type) => {
             const isSelected = irrigationType === type
@@ -202,16 +202,16 @@ export const FarmerSetupScreen: React.FC<{ navigation: any }> = ({ navigation })
                 onPress={() => setIrrigationType(type)}
                 style={[styles.irrigationButton, isSelected && styles.irrigationButtonSelected]}
               >
-                <VaaniText size="sm" color={isSelected ? colors.text.inverse : colors.text.secondary}>
+                <KrishiMitraAIText size="sm" color={isSelected ? colors.text.inverse : colors.text.secondary}>
                   {type}
-                </VaaniText>
+                </KrishiMitraAIText>
               </TouchableOpacity>
             )
           })}
         </View>
       </View>
 
-      <VaaniButton
+      <KrishiMitraAIButton
         title="Save Setup"
         onPress={handleSaveSetup}
         loading={loading}

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { StyleSheet, View, TouchableOpacity, Modal, FlatList } from 'react-native'
 import { ChevronDown, Check, Globe } from 'lucide-react-native'
 import { colors, spacing, radii } from './tokens'
-import { VaaniText } from './VaaniText'
+import { KrishiMitraAIText } from './KrishiMitraAIText'
 
 const LANGUAGES = [
   { code: 'en', name: 'English', native: 'English', flag: '🇺🇸' },
@@ -38,9 +38,9 @@ export const LanguageToggle: React.FC<LanguageToggleProps> = ({
         activeOpacity={0.7}
       >
         <Globe size={12} color={colors.sky.bright} />
-        <VaaniText size="xs" weight="semibold" color={colors.sky.bright} style={styles.toggleText}>
+        <KrishiMitraAIText size="xs" weight="semibold" color={colors.sky.bright} style={styles.toggleText}>
           {current.flag} {compact ? current.code.toUpperCase() : current.native}
-        </VaaniText>
+        </KrishiMitraAIText>
         <ChevronDown size={10} color={colors.sky.bright} />
       </TouchableOpacity>
 
@@ -51,9 +51,9 @@ export const LanguageToggle: React.FC<LanguageToggleProps> = ({
           onPress={() => setShowPicker(false)}
         >
           <View style={styles.pickerContainer}>
-            <VaaniText size="sm" weight="bold" color={colors.text.primary} style={styles.pickerTitle}>
+            <KrishiMitraAIText size="sm" weight="bold" color={colors.text.primary} style={styles.pickerTitle}>
               Answer Language
-            </VaaniText>
+            </KrishiMitraAIText>
 
             {detected && detected.code !== currentLanguage && (
               <TouchableOpacity
@@ -63,9 +63,9 @@ export const LanguageToggle: React.FC<LanguageToggleProps> = ({
                   setShowPicker(false)
                 }}
               >
-                <VaaniText size="xs" color={colors.amber.bright}>
+                <KrishiMitraAIText size="xs" color={colors.amber.bright}>
                   🎤 Detected: {detected.native} — Tap to switch
-                </VaaniText>
+                </KrishiMitraAIText>
               </TouchableOpacity>
             )}
 
@@ -83,18 +83,18 @@ export const LanguageToggle: React.FC<LanguageToggleProps> = ({
                     }}
                     style={[styles.languageItem, isSelected && styles.languageItemSelected]}
                   >
-                    <VaaniText size="md" style={styles.flag}>{item.flag}</VaaniText>
+                    <KrishiMitraAIText size="md" style={styles.flag}>{item.flag}</KrishiMitraAIText>
                     <View style={styles.languageInfo}>
-                      <VaaniText size="sm" weight={isSelected ? 'bold' : 'regular'} color={colors.text.primary}>
+                      <KrishiMitraAIText size="sm" weight={isSelected ? 'bold' : 'regular'} color={colors.text.primary}>
                         {item.native}
-                      </VaaniText>
-                      <VaaniText size="xs" color={colors.text.tertiary}>
+                      </KrishiMitraAIText>
+                      <KrishiMitraAIText size="xs" color={colors.text.tertiary}>
                         {item.name}
-                      </VaaniText>
+                      </KrishiMitraAIText>
                     </View>
                     {isDetected && !isSelected && (
                       <View style={styles.detectedBadge}>
-                        <VaaniText size="xs" color={colors.amber.bright}>🎤</VaaniText>
+                        <KrishiMitraAIText size="xs" color={colors.amber.bright}>🎤</KrishiMitraAIText>
                       </View>
                     )}
                     {isSelected && (

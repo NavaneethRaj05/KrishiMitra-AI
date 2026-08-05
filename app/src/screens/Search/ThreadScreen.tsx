@@ -1,383 +1,210 @@
+/**
+ * ThreadScreen — full conversation thread view.
+ * Loads message history from WatermelonDB and allows follow-up Q&A.
+ */
+
 import React, { useEffect, useState, useRef } from 'react'
-import { StyleSheet, View, ScrollView, SafeAreaView, ActivityIndicator, Alert, TouchableOpacity, useWindowDimensions } from 'react-native'
-import { colors, spacing, radii, shadows } from '../../components/ui/tokens'
-import { VaaniText } from '../../components/ui/VaaniText'
+import {
+  StyleSheet, View, ScrollView, SafeAreaView,
+  ActivityIndicator, Alert, TouchableOpacity,
+} from 'react-native'
+import { ArrowLeft } from 'lucide-react-native'
+import { useTheme } from '../../hooks/useTheme'
+import { spacing, radii } from '../../theme/tokens'
+import { KMText } from '../../components/ui/Text'
+import { KMStatusBar } from '../../components/ui/StatusBar'
+import { AskBar } from '../../components/search/AskBar'
+import { VoiceModal } from '../../components/search/VoiceModal'
 import { MessageBubble } from '../../components/thread/MessageBubble'
 import { FollowUpChips } from '../../components/search/FollowUpChips'
-import { SearchBar } from '../../components/search/SearchBar'
-import { OfflineBanner } from '../../components/ui/OfflineBanner'
-import { Sidebar } from '../../components/thread/Sidebar'
+import { PhotoCapture } from '../../components/photo/PhotoCapture'
 import { database } from '../../db/database'
 import { searchService } from '../../services/searchService'
-import { PhotoCapture } from '../../components/photo/PhotoCapture'
 import { photoService } from '../../services/photoService'
-import { useOfflineStore } from '../../store/useOfflineStore'
-import { ArrowLeft, WifiOff } from 'lucide-react-native'
 import { t } from '../../i18n'
+import * as FileSystem from 'expo-file-system'
 
-export const ThreadScreen: React.FC<{ route: any; navigation: any }> = ({ route, navigation }) => {
-  const { width } = useWindowDimensions()
-  const isLargeScreen = width > 768
-  const [activeTab, setActiveTab] = useState('search')
-  const isConnected = useOfflineStore((state) => state.isConnected)
+export default function ThreadScreen({ route, navigation }: any) {
+  const { theme } = useTheme()
+  const { threadId, threadTitle, initialFollowUpQuery, imageUri: initImgUri, imageB64: initImgB64 } = route.params
 
-  const { threadId, threadTitle, initialFollowUpQuery } = route.params
-  
-  const [messages, setMessages] = useState<any[]>([])
+  const [messages, setMessages]   = useState<any[]>([])
   const [loadingHistory, setLoadingHistory] = useState(true)
-  const [loadingNewMessage, setLoadingNewMessage] = useState(false)
-  const [suggestedFollowUps, setSuggestedFollowUps] = useState<string[]>([])
-  const [showCameraOverlay, setShowCameraOverlay] = useState(false)
-  
-  const scrollViewRef = useRef<ScrollView>(null)
+  const [loadingReply, setLoadingReply]     = useState(false)
+  const [followUps, setFollowUps] = useState<string[]>([])
+  const [showMic, setShowMic]     = useState(false)
+  const [showCamera, setShowCamera] = useState(false)
+  const [attachedUri, setAttachedUri]   = useState<string | null>(null)
+  const [attachedB64, setAttachedB64]   = useState<string | null>(null)
+  const scrollRef = useRef<ScrollView>(null)
 
-  useEffect(() => {
-    loadMessageHistory()
-  }, [threadId])
+  useEffect(() => { loadHistory() }, [threadId])
 
-  const loadMessageHistory = async () => {
+  const loadHistory = async () => {
     setLoadingHistory(true)
     try {
-      const threadRecord = await database.get('threads').find(threadId) as any
-      
-      // Load all messages belonging to this thread
-      const allMsgs = await threadRecord.messages.fetch()
-      // Sort chronologically by date
-      const sorted = [...allMsgs].sort((a, b) => a.createdAt - b.createdAt)
+      const record = await database.get('threads').find(threadId) as any
+      const all: any[] = await record.messages.fetch()
+      const sorted = [...all].sort((a, b) => a.createdAt - b.createdAt)
       setMessages(sorted)
-
-      // Set follow ups from the last assistant message
-      const assistantMsgs = sorted.filter(m => m.role === 'assistant')
-      if (assistantMsgs.length > 0) {
-        const lastAns = assistantMsgs[assistantMsgs.length - 1]
-        try {
-          setSuggestedFollowUps(JSON.parse(lastAns.followUps) || [])
-        } catch (e) {}
+      const last = sorted.filter(m => m.role === 'assistant').at(-1)
+      if (last) {
+        try { setFollowUps(JSON.parse(last.followUps) || []) } catch {}
       }
-
-      // If there's an initial follow up query forwarded from SearchResult, run it
-      if (initialFollowUpQuery) {
-        executeFollowUp(initialFollowUpQuery)
-      }
+      if (initialFollowUpQuery) sendReply(initialFollowUpQuery, initImgUri, initImgB64)
     } catch (e) {
-      console.warn('Failed to load message history:', e)
-      Alert.alert('History Error', 'Failed to retrieve conversation logs.')
+      Alert.alert('Error', 'Could not load conversation history.')
     } finally {
       setLoadingHistory(false)
-      setTimeout(() => scrollViewRef.current?.scrollToEnd({ animated: true }), 300)
+      setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 300)
     }
   }
 
-  const executeFollowUp = async (queryText: string, overrideLanguage?: string) => {
-    if (loadingNewMessage) return
-    setLoadingNewMessage(true)
-    
-    // Check if this is a language toggle re-run of the last question
-    const lastMsg = messages[messages.length - 1]
-    const isRerun = lastMsg && lastMsg.role === 'assistant' && messages.some(m => m.content === queryText)
-    
-    if (!isRerun) {
-      const userMsgMock = {
-        id: 'temp_user_' + Date.now(),
-        role: 'user',
-        content: queryText,
-        createdAt: Date.now()
-      }
-      setMessages(prev => [...prev, userMsgMock])
-    }
-    setTimeout(() => scrollViewRef.current?.scrollToEnd({ animated: true }), 100)
+  const sendReply = async (
+    text: string,
+    imgUri?: string | null,
+    imgB64?: string | null,
+    lang?: string,
+  ) => {
+    if (loadingReply) return
+    setLoadingReply(true)
+
+    // Optimistic user bubble
+    const tempUser = { id: `tmp_${Date.now()}`, role: 'user', content: text, imageUri: imgUri ?? '', createdAt: Date.now() }
+    setMessages(prev => [...prev, tempUser])
+    setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 80)
 
     try {
-      // 1. Run Search client
-      const searchRes = await searchService.search(queryText, threadId, null, null, overrideLanguage)
-      
-      // 2. Save User & Assistant messages to WatermelonDB (only save user if not a rerun)
-      if (!isRerun) {
-        await searchService.saveMessageToLocalDB(threadId, 'user', queryText)
-      }
-      await searchService.saveMessageToLocalDB(threadId, 'assistant', searchRes.answer, searchRes)
+      const res = await searchService.search(text, threadId, null, imgB64 ?? null, lang)
+      await searchService.saveMessageToLocalDB(threadId, 'user', text, undefined, imgUri ?? undefined)
+      await searchService.saveMessageToLocalDB(threadId, 'assistant', res.answer, res)
 
-      // 3. Reload messages from DB to display saved record
-      const threadRecord = await database.get('threads').find(threadId) as any
-      const allMsgs = await threadRecord.messages.fetch()
-      const sorted = [...allMsgs].sort((a, b) => a.createdAt - b.createdAt)
-      setMessages(sorted)
-
-      setSuggestedFollowUps(searchRes.followUps || [])
-    } catch (e) {
-      console.error('Follow up search failed:', e)
-      Alert.alert('Search Error', 'Failed to get answer.')
+      const record = await database.get('threads').find(threadId) as any
+      const all: any[] = await record.messages.fetch()
+      setMessages([...all].sort((a, b) => a.createdAt - b.createdAt))
+      setFollowUps(res.followUps || [])
+    } catch {
+      Alert.alert('Error', 'Could not get an answer.')
     } finally {
-      setLoadingNewMessage(false)
-      setTimeout(() => scrollViewRef.current?.scrollToEnd({ animated: true }), 300)
+      setLoadingReply(false)
+      setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 300)
     }
   }
 
-  const handleLanguageChange = (langCode: string, assistantMsg: any) => {
-    const msgIndex = messages.findIndex(m => m.id === assistantMsg.id)
-    if (msgIndex > 0) {
-      const prevMsg = messages[msgIndex - 1]
-      if (prevMsg.role === 'user') {
-        executeFollowUp(prevMsg.content, langCode)
-      }
-    } else {
-      const userMsgs = messages.filter(m => m.role === 'user')
-      if (userMsgs.length > 0) {
-        executeFollowUp(userMsgs[userMsgs.length - 1].content, langCode)
-      }
-    }
-  }
   const handlePhotoSelected = async (uri: string) => {
-    if (loadingNewMessage) return
-    setLoadingNewMessage(true)
-
-    // Run disease detection on the selected photo
-    const result = await photoService.runDiseaseDetection(uri)
-    const queryText = `Treatment for ${result.disease}`
-
-    // Insert mock user message locally
-    const userMsgMock = {
-      id: 'temp_user_' + Date.now(),
-      role: 'user',
-      content: queryText,
-      imageUri: uri,
-      createdAt: Date.now()
-    }
-    setMessages(prev => [...prev, userMsgMock])
-    setTimeout(() => scrollViewRef.current?.scrollToEnd({ animated: true }), 100)
-
+    let b64 = ''
     try {
-      // Get AI results
-      const searchRes = await searchService.search(queryText, threadId, result)
-
-      // Save user prompt & answer messages to local WatermelonDB
-      await searchService.saveMessageToLocalDB(threadId, 'user', queryText, undefined, uri)
-      await searchService.saveMessageToLocalDB(threadId, 'assistant', searchRes.answer, searchRes)
-
-      // Reload messages from DB to display saved record
-      const threadRecord = await database.get('threads').find(threadId) as any
-      const allMsgs = await threadRecord.messages.fetch()
-      const sorted = [...allMsgs].sort((a, b) => a.createdAt - b.createdAt)
-      setMessages(sorted)
-
-      setSuggestedFollowUps(searchRes.followUps || [])
-    } catch (e) {
-      console.error('Photo search failed:', e)
-      Alert.alert('Search Error', 'Failed to get answer.')
-    } finally {
-      setLoadingNewMessage(false)
-      setTimeout(() => scrollViewRef.current?.scrollToEnd({ animated: true }), 300)
-    }
-  }
-
-  if (isLargeScreen) {
-    return (
-      <SafeAreaView style={styles.container}>
-        {/* TOP WEB NAV BAR */}
-        <View style={styles.topNavBar}>
-          <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.topNavLogo}>
-            <View style={styles.logoIcon}>
-              <VaaniText size="base" style={{ lineHeight: 18 }}>🌾</VaaniText>
-            </View>
-            <View style={styles.logoTextWrapper}>
-              <VaaniText size="sm" weight="bold" color={colors.text.primary}>KrishiMitra AI</VaaniText>
-              <VaaniText size="xs" color={colors.text.tertiary} style={styles.logoSubText}>KrishiSearch</VaaniText>
-            </View>
-          </TouchableOpacity>
-
-          {/* Top Right Offline badge */}
-          <View style={styles.topNavRight}>
-            <View style={styles.offlineBadge}>
-              <WifiOff size={11} color={!isConnected ? '#633806' : colors.text.tertiary} style={{ marginRight: 4 }} />
-              <VaaniText size="xs" weight="bold" color={!isConnected ? '#633806' : colors.text.tertiary}>
-                {isConnected ? 'Offline ready' : 'Offline mode'}
-              </VaaniText>
-            </View>
-          </View>
-        </View>
-
-        {/* WEB MAIN SPLIT VIEW */}
-        <View style={styles.webMain}>
-          {/* Persistent Sidebar */}
-          <Sidebar
-            activeThreadId={threadId}
-            onThreadPress={(thread) => {
-              navigation.setParams({ threadId: thread.id, threadTitle: thread.title });
-            }}
-            onNewSearchPress={() => {
-              navigation.navigate('Home');
-            }}
-          />
-
-          {/* Right Content Pane (KrishiSearch Answer panel) */}
-          <View style={styles.webContent}>
-            {/* Input modality indicator bar */}
-            <View style={styles.modalityRow}>
-              <VaaniText size="xs" color={colors.text.tertiary} style={styles.modalityItem}>🗣️ Multilingual Threads</VaaniText>
-              <VaaniText size="xs" color={colors.text.tertiary} style={styles.modalityItem}>🕸️ Neo4j KAG</VaaniText>
-              <VaaniText size="xs" color={colors.text.tertiary} style={styles.modalityItem}>{isConnected ? '🌐 Online' : '⚡ Offline'}</VaaniText>
-            </View>
-
-            {loadingHistory ? (
-              <View style={styles.loadingContainer}>
-                <ActivityIndicator size="large" color={colors.green.bright} />
-              </View>
-            ) : (
-              <ScrollView
-                ref={scrollViewRef}
-                style={styles.webScrollView}
-                contentContainerStyle={styles.webScrollContent}
-                onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({ animated: true })}
-              >
-                {messages.map((msg) => {
-                  let citations: any[] = []
-                  try {
-                    citations = msg.citations ? JSON.parse(msg.citations) : []
-                  } catch (e) {}
-                  
-                  return (
-                    <MessageBubble
-                      key={msg.id}
-                      role={msg.role}
-                      content={msg.content}
-                      citations={citations}
-                      offlineFallback={msg.offlineFallback}
-                      imageUri={msg.imageUri}
-                      intent={msg.intent}
-                      onLanguageChange={(langCode) => handleLanguageChange(langCode, msg)}
-                    />
-                  )
-                })}
-
-                {loadingNewMessage && (
-                  <View style={styles.loadingBubbleContainer}>
-                    <ActivityIndicator size="small" color={colors.green.bright} />
-                    <VaaniText size="sm" color={colors.text.secondary} style={styles.thinkingText}>
-                      {t('search.typing')}
-                    </VaaniText>
-                  </View>
-                )}
-
-                {!loadingNewMessage && suggestedFollowUps.length > 0 && (
-                  <View style={{ marginTop: spacing.md }}>
-                    <VaaniText size="xs" weight="bold" color={colors.text.tertiary} style={styles.followupTitle}>
-                      Follow-up questions
-                    </VaaniText>
-                    <FollowUpChips
-                      chips={suggestedFollowUps}
-                      onChipPress={executeFollowUp}
-                    />
-                  </View>
-                )}
-              </ScrollView>
-            )}
-
-            {/* Bottom sticky bar (within right pane) */}
-            <View style={styles.webBottomBar}>
-              <SearchBar
-                placeholder="Ask a follow-up…"
-                onSubmit={executeFollowUp}
-                onMicPress={() => Alert.alert('ASR Audio', 'Microphone overlays can be triggered from Home.')}
-                onCameraPress={() => setShowCameraOverlay(true)}
-                onImageSelected={handlePhotoSelected}
-              />
-            </View>
-          </View>
-        </View>
-
-        {/* PhotoCapture modal overlay */}
-        {showCameraOverlay && (
-          <PhotoCapture
-            onClose={() => setShowCameraOverlay(false)}
-            navigation={navigation}
-            onPhotoSelected={handlePhotoSelected}
-          />
-        )}
-      </SafeAreaView>
-    )
+      b64 = await FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64 })
+    } catch {}
+    const result = await photoService.runDiseaseDetection(uri)
+    sendReply(`Treatment for ${result.disease}`, uri, b64)
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <OfflineBanner />
-      
-      {/* Header */}
-      <View style={styles.header}>
+    <SafeAreaView style={[styles.root, { backgroundColor: theme.bg.base }]}>
+      <KMStatusBar />
+
+      {/* App bar */}
+      <View style={[styles.appBar, { borderBottomColor: theme.border.subtle }]}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-          <ArrowLeft size={24} color={colors.text.primary} />
+          <ArrowLeft size={22} color={theme.text.primary} />
         </TouchableOpacity>
-        <VaaniText size="md" weight="bold" numberOfLines={1} style={styles.headerTitle}>
-          {threadTitle}
-        </VaaniText>
+        <KMText size="sm" weight="semibold" numberOfLines={1} style={styles.barTitle}>
+          {threadTitle ?? 'Conversation'}
+        </KMText>
         <View style={{ width: 40 }} />
       </View>
 
+      {/* Messages */}
       {loadingHistory ? (
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={colors.green.bright} />
+        <View style={styles.loadingCenter}>
+          <ActivityIndicator size="large" color={theme.accent.primary} />
         </View>
       ) : (
         <ScrollView
-          ref={scrollViewRef}
-          style={styles.scrollView}
+          ref={scrollRef}
+          style={styles.scroll}
           contentContainerStyle={styles.scrollContent}
-          onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({ animated: true })}
+          onContentSizeChange={() => scrollRef.current?.scrollToEnd({ animated: true })}
         >
-          {messages.map((msg) => {
+          {messages.map(msg => {
             let citations: any[] = []
-            try {
-              citations = msg.citations ? JSON.parse(msg.citations) : []
-            } catch (e) {}
-            
+            try { citations = msg.citations ? JSON.parse(msg.citations) : [] } catch {}
             return (
               <MessageBubble
                 key={msg.id}
                 role={msg.role}
                 content={msg.content}
-                citations={citations}
-                offlineFallback={msg.offlineFallback}
                 imageUri={msg.imageUri}
+                citations={citations}
                 intent={msg.intent}
-                onLanguageChange={(langCode) => handleLanguageChange(langCode, msg)}
+                offlineFallback={msg.offlineFallback}
               />
             )
           })}
 
-          {loadingNewMessage && (
-            <View style={styles.loadingBubbleContainer}>
-              <ActivityIndicator size="small" color={colors.green.bright} />
-              <VaaniText size="sm" color={colors.text.secondary} style={styles.thinkingText}>
+          {loadingReply && (
+            <View style={[styles.thinkingBubble, {
+              backgroundColor: theme.bg.surface,
+              borderColor: theme.border.default,
+            }]}>
+              <ActivityIndicator size="small" color={theme.accent.primary} />
+              <KMText size="sm" color={theme.text.secondary} style={{ marginLeft: spacing.sm }}>
                 {t('search.typing')}
-              </VaaniText>
+              </KMText>
             </View>
           )}
 
-          {!loadingNewMessage && suggestedFollowUps.length > 0 && (
-            <FollowUpChips
-              chips={suggestedFollowUps}
-              onChipPress={executeFollowUp}
-            />
+          {!loadingReply && followUps.length > 0 && (
+            <View style={styles.followUpsWrap}>
+              <KMText size="xs" weight="semibold" color={theme.text.tertiary} style={styles.followUpsLabel}>
+                FOLLOW-UP QUESTIONS
+              </KMText>
+              <FollowUpChips chips={followUps} onChipPress={(q) => sendReply(q)} />
+            </View>
           )}
+
+          <View style={{ height: 140 }} />
         </ScrollView>
       )}
 
-      {/* Sticky Bottom Input */}
-      <View style={styles.bottomBar}>
-        <SearchBar
+      {/* Sticky input */}
+      <View style={[styles.bottomBar, {
+        backgroundColor: theme.bg.base,
+        borderTopColor: theme.border.subtle,
+      }]}>
+        <AskBar
           placeholder="Ask a follow-up…"
-          onSubmit={executeFollowUp}
-          onMicPress={() => Alert.alert('ASR Audio', 'Microphone overlays can be triggered from Home.')}
-          onCameraPress={() => setShowCameraOverlay(true)}
-          onImageSelected={handlePhotoSelected}
+          layout="thread"
+          onSubmit={(q) => {
+            sendReply(q, attachedUri, attachedB64)
+            setAttachedUri(null); setAttachedB64(null)
+          }}
+          onMicPress={() => setShowMic(true)}
+          onCameraPress={() => setShowCamera(true)}
+          onImageSelected={(uri, b64) => { setAttachedUri(uri); setAttachedB64(b64) }}
+          attachedImageUri={attachedUri}
+          onRemoveImage={() => { setAttachedUri(null); setAttachedB64(null) }}
         />
       </View>
 
-      {/* PhotoCapture modal overlay */}
-      {showCameraOverlay && (
+      <VoiceModal
+        visible={showMic}
+        onClose={() => setShowMic(false)}
+        onTranscriptComplete={(transcript, lang) => {
+          setShowMic(false)
+          sendReply(transcript, null, null, lang)
+        }}
+      />
+
+      {showCamera && (
         <PhotoCapture
-          onClose={() => setShowCameraOverlay(false)}
+          onClose={() => setShowCamera(false)}
           navigation={navigation}
-          onPhotoSelected={handlePhotoSelected}
+          onPhotoSelected={async (uri) => {
+            setShowCamera(false)
+            await handlePhotoSelected(uri)
+          }}
         />
       )}
     </SafeAreaView>
@@ -385,171 +212,57 @@ export const ThreadScreen: React.FC<{ route: any; navigation: any }> = ({ route,
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: colors.bg.base,
-    flex: 1,
-  },
-  header: {
+  root: { flex: 1 },
+  appBar: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    borderBottomColor: colors.border.default,
-    borderBottomWidth: 1,
     height: 56,
-    paddingHorizontal: spacing.base,
+    paddingHorizontal: spacing.sm,
+    borderBottomWidth: 1,
   },
   backBtn: {
-    padding: spacing.sm,
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  headerTitle: {
+  barTitle: {
     flex: 1,
     textAlign: 'center',
+    marginHorizontal: spacing.xs,
   },
-  scrollView: {
+  loadingCenter: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
+  scroll: { flex: 1 },
   scrollContent: {
     padding: spacing.base,
-    paddingBottom: 160,
   },
-  loadingContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-  },
-  loadingBubbleContainer: {
+  thinkingBubble: {
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'flex-start',
-    backgroundColor: colors.bg.card,
-    borderColor: colors.border.default,
+    borderRadius: radii.lg,
     borderWidth: 1,
-    borderRadius: radii.md,
     padding: spacing.md,
     marginVertical: spacing.sm,
   },
-  thinkingText: {
-    marginLeft: spacing.sm,
+  followUpsWrap: {
+    marginTop: spacing.xl,
+  },
+  followUpsLabel: {
+    letterSpacing: 0.8,
+    marginBottom: spacing.sm,
   },
   bottomBar: {
-    borderTopColor: colors.border.default,
-    borderTopWidth: 1,
+    position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    position: 'absolute',
-    backgroundColor: colors.bg.base,
     paddingHorizontal: spacing.base,
-  },
-  topNavBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.md,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border.default,
-    backgroundColor: colors.bg.base,
-    height: 56,
-  },
-  topNavLogo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  logoIcon: {
-    width: 32,
-    height: 32,
-    borderRadius: radii.md,
-    backgroundColor: '#1D9E75',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: spacing.sm,
-  },
-  logoTextWrapper: {
-    flexDirection: 'column',
-  },
-  logoSubText: {
-    fontSize: 9,
-    letterSpacing: 0.5,
-    textTransform: 'uppercase',
-    marginTop: -2,
-  },
-  topNavPills: {
-    flexDirection: 'row',
-    gap: 6,
-  },
-  topNavPill: {
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: radii.full,
-    borderWidth: 1,
-    borderColor: colors.border.default,
-    backgroundColor: 'transparent',
-  },
-  topNavRight: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  offlineBadge: {
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: radii.full,
-    backgroundColor: colors.amber.dim,
-    borderColor: '#FAC775',
-    borderWidth: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  webMain: {
-    flexDirection: 'row',
-    height: ('calc(100vh - 56px)' as any),
-    overflow: 'hidden',
-  },
-  webContent: {
-    flex: 1,
-    height: '100%',
-    backgroundColor: colors.bg.base,
-    justifyContent: 'space-between',
-    overflow: 'hidden',
-  },
-  modalityRow: {
-    flexDirection: 'row',
-    gap: 12,
-    paddingHorizontal: spacing.xl,
-    paddingTop: spacing.md,
-    paddingBottom: spacing.sm,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.border.default,
-  },
-  modalityItem: {
-    backgroundColor: colors.bg.card,
-    borderColor: colors.border.default,
-    borderWidth: 1,
-    borderRadius: radii.full,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-  },
-  webScrollView: {
-    flex: 1,
-  },
-  webScrollContent: {
-    padding: spacing.xl,
-    maxWidth: 680,
-    alignSelf: 'center',
-    width: '100%',
-    paddingBottom: 120,
-  },
-  followupTitle: {
-    textTransform: 'uppercase',
-    letterSpacing: 0.8,
-    marginBottom: spacing.xs,
-  },
-  webBottomBar: {
-    paddingHorizontal: spacing.xl,
-    paddingVertical: spacing.md,
+    paddingVertical: spacing.sm,
     borderTopWidth: 1,
-    borderTopColor: colors.border.default,
-    backgroundColor: colors.bg.base,
   },
 })
-export default ThreadScreen;

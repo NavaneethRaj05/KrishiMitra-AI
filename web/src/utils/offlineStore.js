@@ -139,12 +139,86 @@ export async function getCachedWeather() {
   return cacheGet('weather_data');
 }
 
-export async function cacheMarket(data) {
-  await cacheSet('market_data', data, 'market', 3600000); // 1 hour TTL
+/**
+ * Market cache uses a composite key so changing crop or district correctly
+ * invalidates the previous entry rather than serving stale data.
+ */
+export async function cacheMarket(data, crop = 'general', district = 'local') {
+  const key = `market_${crop.toLowerCase()}_${district.toLowerCase()}`;
+  await cacheSet(key, data, 'market', 3600000); // 1 hour TTL
 }
 
-export async function getCachedMarket() {
-  return cacheGet('market_data');
+export async function getCachedMarket(crop = 'general', district = 'local') {
+  const key = `market_${crop.toLowerCase()}_${district.toLowerCase()}`;
+  return cacheGet(key);
+}
+
+/* ── Multi-Thread conversation history ── */
+
+/**
+ * Save a thread by unique ID. Pass a short preview string (first user message).
+ */
+export async function saveThread(id, thread) {
+  try {
+    const db = await openDB();
+    const tx = db.transaction('threads', 'readwrite');
+    const preview = thread.length > 0 ? (thread[0].query || '').slice(0, 60) : '';
+    tx.objectStore('threads').put({ id, thread, preview, updatedAt: Date.now() });
+    await new Promise((res, rej) => { tx.oncomplete = res; tx.onerror = rej; });
+  } catch (e) {
+    console.warn('saveThread failed:', e);
+  }
+}
+
+export async function getThread(id) {
+  try {
+    const db = await openDB();
+    const tx = db.transaction('threads', 'readonly');
+    const req = tx.objectStore('threads').get(id);
+    return new Promise((res) => {
+      req.onsuccess = () => res(req.result?.thread || null);
+      req.onerror = () => res(null);
+    });
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * List all saved threads sorted by most recently updated.
+ * Returns: [{id, preview, updatedAt}]
+ */
+export async function listThreads() {
+  try {
+    const db = await openDB();
+    const tx = db.transaction('threads', 'readonly');
+    const req = tx.objectStore('threads').getAll();
+    return new Promise((res) => {
+      req.onsuccess = () => {
+        const all = (req.result || [])
+          .filter(t => t.id !== 'active_thread') // exclude the live working thread
+          .sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+        res(all.map(t => ({ id: t.id, preview: t.preview || '(empty)', updatedAt: t.updatedAt })));
+      };
+      req.onerror = () => res([]);
+    });
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Delete a saved thread by ID.
+ */
+export async function deleteThread(id) {
+  try {
+    const db = await openDB();
+    const tx = db.transaction('threads', 'readwrite');
+    tx.objectStore('threads').delete(id);
+    await new Promise((res, rej) => { tx.oncomplete = res; tx.onerror = rej; });
+  } catch (e) {
+    console.warn('deleteThread failed:', e);
+  }
 }
 
 /* ── Request queue for offline sync ── */

@@ -1,8 +1,8 @@
-# Design Document: KrishiMind RAG/KAG Agriculture Intelligence Platform
+# Design Document: KrishiMitra-AI RAG/KAG Agriculture Intelligence Platform
 
 ## Overview
 
-KrishiMind is being rebuilt as a **Perplexity-style agriculture intelligence platform** — a global, location-aware query engine for farmers and agronomists. Users type (or speak) a farming question in any of five languages and receive a streaming, cited answer synthesised from a hybrid retrieval pipeline: dense vector search over a globally-expandable knowledge corpus (RAG) combined with structured reasoning over an agricultural knowledge graph (KAG). The design retains the existing React + Express + Python + Neo4j + ChromaDB + MongoDB stack and extends it with streaming SSE, a citation engine, a global knowledge ingestion pipeline, and a Perplexity-inspired UI.
+KrishiMitra-AI is being rebuilt as a **Perplexity-style agriculture intelligence platform** — a global, location-aware query engine for farmers and agronomists. Users type (or speak) a farming question in any of five languages and receive a streaming, cited answer synthesised from a hybrid retrieval pipeline: dense vector search over a globally-expandable knowledge corpus (RAG) combined with structured reasoning over an agricultural knowledge graph (KAG). The design retains the existing React + Express + Python + Neo4j + ChromaDB + MongoDB stack and extends it with streaming SSE, a citation engine, a global knowledge ingestion pipeline, and a Perplexity-inspired UI.
 
 ---
 

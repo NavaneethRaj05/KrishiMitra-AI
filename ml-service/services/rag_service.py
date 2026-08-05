@@ -32,6 +32,9 @@ QUERY_EXPANSION = {
     "soil":        ["pH", "organic matter", "NPK", "compost", "amendment"],
     "rust":        ["Puccinia", "fungicide", "triazole", "propiconazole", "tebuconazole"],
     "wilt":        ["Fusarium", "Verticillium", "root rot", "soil solarization", "biocontrol"],
+    "weed":        ["herbicide", "glyphosate", "pendimethalin", "weeding", "grass", "broadleaf"],
+    "seed":        ["sowing", "germination", "variety", "hybrid", "treatment", "rate"],
+    "worm":        ["fall armyworm", "caterpillar", "borer", "larvae", "insecticide", "spinosad"],
 }
 
 
@@ -221,11 +224,31 @@ class RAGService:
         return self._trim_to_budget(chunks[:top_k])
 
     # ──────────────────────────────────────────
-    def generate_answer(
+    # ──────────────────────────────────────────
+    def _sanitize_query(self, query: str) -> str:
+        """
+        Sanitize user query before embedding into LLM prompt.
+        - Cap at 500 chars to prevent context overflow
+        - Strip control characters to reduce prompt injection risk
+        - Use a fixed delimiter so injected instructions can't break the prompt structure
+        """
+        import re
+        # Strip non-printable / control characters (keep newlines for readability)
+        cleaned = re.sub(r"[^\x09\x0a\x0d\x20-\x7e\x80-\xff]", "", query)
+        # Collapse excessive whitespace / newlines
+        cleaned = re.sub(r"\n{3,}", "\n\n", cleaned).strip()
+        # Hard cap at 500 characters
+        if len(cleaned) > 500:
+            cleaned = cleaned[:500] + "..."
+        return cleaned
+
+    async def generate_answer(
         self, query: str, language: str = "en", farmer_history: Optional[list] = None
     ) -> Dict:
-        """Full RAG pipeline: retrieve → build prompt → call Ollama → return answer + sources."""
-        chunks  = self.retrieve(query, top_k=TOP_K)
+        """Full RAG pipeline: retrieve → build prompt → call LLM → return answer + sources."""
+        # Sanitize query before use in prompts
+        safe_query = self._sanitize_query(query)
+        chunks  = self.retrieve(safe_query, top_k=TOP_K)
 
         # KAG enrichment: if a crop is mentioned, add graph knowledge to context
         kag_context = ""
@@ -296,7 +319,9 @@ class RAGService:
 
         user_prompt = (
             f"Context from agricultural knowledge base:\n{context}\n\n"
-            f"Farmer's question: {query}\n\n"
+            "###FARMER QUESTION###\n"
+            f"{safe_query}\n"
+            "###END QUESTION###\n\n"
             "Provide a clear, practical answer based on the context above."
         )
 
@@ -305,9 +330,9 @@ class RAGService:
         
         try:
             from services.unified_llm_service import unified_llm_service
-            import asyncio
-            answer_text = asyncio.run(unified_llm_service.chat(system_prompt, user_prompt))
-            used_model = getattr(unified_llm_service, "gemini_model", used_model)
+            # FIXED: was asyncio.run() which crashes inside FastAPI's running event loop
+            answer_text = await unified_llm_service.chat(system_prompt, user_prompt)
+            used_model = getattr(unified_llm_service, "_last_used_model", used_model)
         except Exception:
             try:
                 response = ollama.chat(
@@ -320,7 +345,7 @@ class RAGService:
                 answer_text = response["message"]["content"]
             except Exception:
                 from utils.fallback_formatter import format_offline_fallback
-                answer_text = format_offline_fallback(query, chunks, target_lang=language)
+                answer_text = format_offline_fallback(safe_query, chunks, target_lang=language)
 
         return {
             "answer":   answer_text,

@@ -25,6 +25,22 @@ async def lifespan(app: FastAPI):
             count = rag_service.collection.count()
         except Exception:
             pass
+
+        # Auto-ingest on a fresh clone: if DB is empty but documents exist, ingest now
+        if count == 0:
+            from pathlib import Path
+            docs_path = Path("knowledge_base/documents")
+            if docs_path.exists() and any(docs_path.glob("*.txt")):
+                logger.info("📚 Knowledge base is empty — auto-ingesting documents from %s ...", docs_path)
+                try:
+                    new_chunks = rag_service.ingest_documents(docs_path)
+                    count = new_chunks
+                    logger.info("✅ Auto-ingested %d chunks into ChromaDB", new_chunks)
+                except Exception as ingest_err:
+                    logger.warning("⚠️  Auto-ingest failed: %s", ingest_err)
+            else:
+                logger.warning("⚠️  knowledge_base/documents/ has no .txt files — RAG will not have context")
+
         logger.info("✅ RAG service ready (%d chunks)", count)
     except Exception as e:
         logger.warning("⚠️  RAG service failed to init: %s", e)
@@ -108,24 +124,46 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Register routers
+# Register routers — each wrapped individually so one failure doesn't silently kill the rest
+def _include(router_obj, **kwargs):
+    try:
+        app.include_router(router_obj, **kwargs)
+    except Exception as exc:
+        logger.error("❌ Failed to include router %s: %s", router_obj, exc)
+
 try:
     from routers import rag, disease, crop, voice  # noqa: E402
-    from routers.kag    import router as kag_router    # noqa: E402
-    from routers.search import router as search_router # noqa: E402
-    from routers.intent import router as intent_router # noqa: E402
-    from routers.query_router import router as query_router # noqa: E402
-
-    app.include_router(rag.router)
-    app.include_router(disease.router)
-    app.include_router(crop.router)
-    app.include_router(voice.router)
-    app.include_router(kag_router)
-    app.include_router(search_router)
-    app.include_router(intent_router)
-    app.include_router(query_router, prefix="/query")
+    _include(rag.router)
+    _include(disease.router)
+    _include(crop.router)
+    _include(voice.router)
 except Exception as e:
-    logger.error("❌ Failed to register one or more routers: %s", e)
+    logger.error("❌ Failed to import base routers: %s", e)
+
+try:
+    from routers.kag import router as kag_router  # noqa: E402
+    _include(kag_router)
+except Exception as e:
+    logger.error("❌ Failed to import kag router: %s", e)
+
+try:
+    from routers.search import router as search_router  # noqa: E402
+    _include(search_router)
+except Exception as e:
+    logger.error("❌ Failed to import search router: %s", e)
+
+try:
+    from routers.intent import router as intent_router  # noqa: E402
+    _include(intent_router)
+except Exception as e:
+    logger.error("❌ Failed to import intent router: %s", e)
+
+try:
+    from routers.query_router import router as query_router  # noqa: E402
+    _include(query_router, prefix="/query")
+    logger.info("✅ query_router registered at /query")
+except Exception as e:
+    logger.error("❌ Failed to import query_router: %s", e)
 
 
 @app.get("/health")
@@ -147,7 +185,7 @@ async def health():
 
     return {
         "status": "ok",
-        "service": "krishimind-ml",
+        "service": "krishimitra-ai-ml",
         "version": "1.1.0",
         "llm": {
             "primary": llm_status.get("primary", "none"),
@@ -176,7 +214,7 @@ async def root():
             <h1>🌾 KrishiMitraAI ML Service is Running!</h1>
             <p>This is the backend API and machine learning service engine.</p>
             <p>To access the farmer application user interface, please open:</p>
-            <a class="btn" href="http://localhost:8081" target="_blank">Open KrishiMitraAI Web App</a>
+            <a class="btn" href="http://localhost:5173" target="_blank">Open KrishiMitraAI Web App</a>
         </body>
     </html>
     """)

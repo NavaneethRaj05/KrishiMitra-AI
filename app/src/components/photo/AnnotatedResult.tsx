@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, Image, TouchableOpacity } from 'react-native'
 import { colors, spacing, radii, shadows } from '../ui/tokens'
-import { VaaniText } from '../ui/VaaniText'
+import { KrishiMitraAIText } from '../ui/KrishiMitraAIText'
 import { ChevronRight } from 'lucide-react-native'
 
 interface AnnotatedResultProps {
@@ -34,80 +34,80 @@ export const AnnotatedResult: React.FC<AnnotatedResultProps> = ({
           <Image source={{ uri: imageUri }} style={styles.image} />
         ) : (
           <View style={[styles.image, styles.placeholderImage]}>
-            <VaaniText size="xxl">🍃</VaaniText>
-            <VaaniText size="sm" color={colors.text.secondary} style={styles.placeholderText}>
+            <KrishiMitraAIText size="xl">🍃</KrishiMitraAIText>
+            <KrishiMitraAIText size="sm" color={colors.text.secondary} style={styles.placeholderText}>
               Leaf Photo Viewfinder
-            </VaaniText>
+            </KrishiMitraAIText>
           </View>
         )}
 
         {/* Mock bounding box overlay */}
         <View style={styles.boundingBox}>
           <View style={styles.boxTag}>
-            <VaaniText size="xs" weight="bold" color="#fff">
+            <KrishiMitraAIText size="xs" weight="bold" color="#fff">
               BLAST {(confidence * 100).toFixed(0)}%
-            </VaaniText>
+            </KrishiMitraAIText>
           </View>
         </View>
       </View>
 
       {/* Detection parameters card */}
       <View style={styles.resultsCard}>
-        <VaaniText size="md" weight="bold" color={colors.green.bright} style={styles.title}>
+        <KrishiMitraAIText size="md" weight="bold" color={colors.green.bright} style={styles.title}>
           Detection Result
-        </VaaniText>
+        </KrishiMitraAIText>
         
         <View style={styles.row}>
-          <VaaniText size="base" weight="semibold">Disease:</VaaniText>
-          <VaaniText size="base" color={colors.text.primary}>{disease}</VaaniText>
+          <KrishiMitraAIText size="base" weight="semibold">Disease:</KrishiMitraAIText>
+          <KrishiMitraAIText size="base" color={colors.text.primary}>{disease}</KrishiMitraAIText>
         </View>
 
         <View style={styles.row}>
-          <VaaniText size="sm" color={colors.text.secondary}>Severity:</VaaniText>
-          <VaaniText size="sm" weight="bold" color={colors.amber.bright}>
+          <KrishiMitraAIText size="sm" color={colors.text.secondary}>Severity:</KrishiMitraAIText>
+          <KrishiMitraAIText size="sm" weight="bold" color={colors.amber.bright}>
             {severity.toUpperCase()} ●●●○○
-          </VaaniText>
+          </KrishiMitraAIText>
         </View>
 
         <View style={styles.row}>
-          <VaaniText size="sm" color={colors.text.secondary}>Confidence:</VaaniText>
-          <VaaniText size="sm" color={colors.text.primary}>{(confidence * 100).toFixed(0)}%</VaaniText>
+          <KrishiMitraAIText size="sm" color={colors.text.secondary}>Confidence:</KrishiMitraAIText>
+          <KrishiMitraAIText size="sm" color={colors.text.primary}>{(confidence * 100).toFixed(0)}%</KrishiMitraAIText>
         </View>
       </View>
 
       {/* Treatment summary */}
       <View style={styles.treatmentCard}>
-        <VaaniText size="sm" weight="bold" color={colors.amber.bright} style={styles.label}>
+        <KrishiMitraAIText size="sm" weight="bold" color={colors.amber.bright} style={styles.label}>
           Immediate action:
-        </VaaniText>
-        <VaaniText size="sm" style={styles.val}>
+        </KrishiMitraAIText>
+        <KrishiMitraAIText size="sm" style={styles.val}>
           {treatmentPlan.immediate}
-        </VaaniText>
+        </KrishiMitraAIText>
 
-        <VaaniText size="sm" weight="bold" color={colors.green.bright} style={styles.label}>
+        <KrishiMitraAIText size="sm" weight="bold" color={colors.green.bright} style={styles.label}>
           Chemical:
-        </VaaniText>
-        <VaaniText size="sm" style={styles.val}>
+        </KrishiMitraAIText>
+        <KrishiMitraAIText size="sm" style={styles.val}>
           {treatmentPlan.chemical}
-        </VaaniText>
+        </KrishiMitraAIText>
 
-        <VaaniText size="sm" weight="bold" color={colors.sand.bright} style={styles.label}>
+        <KrishiMitraAIText size="sm" weight="bold" color={colors.sand.bright} style={styles.label}>
           Organic:
-        </VaaniText>
-        <VaaniText size="sm" style={styles.val}>
+        </KrishiMitraAIText>
+        <KrishiMitraAIText size="sm" style={styles.val}>
           {treatmentPlan.organic}
-        </VaaniText>
+        </KrishiMitraAIText>
 
-        <VaaniText size="xs" color={colors.text.tertiary} style={styles.label}>
-          Estimated Cost: <VaaniText size="xs" weight="bold" color={colors.green.bright}>{treatmentPlan.costEstimate}</VaaniText>
-        </VaaniText>
+        <KrishiMitraAIText size="xs" color={colors.text.tertiary} style={styles.label}>
+          Estimated Cost: <KrishiMitraAIText size="xs" weight="bold" color={colors.green.bright}>{treatmentPlan.costEstimate}</KrishiMitraAIText>
+        </KrishiMitraAIText>
       </View>
 
       {/* Inter-linking conversational button */}
       <TouchableOpacity onPress={onAskClick} style={styles.askBtn}>
-        <VaaniText size="base" weight="semibold" color={colors.text.inverse}>
+        <KrishiMitraAIText size="base" weight="semibold" color={colors.text.inverse}>
           Ask about this disease
-        </VaaniText>
+        </KrishiMitraAIText>
         <ChevronRight size={18} color={colors.text.inverse} />
       </TouchableOpacity>
     </View>
@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: spacing.md,
-    ...shadows.card,
+    ...shadows.sm,
   },
 })
 export default AnnotatedResult;

@@ -174,6 +174,156 @@ EXPERT_ANSWERS = {
 - Spray Endosulfan 35% EC @ 1.5 ml/litre at flowering stage
 
 > Use pheromone traps @ 5–8 per acre for monitoring pest populations.""",
+
+    ("wheat", "disease"): """## 🌾 Wheat Disease Management
+
+### Yellow Rust (*Puccinia striiformis*)
+- **Symptoms**: Yellow pustules in stripes along leaves
+- **Chemical**: Propiconazole 25% EC @ 1 ml/litre OR Tebuconazole 250 EW @ 1 ml/litre
+- Spray at first appearance, repeat after 15 days if needed
+
+### Loose Smut (*Ustilago tritici*)
+- **Seed Treatment**: Carboxin 37.5% + Thiram 37.5% DS @ 3 g/kg seed
+- Destroy smutted spikes before they burst open
+
+### Powdery Mildew (*Blumeria graminis*)
+- **Spray**: Propiconazole 25% EC @ 0.1% OR Triadimefon 25% WP @ 0.05%
+
+### Stem Rust
+- **Spray**: Mancozeb 75% WP @ 2.5 g/litre; start at flag leaf emergence
+
+> Use certified rust-resistant varieties (HD 2967, DBW 17, PBW 343).""",
+
+    ("wheat", "fertilizer"): """## 🌾 Wheat Fertilizer Schedule
+
+### Recommended NPK for Wheat (per acre)
+| Nutrient | Total | Basal | CRI Stage (21 DAS) | Jointing (45 DAS) |
+|----------|-------|----|-----|-----|
+| Nitrogen (N) | 50 kg | 17 kg | 17 kg | 16 kg |
+| Phosphorus (P) | 25 kg | 25 kg | — | — |
+| Potassium (K) | 12 kg | 12 kg | — | — |
+
+### Products & Dosage (per acre)
+- **Basal**: DAP @ 55 kg + MOP @ 20 kg + Urea @ 37 kg
+- **CRI Stage** (Crown Root Initiation, 21 days): Urea @ 37 kg
+- **Jointing Stage** (45 days): Urea @ 35 kg
+
+### Sulphur & Zinc
+- Apply **Zinc Sulfate @ 10 kg/acre** if zinc deficiency present
+- **Sulphur @ 8–10 kg/acre** basal for better protein content
+
+> Avoid applying nitrogen after jointing — lodging risk increases significantly.""",
+
+    ("cotton", "pest"): """## 🌿 Cotton Pest Management
+
+### American Bollworm (*Helicoverpa armigera*)
+- **Pheromone Traps**: Deploy @ 5–8 traps/acre for monitoring
+- **Bio**: Helicoverpa NPV @ 250 LE/acre + 0.1% Tinopal at squaring stage
+- **Chemical**: Emamectin Benzoate 5% SG @ 0.4 g/litre OR Spinosad 45% SC @ 0.3 ml/litre
+
+### Pink Bollworm (*Pectinophora gossypiella*)
+- **IPM**: Avoid late sowing; use Bt cotton where available
+- **Pheromone traps** for early detection
+- **Chemical**: Profenofos 50% EC @ 2 ml/litre
+
+### Whitefly (Vector of CLCuV — Cotton Leaf Curl Virus)
+- **Yellow sticky traps** @ 10–15 per acre
+- **Spray**: Thiamethoxam 25% WG @ 0.3 g/litre OR Pyriproxyfen 10% EC @ 1 ml/litre
+
+### Mites (Red Spider Mite)
+- **Spray**: Abamectin 1.8% EC @ 0.5 ml/litre OR Dicofol 18.5% EC @ 2.5 ml/litre
+
+> Follow IPM calendar strictly — avoid calendar-based spraying to prevent resistance.""",
+
+    ("cotton", "disease"): """## 🌿 Cotton Disease Management
+
+### Bacterial Blight (*Xanthomonas axonopodis*)
+- **Seed Treatment**: Streptocycline 100 ppm + Copper oxychloride 0.3%
+- **Spray**: Copper oxychloride 50% WP @ 3 g/litre at 15-day intervals
+
+### Fusarium Wilt
+- **Soil Treatment**: *Trichoderma viride* @ 2.5 kg/acre at sowing
+- Use resistant varieties (LRA 5166, Suraj)
+- Crop rotation with cereals for 2–3 years
+
+### Alternaria Leaf Spot
+- **Spray**: Mancozeb 75% WP @ 2.5 g/litre OR Carbendazim 50% WP @ 1 g/litre
+
+> Ensure proper plant spacing (90×45 cm) for airflow to reduce foliar diseases.""",
+
+    ("maize", "pest"): """## 🌽 Maize Pest Management
+
+### Fall Armyworm (*Spodoptera frugiperda*) — Most Critical
+- **Symptoms**: Window-pane feeding; frass in whorl
+- **Bio**: *Metarhizium anisopliae* @ 5 g/litre OR Beauveria bassiana @ 5 g/litre in whorl
+- **Chemical**: Emamectin Benzoate 5% SG @ 0.4 g/litre — apply into whorl
+- Apply at first instar stage (early detection critical)
+- Pheromone traps @ 8–10 per acre for monitoring
+
+### Stem Borer (*Chilo partellus*)
+- **Bio**: Trichogramma egg parasitoid @ 50,000/acre release at 2, 4 weeks
+- **Chemical**: Chlorantraniliprole 18.5% SC @ 0.4 ml/litre
+
+### Shoot Fly
+- **Seed Treatment**: Imidacloprid 70% WS @ 12 ml/kg seed
+
+> Scout fields weekly — early FAW detection is critical to prevent yield loss exceeding 50%.""",
+
+    ("maize", "disease"): """## 🌽 Maize Disease Management
+
+### Turcicum Leaf Blight (*Exserohilum turcicum*)
+- **Symptoms**: Long elliptical tan lesions with wavy margins
+- **Spray**: Mancozeb 75% WP @ 2.5 g/litre at 45 and 60 DAS
+
+### Common Rust (*Puccinia sorghi*)
+- **Spray**: Propiconazole 25% EC @ 1 ml/litre
+
+### Downy Mildew (*Peronosclerospora sorghi*)
+- **Seed Treatment**: Metalaxyl 35% WS @ 6 g/kg seed
+- Rogue out infected plants (whole plant turns yellow-white)
+
+### Stalk Rot (Pythium/Fusarium)
+- Avoid water stress and waterlogging
+- Balanced potassium nutrition reduces incidence
+
+> Use hybrid varieties with built-in resistance (NK 6240, DKC 9144, P3396).""",
+
+    ("sugarcane", "pest"): """## 🎋 Sugarcane Pest Management
+
+### Early Shoot Borer (*Chilo infuscatellus*)
+- **Symptoms**: Dead heart at tillering stage
+- **Bio**: Release *Sturmiopsis inferens* parasitoid pupae
+- **Chemical**: Chlorpyrifos 20% EC @ 4 litre/acre as soil drench
+
+### Top Shoot Borer (*Scirpophaga excerptalis*)
+- **Spray**: Chlorantraniliprole 18.5% SC @ 0.4 ml/litre at 4 and 6 months
+
+### Woolly Aphid (*Ceratovacuna lanigera*)
+- **Spray**: Dimethoate 30% EC @ 2 ml/litre
+- Spray the undersurface of leaves
+
+### Pyrilla (Sugarcane Leafhopper)
+- **Bio**: Release *Epiricania melanoleuca* parasitoid @ 4,000 cocoons/acre
+
+> Trash mulching conserves moisture and suppresses soil pests simultaneously.""",
+
+    ("sugarcane", "disease"): """## 🎋 Sugarcane Disease Management
+
+### Red Rot (*Colletotrichum falcatum*)
+- **Symptoms**: Internal red discolouration with white patches; sour smell
+- **Management**: Use disease-free setts from certified nurseries
+- Treat setts in Carbendazim 0.1% for 15 minutes before planting
+- Destroy affected clumps; do not use crop for ratoon
+
+### Smut (*Ustilago scitaminea*)
+- **Symptoms**: Black whip-like structure replacing the shoot
+- **Sett Treatment**: Hot water treatment at 50°C for 2 hours + Carbendazim 0.1%
+- Remove and burn smutted shoots; use resistant varieties (CO 86032, CoJ 64)
+
+### Wilt (*Fusarium sacchari*)
+- Use resistant varieties and certified seed material
+
+> Never plant ratoon from a diseased field — primary infection source for next season.""",
 }
 
 

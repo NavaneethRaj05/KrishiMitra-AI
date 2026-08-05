@@ -7,7 +7,7 @@ import Animated, {
   Easing,
 } from 'react-native-reanimated'
 import { colors, spacing, radii } from '../ui/tokens'
-import { VaaniText } from '../ui/VaaniText'
+import { KrishiMitraAIText } from '../ui/KrishiMitraAIText'
 
 interface ConfidenceBarProps {
   score: number // 0 to 1
@@ -56,13 +56,13 @@ export const ConfidenceBar: React.FC<ConfidenceBarProps> = ({ score }) => {
   return (
     <View style={[styles.container, { backgroundColor: bgColor }]}>
       <View style={styles.header}>
-        <VaaniText size="xs" weight="semibold" color={colors.text.secondary}>
+        <KrishiMitraAIText size="xs" weight="semibold" color={colors.text.secondary}>
           Confidence
-        </VaaniText>
+        </KrishiMitraAIText>
         <View style={styles.scoreContainer}>
-          <VaaniText size="sm" weight="bold" color={barColor}>
+          <KrishiMitraAIText size="sm" weight="bold" color={barColor}>
             {label} ({percentage}%)
-          </VaaniText>
+          </KrishiMitraAIText>
         </View>
       </View>
       <View style={styles.trackContainer}>

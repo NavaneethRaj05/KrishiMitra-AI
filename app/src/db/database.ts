@@ -22,7 +22,7 @@ if (Platform.OS === 'web') {
   try {
     adapter = new SQLiteAdapter({
       schema,
-      dbName: 'vaani_db',
+      dbName: 'krishimitra_ai_db',
       jsi: true,
       onSetUpError: (error) => {
         console.warn('WatermelonDB setup error, attempting fallback:', error);

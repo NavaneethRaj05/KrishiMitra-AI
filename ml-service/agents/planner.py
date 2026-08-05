@@ -58,6 +58,51 @@ INSTRUCTIONS:
   ],
   "direct_answer": "string (optional, only if tools_to_run is empty)"
 }}
+
+FEW-SHOT EXAMPLES (follow this exact JSON format):
+
+Example 1 — Disease question needing RAG knowledge:
+Query: "My tomato leaves have yellow spots, what disease is it?"
+Output:
+{{
+  "reasoning": "Farmer describes leaf symptoms that require disease identification from the knowledge base.",
+  "tools_to_run": [
+    {{ "tool": "rag_tool", "kwargs": {{ "query": "tomato yellow spots leaf disease identification treatment" }} }}
+  ],
+  "direct_answer": ""
+}}
+
+Example 2 — Weather + fertilizer question needing weather + RAG:
+Query: "Should I apply DAP to my wheat field today?"
+Output:
+{{
+  "reasoning": "Fertilizer application decision requires current weather data and agronomic knowledge about DAP timing.",
+  "tools_to_run": [
+    {{ "tool": "weather_tool", "kwargs": {{ "location": "farmer_district" }} }},
+    {{ "tool": "rag_tool", "kwargs": {{ "query": "wheat DAP fertilizer application timing dosage" }} }}
+  ],
+  "direct_answer": ""
+}}
+
+Example 3 — Simple greeting, no tools needed:
+Query: "Hello, how are you?"
+Output:
+{{
+  "reasoning": "Simple greeting — no agricultural tools needed.",
+  "tools_to_run": [],
+  "direct_answer": "Hello! I am KrishiMitra AI, your personal farming assistant. How can I help you with your crops today?"
+}}
+
+Example 4 — Market price query:
+Query: "What is the current mandi price for onion in Nashik?"
+Output:
+{{
+  "reasoning": "Real-time mandi/market price question requires the market price tool.",
+  "tools_to_run": [
+    {{ "tool": "market_tool", "kwargs": {{ "commodity": "onion", "district": "Nashik" }} }}
+  ],
+  "direct_answer": ""
+}}
 """
         
         try:

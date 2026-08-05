@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, View, ScrollView, SafeAreaView, ActivityIndicator, Alert, TouchableOpacity, useWindowDimensions } from 'react-native'
 import { colors, spacing, radii, shadows } from '../../components/ui/tokens'
-import { VaaniText } from '../../components/ui/VaaniText'
+import { KrishiMitraAIText } from '../../components/ui/KrishiMitraAIText'
 import { MessageBubble } from '../../components/thread/MessageBubble'
 import { FollowUpChips } from '../../components/search/FollowUpChips'
 import { SearchBar } from '../../components/search/SearchBar'
@@ -119,13 +119,13 @@ export const SearchResultScreen: React.FC<{ route: any; navigation: any }> = ({ 
       <SafeAreaView style={styles.container}>
         {/* TOP WEB NAV BAR */}
         <View style={styles.topNavBar}>
-          <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.topNavLogo}>
+          <TouchableOpacity onPress={() => navigation.navigate('MainTabs')} style={styles.topNavLogo}>
             <View style={styles.logoIcon}>
-              <VaaniText size="base" style={{ lineHeight: 18 }}>🌾</VaaniText>
+              <KrishiMitraAIText size="base" style={{ lineHeight: 18 }}>🌾</KrishiMitraAIText>
             </View>
             <View style={styles.logoTextWrapper}>
-              <VaaniText size="sm" weight="bold" color={colors.text.primary}>KrishiMitra AI</VaaniText>
-              <VaaniText size="xs" color={colors.text.tertiary} style={styles.logoSubText}>KrishiSearch</VaaniText>
+              <KrishiMitraAIText size="sm" weight="bold" color={colors.text.primary}>KrishiMitra AI</KrishiMitraAIText>
+              <KrishiMitraAIText size="xs" color={colors.text.tertiary} style={styles.logoSubText}>KrishiSearch</KrishiMitraAIText>
             </View>
           </TouchableOpacity>
 
@@ -136,9 +136,9 @@ export const SearchResultScreen: React.FC<{ route: any; navigation: any }> = ({ 
             </TouchableOpacity>
             <View style={styles.offlineBadge}>
               <WifiOff size={11} color={!isConnected ? '#633806' : colors.text.tertiary} style={{ marginRight: 4 }} />
-              <VaaniText size="xs" weight="bold" color={!isConnected ? '#633806' : colors.text.tertiary}>
+              <KrishiMitraAIText size="xs" weight="bold" color={!isConnected ? '#633806' : colors.text.tertiary}>
                 {isConnected ? 'Offline ready' : 'Offline mode'}
-              </VaaniText>
+              </KrishiMitraAIText>
             </View>
           </View>
         </View>
@@ -154,7 +154,7 @@ export const SearchResultScreen: React.FC<{ route: any; navigation: any }> = ({ 
               navigation.setParams({ threadId: thread.id, query: thread.title });
             }}
             onNewSearchPress={() => {
-              navigation.navigate('Home');
+              navigation.navigate('MainTabs');
             }}
           />
 
@@ -162,11 +162,11 @@ export const SearchResultScreen: React.FC<{ route: any; navigation: any }> = ({ 
           <View style={styles.webContent}>
             {/* Input modality indicator bar */}
             <View style={styles.modalityRow}>
-              <VaaniText size="xs" color={colors.text.tertiary} style={styles.modalityItem}>
+              <KrishiMitraAIText size="xs" color={colors.text.tertiary} style={styles.modalityItem}>
                 🗣️ {getLanguageLabel(detectedLanguage)} → {getLanguageLabel(answerLanguage)}
-              </VaaniText>
-              <VaaniText size="xs" color={colors.text.tertiary} style={styles.modalityItem}>🕸️ RAG + KAG</VaaniText>
-              <VaaniText size="xs" color={colors.text.tertiary} style={styles.modalityItem}>{isConnected ? '🌐 Online mode' : '⚡ Offline mode'}</VaaniText>
+              </KrishiMitraAIText>
+              <KrishiMitraAIText size="xs" color={colors.text.tertiary} style={styles.modalityItem}>🕸️ RAG + KAG</KrishiMitraAIText>
+              <KrishiMitraAIText size="xs" color={colors.text.tertiary} style={styles.modalityItem}>{isConnected ? '🌐 Online mode' : '⚡ Offline mode'}</KrishiMitraAIText>
             </View>
 
             <ScrollView style={styles.webScrollView} contentContainerStyle={styles.webScrollContent}>
@@ -176,9 +176,9 @@ export const SearchResultScreen: React.FC<{ route: any; navigation: any }> = ({ 
               {loading ? (
                 <View style={styles.loadingContainer}>
                   <ActivityIndicator size="large" color={colors.green.bright} />
-                  <VaaniText size="sm" color={colors.text.secondary} style={styles.loadingText}>
+                  <KrishiMitraAIText size="sm" color={colors.text.secondary} style={styles.loadingText}>
                     {t('search.typing')}
-                  </VaaniText>
+                  </KrishiMitraAIText>
                 </View>
               ) : (
                 result && (
@@ -199,9 +199,9 @@ export const SearchResultScreen: React.FC<{ route: any; navigation: any }> = ({ 
 
                     {/* Follow-up chips */}
                     <View style={{ marginTop: spacing.md }}>
-                      <VaaniText size="xs" weight="bold" color={colors.text.tertiary} style={styles.followupTitle}>
+                      <KrishiMitraAIText size="xs" weight="bold" color={colors.text.tertiary} style={styles.followupTitle}>
                         Follow-up questions
-                      </VaaniText>
+                      </KrishiMitraAIText>
                       <FollowUpChips
                         chips={result.followUps}
                         onChipPress={handleFollowUpSubmit}
@@ -279,9 +279,9 @@ export const SearchResultScreen: React.FC<{ route: any; navigation: any }> = ({ 
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
           <ArrowLeft size={24} color={colors.text.primary} />
         </TouchableOpacity>
-        <VaaniText size="md" weight="bold" numberOfLines={1} style={styles.headerTitle}>
+        <KrishiMitraAIText size="md" weight="bold" numberOfLines={1} style={styles.headerTitle}>
           {query}
-        </VaaniText>
+        </KrishiMitraAIText>
         <View style={{ width: 40 }} />
       </View>
 
@@ -292,9 +292,9 @@ export const SearchResultScreen: React.FC<{ route: any; navigation: any }> = ({ 
         {loading ? (
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color={colors.green.bright} />
-            <VaaniText size="sm" color={colors.text.secondary} style={styles.loadingText}>
+            <KrishiMitraAIText size="sm" color={colors.text.secondary} style={styles.loadingText}>
               {t('search.typing')}
-            </VaaniText>
+            </KrishiMitraAIText>
           </View>
         ) : (
           result && (

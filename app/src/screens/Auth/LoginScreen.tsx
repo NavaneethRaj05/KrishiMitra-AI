@@ -4,9 +4,9 @@ import * as LocalAuthentication from 'expo-local-authentication'
 import { secureStore } from '../../utils/secureStore'
 import { Fingerprint } from 'lucide-react-native'
 import { colors, spacing, radii } from '../../components/ui/tokens'
-import { VaaniText } from '../../components/ui/VaaniText'
-import { VaaniInput } from '../../components/ui/VaaniInput'
-import { VaaniButton } from '../../components/ui/VaaniButton'
+import { KrishiMitraAIText } from '../../components/ui/KrishiMitraAIText'
+import { KrishiMitraAIInput } from '../../components/ui/KrishiMitraAIInput'
+import { KrishiMitraAIButton } from '../../components/ui/KrishiMitraAIButton'
 import { useAuthStore } from '../../store/useAuthStore'
 import { authService } from '../../services/authService'
 
@@ -49,7 +49,7 @@ export const LoginScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         const valid = await authService.verifyBiometricToken()
         setLoading(false)
         if (valid) {
-          navigation.replace('Home')
+          navigation.replace('MainTabs')
         } else {
           Alert.alert('Session Expired', 'Please register again using OTP.')
         }
@@ -81,9 +81,9 @@ export const LoginScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         // Save PIN
         await secureStore.setItemAsync(`pin:${phone}`, pin)
         if (res.isNewUser || !useAuthStore.getState().isOnboarded) {
-          navigation.replace('FarmerSetup')
+          navigation.replace('Onboarding')
         } else {
-          navigation.replace('Home')
+          navigation.replace('MainTabs')
         }
       } else {
         Alert.alert('Error', 'Login failed. Please check credentials.')
@@ -97,15 +97,15 @@ export const LoginScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   return (
     <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
       <View style={styles.card}>
-        <VaaniText size="xl" weight="bold" color={colors.green.bright} style={styles.title}>
+        <KrishiMitraAIText size="xl" weight="bold" color={colors.green.bright} style={styles.title}>
           Sign In
-        </VaaniText>
+        </KrishiMitraAIText>
         
-        <VaaniText size="sm" color={colors.text.secondary} style={styles.subTitle}>
-          Enter your registered phone and PIN to unlock Vaani.
-        </VaaniText>
+        <KrishiMitraAIText size="sm" color={colors.text.secondary} style={styles.subTitle}>
+          Enter your registered phone and PIN to unlock KrishiMitra-AI.
+        </KrishiMitraAIText>
 
-        <VaaniInput
+        <KrishiMitraAIInput
           keyboardType="phone-pad"
           maxLength={10}
           placeholder="Phone Number"
@@ -114,7 +114,7 @@ export const LoginScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           label="Registered Phone"
         />
 
-        <VaaniInput
+        <KrishiMitraAIInput
           keyboardType="number-pad"
           maxLength={4}
           secureTextEntry
@@ -124,14 +124,14 @@ export const LoginScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
           label="Secure PIN"
         />
 
-        <VaaniButton
+        <KrishiMitraAIButton
           title="Sign In"
           onPress={handlePinLogin}
           loading={loading}
           style={styles.button}
         />
 
-        <VaaniButton
+        <KrishiMitraAIButton
           title="Login with Demo Account"
           variant="secondary"
           onPress={async () => {
@@ -145,9 +145,9 @@ export const LoginScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
             if (res.success) {
               await secureStore.setItemAsync(`pin:${demoPhone}`, demoPin)
               if (res.isNewUser || !useAuthStore.getState().isOnboarded) {
-                navigation.replace('FarmerSetup')
+                navigation.replace('Onboarding')
               } else {
-                navigation.replace('Home')
+                navigation.replace('MainTabs')
               }
             } else {
               Alert.alert('Error', 'Demo login failed.')
@@ -160,16 +160,16 @@ export const LoginScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
         {hasBiometrics && (
           <TouchableOpacity onPress={handleBiometricLogin} style={styles.biometricButton}>
             <Fingerprint size={32} color={colors.green.bright} />
-            <VaaniText size="sm" color={colors.text.secondary} style={styles.biometricText}>
+            <KrishiMitraAIText size="sm" color={colors.text.secondary} style={styles.biometricText}>
               Unlock with fingerprint/face
-            </VaaniText>
+            </KrishiMitraAIText>
           </TouchableOpacity>
         )}
 
         <TouchableOpacity onPress={() => navigation.navigate('Register')} style={styles.registerLink}>
-          <VaaniText size="sm" color={colors.text.secondary} align="center">
-            New user? <VaaniText size="sm" weight="semibold" color={colors.green.bright}>Register here</VaaniText>
-          </VaaniText>
+          <KrishiMitraAIText size="sm" color={colors.text.secondary} align="center">
+            New user? <KrishiMitraAIText size="sm" weight="semibold" color={colors.green.bright}>Register here</KrishiMitraAIText>
+          </KrishiMitraAIText>
         </TouchableOpacity>
       </View>
     </ScrollView>

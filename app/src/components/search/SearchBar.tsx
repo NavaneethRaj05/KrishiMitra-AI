@@ -5,7 +5,7 @@ import { Mic, Camera, Send, X, Keyboard, Paperclip } from 'lucide-react-native'
 import * as ImagePicker from 'expo-image-picker'
 import * as FileSystem from 'expo-file-system'
 import { colors, spacing, radii } from '../ui/tokens'
-import { VaaniText } from '../ui/VaaniText'
+import { KrishiMitraAIText } from '../ui/KrishiMitraAIText'
 import { t } from '../../i18n'
 
 export type InputMode = 'idle' | 'text' | 'voice' | 'camera' | 'soil'
@@ -131,9 +131,9 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         {/* Mode pill indicator */}
         {(text.trim() || attachedImageUri) && (
           <View style={[styles.modePill, { backgroundColor: mode.color + '22' }]}>
-            <VaaniText size="xs" color={mode.color} weight="semibold">
+            <KrishiMitraAIText size="xs" color={mode.color} weight="semibold">
               {mode.icon} {mode.label}
-            </VaaniText>
+            </KrishiMitraAIText>
           </View>
         )}
 

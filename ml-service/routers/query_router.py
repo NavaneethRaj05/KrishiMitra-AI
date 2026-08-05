@@ -24,34 +24,12 @@ from services.context_service import context_service
 from services.location_service import location_service
 import json
 
-logger = logging.getLogger("krishimind.query")
+logger = logging.getLogger("krishimitra_ai.query")
 
 router = APIRouter(prefix="", tags=["Modality Queries"])
 
 # Ollama config is now managed by unified_llm_service
 
-
-# ── Dependency: Decode base64 x-user-profile header ──
-async def get_current_user(request: Request):
-    profile_header = request.headers.get("x-user-profile")
-    user = {"preferredLanguage": "english"}
-    if profile_header:
-        try:
-            decoded_bytes = base64.b64decode(profile_header)
-            user = json.loads(decoded_bytes.decode('utf-8'))
-        except Exception as e:
-            logger.error("Failed to decode base64 x-user-profile header: %s", e)
-
-    # Extract GPS coordinates from headers (always-on GPS)
-    lat = request.headers.get("x-latitude") or request.headers.get("X-Latitude")
-    lon = request.headers.get("x-longitude") or request.headers.get("X-Longitude")
-    if lat and lon:
-        try:
-            user["_gps_lat"] = float(lat)
-            user["_gps_lon"] = float(lon)
-        except (ValueError, TypeError):
-            pass
-    return user
 
 
 # ── Request Models ──

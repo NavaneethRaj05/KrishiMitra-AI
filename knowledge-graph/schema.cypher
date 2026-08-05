@@ -1,4 +1,4 @@
-// ── KrishiMind Knowledge Graph Schema ──
+// ── KrishiMitra-AI Knowledge Graph Schema ──
 // Run in Neo4j Browser (localhost:7474) after seeding
 
 // Constraints (ensure uniqueness)

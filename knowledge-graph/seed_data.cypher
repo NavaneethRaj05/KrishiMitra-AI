@@ -1,4 +1,4 @@
-// ── KrishiMind Knowledge Graph Seed Data ──
+// ── KrishiMitra-AI Knowledge Graph Seed Data ──
 // Global agricultural data — applicable to farmers worldwide
 
 // ── Crops ──

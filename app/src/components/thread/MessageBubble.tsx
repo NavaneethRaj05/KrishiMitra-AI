@@ -1,113 +1,109 @@
+/**
+ * MessageBubble — themed chat message for user and assistant.
+ */
+
 import React from 'react'
 import { StyleSheet, View, Image } from 'react-native'
-import { colors, spacing, radii } from '../ui/tokens'
-import { VaaniText } from '../ui/VaaniText'
-import { AnswerCard } from '../search/AnswerCard'
+import { useTheme } from '../../hooks/useTheme'
+import { spacing, radii } from '../../theme/tokens'
+import { KMText } from '../ui/Text'
+import { AnswerBlock } from '../search/AnswerBlock'
+import type { Citation, SourceBreakdown } from '../../services/searchService'
 
-interface SourceBreakdown {
-  rag: number
-  kag: number
-  web: number
-}
-
-interface MessageBubbleProps {
+interface Props {
   role: 'user' | 'assistant'
   content: string
-  citations?: any[]
+  imageUri?: string | null
+  citations?: Citation[]
   intent?: string
   offlineFallback?: boolean
-  imageUri?: string
   confidenceScore?: number
   sourceBreakdown?: SourceBreakdown
   answerLanguage?: string
   detectedLanguage?: string
-  onLanguageChange?: (langCode: string) => void
+  onLanguageChange?: (lang: string) => void
 }
 
-export const MessageBubble: React.FC<MessageBubbleProps> = ({
+export const MessageBubble: React.FC<Props> = ({
   role,
   content,
+  imageUri,
   citations = [],
   intent,
-  offlineFallback,
-  imageUri,
-  confidenceScore,
+  offlineFallback = false,
+  confidenceScore = 0.75,
   sourceBreakdown,
   answerLanguage,
   detectedLanguage,
   onLanguageChange,
 }) => {
+  const { theme } = useTheme()
   const isUser = role === 'user'
 
-  if (!isUser) {
+  if (isUser) {
     return (
-      <View style={styles.assistantContainer}>
-        {offlineFallback && (
-          <View style={styles.fallbackIndicator}>
-            <VaaniText size="xs" color={colors.amber.bright} weight="bold">
-              ⚡ Local Knowledge Response (Offline)
-            </VaaniText>
-          </View>
-        )}
-        <AnswerCard
-          answer={content}
-          citations={citations}
-          intent={intent}
-          confidenceScore={confidenceScore}
-          sourceBreakdown={sourceBreakdown}
-          answerLanguage={answerLanguage}
-          detectedLanguage={detectedLanguage}
-          onLanguageChange={onLanguageChange}
-        />
+      <View style={styles.userRow}>
+        <View style={[styles.userBubble, { backgroundColor: theme.bubble.user }]}>
+          {imageUri && (
+            <Image
+              source={{ uri: imageUri }}
+              style={[styles.image, { borderColor: theme.bubble.user }]}
+            />
+          )}
+          {content ? (
+            <KMText size="base" color={theme.bubble.userText} style={{ lineHeight: 22 }}>
+              {content}
+            </KMText>
+          ) : null}
+        </View>
       </View>
     )
   }
 
+  // Assistant message
   return (
-    <View style={styles.userContainer}>
-      <View style={styles.userBubble}>
-        {imageUri ? (
-          <Image source={{ uri: imageUri }} style={styles.bubbleImage} resizeMode="cover" />
-        ) : null}
-        <VaaniText size="base" color={colors.text.primary}>
-          {content}
-        </VaaniText>
-      </View>
+    <View style={[styles.assistantBubble, {
+      backgroundColor: theme.bubble.assistant,
+      borderColor: theme.bubble.assistantBorder,
+    }]}>
+      <AnswerBlock
+        answer={content}
+        citations={citations}
+        intent={intent}
+        confidenceScore={confidenceScore}
+        sourceBreakdown={sourceBreakdown}
+        offlineFallback={offlineFallback}
+      />
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  assistantContainer: {
-    alignSelf: 'flex-start',
-    width: '100%',
-    marginVertical: spacing.sm,
-  },
-  fallbackIndicator: {
-    backgroundColor: colors.amber.dim,
-    alignSelf: 'flex-start',
-    paddingHorizontal: spacing.sm,
-    paddingVertical: 2,
-    borderRadius: radii.sm,
-    marginBottom: spacing.xs,
-  },
-  userContainer: {
-    alignSelf: 'flex-end',
-    maxWidth: '80%',
-    marginVertical: spacing.sm,
+  userRow: {
+    alignItems: 'flex-end',
+    marginBottom: spacing.md,
   },
   userBubble: {
-    backgroundColor: colors.green.dim,
-    borderColor: colors.green.dark,
-    borderWidth: 1,
-    borderRadius: radii.md,
+    borderRadius: radii.xl,
+    borderBottomRightRadius: radii.xs,
     padding: spacing.md,
+    maxWidth: '82%',
+    gap: spacing.sm,
   },
-  bubbleImage: {
-    width: 200,
-    height: 150,
-    borderRadius: radii.sm,
-    marginBottom: spacing.sm,
+  image: {
+    width: 160,
+    height: 120,
+    borderRadius: radii.md,
+    borderWidth: 1,
+  },
+  assistantBubble: {
+    borderRadius: radii.xl,
+    borderBottomLeftRadius: radii.xs,
+    borderWidth: 1,
+    padding: spacing.base,
+    marginBottom: spacing.md,
+    width: '100%',
   },
 })
+
 export default MessageBubble

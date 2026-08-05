@@ -7,7 +7,7 @@ import { useAuthStore } from '../store/useAuthStore'
 import { predictiveCache } from './predictiveCache'
 import { Q } from '@nozbe/watermelondb'
 
-const SYNC_TASK_NAME = 'vaani-background-sync'
+const SYNC_TASK_NAME = 'krishimitra-ai-background-sync'
 const getApiBase = () => {
   if (typeof window !== 'undefined' && window.location && window.location.hostname) {
     const hostname = window.location.hostname

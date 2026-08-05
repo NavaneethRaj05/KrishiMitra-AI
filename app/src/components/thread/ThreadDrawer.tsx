@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, ScrollView, TouchableOpacity, Modal, TextInput } from 'react-native'
 import { X, Search, Clock, Bookmark, BookmarkCheck, Wifi, WifiOff, MessageSquare } from 'lucide-react-native'
 import { colors, spacing, radii } from '../ui/tokens'
-import { VaaniText } from '../ui/VaaniText'
+import { KrishiMitraAIText } from '../ui/KrishiMitraAIText'
 import { database } from '../../db/database'
 import { Q } from '@nozbe/watermelondb'
 
@@ -142,9 +142,9 @@ export const ThreadDrawer: React.FC<ThreadDrawerProps> = ({
         <View style={styles.drawer}>
           {/* Header */}
           <View style={styles.header}>
-            <VaaniText size="md" weight="bold" color={colors.text.primary}>
+            <KrishiMitraAIText size="md" weight="bold" color={colors.text.primary}>
               Conversations
-            </VaaniText>
+            </KrishiMitraAIText>
             <TouchableOpacity onPress={onClose} style={styles.closeBtn}>
               <X size={20} color={colors.text.secondary} />
             </TouchableOpacity>
@@ -168,9 +168,9 @@ export const ThreadDrawer: React.FC<ThreadDrawerProps> = ({
               onPress={() => setIntentFilter(null)}
               style={[styles.filterChip, !intentFilter && styles.filterChipActive]}
             >
-              <VaaniText size="xs" color={!intentFilter ? colors.text.inverse : colors.text.secondary}>
+              <KrishiMitraAIText size="xs" color={!intentFilter ? colors.text.inverse : colors.text.secondary}>
                 All
-              </VaaniText>
+              </KrishiMitraAIText>
             </TouchableOpacity>
             {intentFilters.map((f) => (
               <TouchableOpacity
@@ -178,9 +178,9 @@ export const ThreadDrawer: React.FC<ThreadDrawerProps> = ({
                 onPress={() => setIntentFilter(intentFilter === f ? null : f)}
                 style={[styles.filterChip, intentFilter === f && styles.filterChipActive]}
               >
-                <VaaniText size="xs" color={intentFilter === f ? colors.text.inverse : colors.text.secondary}>
+                <KrishiMitraAIText size="xs" color={intentFilter === f ? colors.text.inverse : colors.text.secondary}>
                   {INTENT_LABELS[f] || f}
-                </VaaniText>
+                </KrishiMitraAIText>
               </TouchableOpacity>
             ))}
           </ScrollView>
@@ -189,9 +189,9 @@ export const ThreadDrawer: React.FC<ThreadDrawerProps> = ({
           <ScrollView style={styles.threadList} showsVerticalScrollIndicator={false}>
             {grouped.map((group) => (
               <View key={group.label}>
-                <VaaniText size="xs" weight="bold" color={colors.text.tertiary} style={styles.groupLabel}>
+                <KrishiMitraAIText size="xs" weight="bold" color={colors.text.tertiary} style={styles.groupLabel}>
                   {group.label}
-                </VaaniText>
+                </KrishiMitraAIText>
                 {group.threads.map((thread: any) => {
                   const intentColor = INTENT_COLORS[thread.intent] || colors.text.tertiary
                   return (
@@ -206,9 +206,9 @@ export const ThreadDrawer: React.FC<ThreadDrawerProps> = ({
                     >
                       <View style={styles.threadMain}>
                         <View style={styles.threadTitleRow}>
-                          <VaaniText size="sm" weight="semibold" color={colors.text.primary} numberOfLines={1} style={styles.threadTitle}>
+                          <KrishiMitraAIText size="sm" weight="semibold" color={colors.text.primary} numberOfLines={1} style={styles.threadTitle}>
                             {thread.title}
-                          </VaaniText>
+                          </KrishiMitraAIText>
                           <TouchableOpacity onPress={() => toggleBookmark(thread)} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
                             {thread.isBookmarked ? (
                               <BookmarkCheck size={14} color={colors.amber.bright} />
@@ -221,17 +221,17 @@ export const ThreadDrawer: React.FC<ThreadDrawerProps> = ({
                         <View style={styles.threadMeta}>
                           {/* Intent badge */}
                           <View style={[styles.intentBadge, { backgroundColor: intentColor + '22' }]}>
-                            <VaaniText size="xs" color={intentColor} weight="bold">
+                            <KrishiMitraAIText size="xs" color={intentColor} weight="bold">
                               {INTENT_LABELS[thread.intent] || '🌾 General'}
-                            </VaaniText>
+                            </KrishiMitraAIText>
                           </View>
 
                           {/* Message count */}
                           <View style={styles.metaItem}>
                             <MessageSquare size={10} color={colors.text.tertiary} />
-                            <VaaniText size="xs" color={colors.text.tertiary} style={styles.metaText}>
+                            <KrishiMitraAIText size="xs" color={colors.text.tertiary} style={styles.metaText}>
                               {thread.messageCount || 0}
-                            </VaaniText>
+                            </KrishiMitraAIText>
                           </View>
 
                           {/* Sync status */}
@@ -244,9 +244,9 @@ export const ThreadDrawer: React.FC<ThreadDrawerProps> = ({
                           </View>
 
                           {/* Relative time */}
-                          <VaaniText size="xs" color={colors.text.tertiary}>
+                          <KrishiMitraAIText size="xs" color={colors.text.tertiary}>
                             {getRelativeTime(thread.createdAt)}
-                          </VaaniText>
+                          </KrishiMitraAIText>
                         </View>
                       </View>
                     </TouchableOpacity>
@@ -257,9 +257,9 @@ export const ThreadDrawer: React.FC<ThreadDrawerProps> = ({
 
             {threads.length === 0 && (
               <View style={styles.emptyContainer}>
-                <VaaniText size="sm" color={colors.text.tertiary} align="center">
-                  No conversations yet.{'\n'}Start by asking Vaani a question!
-                </VaaniText>
+                <KrishiMitraAIText size="sm" color={colors.text.tertiary} align="center">
+                  No conversations yet.{'\n'}Start by asking KrishiMitra-AI a question!
+                </KrishiMitraAIText>
               </View>
             )}
           </ScrollView>

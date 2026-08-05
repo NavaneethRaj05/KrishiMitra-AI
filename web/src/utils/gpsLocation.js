@@ -1,5 +1,5 @@
 /**
- * GPS Location Hook — Always-on location tracking for KrishiMind
+ * GPS Location Hook — Always-on location tracking for KrishiMitra-AI
  * 
  * Provides real-time GPS coordinates that are automatically sent
  * with every API request for location-aware agricultural advice.

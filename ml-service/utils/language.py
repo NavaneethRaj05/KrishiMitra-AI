@@ -64,7 +64,7 @@ import urllib.parse
 import requests
 import logging
 
-logger = logging.getLogger("krishimind.language")
+logger = logging.getLogger("krishimitra_ai.language")
 
 def translate_fallback_text(text: str, target_lang: str) -> str:
     """Translate text response to target language using Google Translate API, chunk by chunk, preserving markdown."""

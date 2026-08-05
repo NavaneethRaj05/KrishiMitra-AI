@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View, TouchableOpacity, Linking } from 'react-native'
 import { ExternalLink } from 'lucide-react-native'
 import { colors, spacing, radii } from '../ui/tokens'
-import { VaaniText } from '../ui/VaaniText'
+import { KrishiMitraAIText } from '../ui/KrishiMitraAIText'
 
 interface SourceCardProps {
   index: number
@@ -50,25 +50,25 @@ export const SourceCard: React.FC<SourceCardProps> = ({
       {/* Header Row */}
       <View style={styles.header}>
         <View style={[styles.indexCircle, { backgroundColor: config.border }]}>
-          <VaaniText size="xs" weight="bold" color={colors.text.inverse}>
+          <KrishiMitraAIText size="xs" weight="bold" color={colors.text.inverse}>
             {index}
-          </VaaniText>
+          </KrishiMitraAIText>
         </View>
 
         <View style={styles.headerText}>
           <View style={styles.sourceRow}>
-            <VaaniText size="xs" weight="bold" color={config.border}>
+            <KrishiMitraAIText size="xs" weight="bold" color={config.border}>
               {config.icon} {authorityBadge || source}
-            </VaaniText>
+            </KrishiMitraAIText>
             <View style={[styles.tierBadge, { backgroundColor: config.border + '22' }]}>
-              <VaaniText size="xs" weight="bold" color={config.border}>
+              <KrishiMitraAIText size="xs" weight="bold" color={config.border}>
                 {config.label}
-              </VaaniText>
+              </KrishiMitraAIText>
             </View>
           </View>
-          <VaaniText size="sm" weight="semibold" color={colors.text.primary} numberOfLines={1}>
+          <KrishiMitraAIText size="sm" weight="semibold" color={colors.text.primary} numberOfLines={1}>
             {title}
-          </VaaniText>
+          </KrishiMitraAIText>
         </View>
 
         {url && url !== '#' && (
@@ -79,21 +79,21 @@ export const SourceCard: React.FC<SourceCardProps> = ({
       </View>
 
       {/* Snippet */}
-      <VaaniText size="xs" color={colors.text.secondary} numberOfLines={2} style={styles.snippet}>
+      <KrishiMitraAIText size="xs" color={colors.text.secondary} numberOfLines={2} style={styles.snippet}>
         {snippet}
-      </VaaniText>
+      </KrishiMitraAIText>
 
       {/* Relevance micro-bar */}
       <View style={styles.relevanceContainer}>
-        <VaaniText size="xs" color={colors.text.tertiary}>
+        <KrishiMitraAIText size="xs" color={colors.text.tertiary}>
           Relevance
-        </VaaniText>
+        </KrishiMitraAIText>
         <View style={styles.relevanceTrack}>
           <View style={[styles.relevanceFill, { width: `${relPercent}%`, backgroundColor: config.border }]} />
         </View>
-        <VaaniText size="xs" color={colors.text.tertiary}>
+        <KrishiMitraAIText size="xs" color={colors.text.tertiary}>
           {relPercent}%
-        </VaaniText>
+        </KrishiMitraAIText>
       </View>
     </TouchableOpacity>
   )

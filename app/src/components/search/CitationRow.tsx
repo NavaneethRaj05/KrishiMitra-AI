@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, TouchableOpacity, Linking } from 'react-native'
 import { colors, spacing, radii } from '../ui/tokens'
-import { VaaniText } from '../ui/VaaniText'
+import { KrishiMitraAIText } from '../ui/KrishiMitraAIText'
 import { ExternalLink } from 'lucide-react-native'
 
 interface Citation {
@@ -25,26 +25,26 @@ export const CitationRow: React.FC<CitationRowProps> = ({ citations }) => {
 
   return (
     <View style={styles.container}>
-      <VaaniText size="base" weight="semibold" color={colors.text.secondary} style={styles.title}>
+      <KrishiMitraAIText size="base" weight="semibold" color={colors.text.secondary} style={styles.title}>
         Sources & Citations
-      </VaaniText>
+      </KrishiMitraAIText>
       
       {citations.map((cite) => (
         <View key={cite.index} style={styles.card}>
           <View style={styles.header}>
             <View style={styles.indexCircle}>
-              <VaaniText size="xs" weight="bold" color={colors.text.inverse}>
+              <KrishiMitraAIText size="xs" weight="bold" color={colors.text.inverse}>
                 {cite.index}
-              </VaaniText>
+              </KrishiMitraAIText>
             </View>
             
             <View style={styles.headerText}>
-              <VaaniText size="sm" weight="semibold" color={colors.sand.bright}>
+              <KrishiMitraAIText size="sm" weight="semibold" color={colors.sand.bright}>
                 {cite.source}
-              </VaaniText>
-              <VaaniText size="xs" color={colors.text.secondary} numberOfLines={1}>
+              </KrishiMitraAIText>
+              <KrishiMitraAIText size="xs" color={colors.text.secondary} numberOfLines={1}>
                 {cite.title}
-              </VaaniText>
+              </KrishiMitraAIText>
             </View>
 
             {cite.url && cite.url !== '#' && (
@@ -54,9 +54,9 @@ export const CitationRow: React.FC<CitationRowProps> = ({ citations }) => {
             )}
           </View>
           
-          <VaaniText size="sm" color={colors.text.secondary} style={styles.snippet}>
+          <KrishiMitraAIText size="sm" color={colors.text.secondary} style={styles.snippet}>
             "{cite.snippet}"
-          </VaaniText>
+          </KrishiMitraAIText>
         </View>
       ))}
     </View>

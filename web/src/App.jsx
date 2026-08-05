@@ -9,7 +9,7 @@ import SettingsPanel from './components/SettingsPanel';
 import CropCalendar from './components/CropCalendar';
 import { translate } from './utils/translations';
 import { submitQuery, transcribeVoice, reverseGeocode } from './api/queryRouter';
-import { cacheWeather, getCachedWeather, cacheMarket, getCachedMarket, saveThread, getThread, getQueuedRequests, clearQueue } from './utils/offlineStore';
+import { cacheWeather, getCachedWeather, cacheMarket, getCachedMarket, saveThread, getThread, listThreads, deleteThread, getQueuedRequests, clearQueue } from './utils/offlineStore';
 import { startLocationTracking, stopLocationTracking, getCurrentLocation, onStatusUpdate, retryLocationTracking, onLocationUpdate } from './utils/gpsLocation';
 import LocationOverlay from './components/LocationOverlay';
 
@@ -77,6 +77,8 @@ function App() {
   const [geocodedLocation, setGeocodedLocation] = useState(null);
   const [activeNav, setActiveNav] = useState('home');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [activeThreadId, setActiveThreadId] = useState('active_thread');
+  const [threadHistory, setThreadHistory] = useState([]); // [{id, preview, updatedAt}]
 
   // ── Restore thread from IndexedDB on startup ──
   useEffect(() => {
@@ -86,6 +88,9 @@ function App() {
         setThread(saved);
         setView('thread');
       }
+      // Load conversation history for sidebar
+      const history = await listThreads();
+      setThreadHistory(history);
     }
     restoreThread();
   }, []);
@@ -248,7 +253,7 @@ function App() {
     };
     fetchWeather();
     return () => { active = false; };
-  }, [profile.district, profile.lat, profile.lng, gpsCoords, lang]);
+  }, [profile.district, profile.lat, profile.lng, gpsCoords]); // lang intentionally excluded — weather data is language-agnostic
 
   // ── Fetch Market ──
   useEffect(() => {
@@ -256,15 +261,7 @@ function App() {
     const fetchMarket = async () => {
       setMarket(prev => ({ ...prev, loading: true }));
 
-      const cached = await getCachedMarket();
-      if (cached && active) {
-        setMarket({ ...cached, loading: false });
-      }
-
-      let host = window.location.hostname || 'localhost';
-      if (host === 'localhost') host = '127.0.0.1';
       const district = profile.district || 'Hassan';
-      
       let crop = profile.crop || 'Tomato';
       if (profile.majorCrops && profile.majorCrops.length > 0) {
         if (crop === 'Tomato') {
@@ -273,7 +270,14 @@ function App() {
         }
       }
 
+      const cached = await getCachedMarket(crop, district);
+      if (cached && active) {
+        setMarket({ ...cached, loading: false });
+      }
+
       let headers = {};
+      let host = window.location.hostname || 'localhost';
+      if (host === 'localhost') host = '127.0.0.1';
       if (gpsCoords && gpsCoords.latitude && gpsCoords.longitude) {
         headers['X-Latitude'] = String(gpsCoords.latitude);
         headers['X-Longitude'] = String(gpsCoords.longitude);
@@ -290,7 +294,7 @@ function App() {
             trend: `${item.trend} this week`,
           };
           setMarket({ ...m, loading: false });
-          cacheMarket(m);
+          cacheMarket(m, crop, district);
         } else if (active && !cached) {
           setMarket({ price: '₹1,850/q', trend: '+5% this week', loading: false });
         }
@@ -412,10 +416,38 @@ function App() {
     }
   };
 
-  const handleNewThread = () => {
+  const handleNewThread = async () => {
+    // Archive the current thread before clearing (if it has messages)
+    if (thread.length > 0) {
+      const archiveId = `thread_${Date.now()}`;
+      await saveThread(archiveId, thread);
+      // Refresh history list
+      const history = await listThreads();
+      setThreadHistory(history);
+    }
     setThread([]);
+    setActiveThreadId('active_thread');
     setView('home');
     setHomeQuery('');
+  };
+
+  const handleLoadThread = async (id) => {
+    const saved = await getThread(id);
+    if (saved) {
+      // Archive current active thread first
+      if (thread.length > 0) {
+        await saveThread(`thread_${Date.now()}`, thread);
+      }
+      setThread(saved);
+      setActiveThreadId(id);
+      setView('thread');
+    }
+  };
+
+  const handleDeleteThread = async (id) => {
+    await deleteThread(id);
+    const history = await listThreads();
+    setThreadHistory(history);
   };
 
   const handleChipClick = (chipQuery) => {
@@ -447,6 +479,10 @@ function App() {
         activeNav={activeNav}
         onNavChange={setActiveNav}
         profile={profile}
+        threadHistory={threadHistory}
+        activeThreadId={activeThreadId}
+        onLoadThread={(id) => { handleLoadThread(id); setIsMenuOpen(false); }}
+        onDeleteThread={handleDeleteThread}
       />
 
       {/* Main Layout Area */}

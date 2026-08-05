@@ -1,34 +1,44 @@
-import React from 'react'
-import { StyleSheet, View, TouchableOpacity, ScrollView } from 'react-native'
-import { colors, spacing, radii } from '../ui/tokens'
-import { VaaniText } from '../ui/VaaniText'
-import { ArrowRight } from 'lucide-react-native'
+/**
+ * FollowUpChips — themed follow-up question chips.
+ */
 
-interface FollowUpChipsProps {
+import React from 'react'
+import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native'
+import { ArrowRight } from 'lucide-react-native'
+import { useTheme } from '../../hooks/useTheme'
+import { spacing, radii } from '../../theme/tokens'
+import { KMText } from '../ui/Text'
+
+interface Props {
   chips: string[]
   onChipPress: (chip: string) => void
 }
 
-export const FollowUpChips: React.FC<FollowUpChipsProps> = ({ chips, onChipPress }) => {
-  if (!chips || chips.length === 0) return null
+export const FollowUpChips: React.FC<Props> = ({ chips, onChipPress }) => {
+  const { theme } = useTheme()
+  if (!chips?.length) return null
 
   return (
-    <View style={styles.container}>
-      <VaaniText size="sm" weight="semibold" color={colors.text.secondary} style={styles.title}>
-        Suggested Follow-up Questions:
-      </VaaniText>
-      
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
-        {chips.map((chip, idx) => (
+    <View style={styles.wrapper}>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.scroll}
+      >
+        {chips.map((chip, i) => (
           <TouchableOpacity
-            key={idx}
+            key={i}
             onPress={() => onChipPress(chip)}
-            style={styles.chip}
+            style={[styles.chip, {
+              backgroundColor: theme.accent.primaryDim,
+              borderColor: theme.accent.primary + '50',
+            }]}
+            activeOpacity={0.75}
           >
-            <VaaniText size="sm" color={colors.green.bright} style={styles.chipText}>
+            <KMText size="sm" color={theme.accent.primary} style={{ flex: 1, marginRight: spacing.xs }}>
               {chip}
-            </VaaniText>
-            <ArrowRight size={14} color={colors.green.bright} />
+            </KMText>
+            <ArrowRight size={13} color={theme.accent.primary} />
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -37,29 +47,22 @@ export const FollowUpChips: React.FC<FollowUpChipsProps> = ({ chips, onChipPress
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginVertical: spacing.md,
+  wrapper: {
     width: '100%',
   },
-  title: {
-    marginBottom: spacing.sm,
-  },
-  scrollContent: {
+  scroll: {
+    gap: spacing.sm,
     paddingRight: spacing.xl,
   },
   chip: {
-    alignItems: 'center',
-    backgroundColor: colors.green.dim,
-    borderColor: colors.green.dark,
-    borderRadius: radii.full,
-    borderWidth: 1,
     flexDirection: 'row',
-    marginRight: spacing.sm,
-    paddingHorizontal: spacing.base,
+    alignItems: 'center',
+    borderRadius: radii.xl,
+    borderWidth: 1,
+    paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
-  },
-  chipText: {
-    marginRight: spacing.xs,
+    maxWidth: 280,
   },
 })
-export default FollowUpChips;
+
+export default FollowUpChips

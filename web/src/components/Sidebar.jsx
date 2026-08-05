@@ -1,6 +1,18 @@
-import { Sprout, Plus, Wifi, WifiOff, Settings, Menu, X, Home, Calendar, TrendingUp, CloudRain } from 'lucide-react';
+import { Sprout, Plus, Wifi, WifiOff, Settings, X, Home, Calendar, MessageSquare, Trash2, Clock } from 'lucide-react';
 import LanguageSelector from './LanguageSelector';
 import { translate } from '../utils/translations';
+
+function formatRelativeTime(ts) {
+  if (!ts) return '';
+  const diff = Date.now() - ts;
+  const mins = Math.floor(diff / 60000);
+  const hours = Math.floor(diff / 3600000);
+  const days = Math.floor(diff / 86400000);
+  if (mins < 1) return 'just now';
+  if (mins < 60) return `${mins}m ago`;
+  if (hours < 24) return `${hours}h ago`;
+  return `${days}d ago`;
+}
 
 export default function Sidebar({
   isOpen,
@@ -12,7 +24,11 @@ export default function Sidebar({
   onOpenSettings,
   activeNav,
   onNavChange,
-  profile
+  profile,
+  threadHistory = [],
+  activeThreadId,
+  onLoadThread,
+  onDeleteThread,
 }) {
   const navItems = [
     { key: 'home', label: 'Home / Ask', icon: Home },
@@ -42,7 +58,7 @@ export default function Sidebar({
           </button>
         </div>
 
-        {/* Action button */}
+        {/* New Thread button */}
         <div className="px-4 py-4">
           <button
             onClick={() => {
@@ -58,7 +74,7 @@ export default function Sidebar({
         </div>
 
         {/* Navigation list */}
-        <nav className="flex-1 px-3 space-y-1 overflow-y-auto">
+        <nav className="px-3 space-y-1">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = activeNav === item.key;
@@ -81,6 +97,67 @@ export default function Sidebar({
             );
           })}
         </nav>
+
+        {/* ── Conversation History ── */}
+        <div className="flex-1 overflow-y-auto px-3 mt-3">
+          {threadHistory.length > 0 && (
+            <>
+              <p className="text-[9px] font-bold text-text-tertiary uppercase tracking-wider px-2 mb-2">
+                History
+              </p>
+              <div className="space-y-1">
+                {threadHistory.map((t) => {
+                  const isActive = activeThreadId === t.id;
+                  return (
+                    <div
+                      key={t.id}
+                      className={`group flex items-start gap-2 px-3 py-2.5 rounded-xl cursor-pointer transition-all ${
+                        isActive
+                          ? 'bg-accent-muted border border-accent/20'
+                          : 'hover:bg-bg-hover'
+                      }`}
+                      onClick={() => onLoadThread?.(t.id)}
+                    >
+                      <MessageSquare
+                        size={13}
+                        className={`mt-0.5 flex-shrink-0 ${isActive ? 'text-accent' : 'text-text-tertiary'}`}
+                      />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[11px] font-medium text-text-primary truncate leading-tight">
+                          {t.preview || '(empty thread)'}
+                        </p>
+                        <div className="flex items-center gap-1 mt-0.5">
+                          <Clock size={9} className="text-text-tertiary" />
+                          <span className="text-[9px] text-text-tertiary">{formatRelativeTime(t.updatedAt)}</span>
+                        </div>
+                      </div>
+                      {/* Delete button — only shows on hover */}
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDeleteThread?.(t.id);
+                        }}
+                        className="opacity-0 group-hover:opacity-100 p-0.5 rounded text-text-tertiary hover:text-danger transition-all flex-shrink-0"
+                        title="Delete this conversation"
+                      >
+                        <Trash2 size={11} />
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
+          )}
+
+          {threadHistory.length === 0 && (
+            <div className="px-3 py-4 text-center">
+              <MessageSquare size={20} className="text-text-tertiary/40 mx-auto mb-2" />
+              <p className="text-[10px] text-text-tertiary">
+                Past conversations appear here
+              </p>
+            </div>
+          )}
+        </div>
 
         {/* Bottom Panel */}
         <div className="p-4 border-t border-border/40 bg-bg-elevated/40 space-y-3.5">

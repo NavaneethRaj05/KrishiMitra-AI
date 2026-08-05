@@ -16,8 +16,8 @@ class ConfidenceScorer:
         """
         score = 50 # Base score
         
-        # 1. Citation Analysis
-        citations = len(set(re.findall(r'\[(\d+)\]', answer)))
+        # 1. Citation Analysis — matches [Source: Title] format used by the LLM
+        citations = len(set(re.findall(r'\[Source:\s*.*?\]', answer)))
         words = len(answer.split())
         
         if words > 0:

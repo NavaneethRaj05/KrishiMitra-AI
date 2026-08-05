@@ -291,7 +291,7 @@ class KrishiSearchService:
                 yield {"type": "related", "questions": related}
 
             # ── 8. Done ───────────────────────────────────────────────────────
-            citation_count = len(set(re.findall(r'\[(\d+)\]', full_answer)))
+            citation_count = len(set(re.findall(r'\[Source:\s*.*?\]', full_answer)))
             yield {
                 "type":             "done",
                 "mode":             mode,

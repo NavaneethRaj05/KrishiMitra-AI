@@ -1,10 +1,18 @@
+/**
+ * PhotoCapture — full-screen camera / gallery modal for crop scanning.
+ * Theme-aware: adapts to light / dark / system.
+ */
+
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, TouchableOpacity, Modal, Alert, ActivityIndicator } from 'react-native'
+import {
+  StyleSheet, View, TouchableOpacity, Modal, Alert, ActivityIndicator,
+} from 'react-native'
 import { Camera, CameraView } from 'expo-camera'
 import { X, ImageIcon, Zap, RefreshCw } from 'lucide-react-native'
 import Svg, { Rect } from 'react-native-svg'
-import { colors, spacing, radii } from '../ui/tokens'
-import { VaaniText } from '../ui/VaaniText'
+import { useTheme } from '../../hooks/useTheme'
+import { spacing, radii } from '../../theme/tokens'
+import { KMText } from '../ui/Text'
 import { photoService } from '../../services/photoService'
 
 interface PhotoCaptureProps {
@@ -13,32 +21,33 @@ interface PhotoCaptureProps {
   onPhotoSelected?: (uri: string) => void | Promise<void>
 }
 
-export const PhotoCapture: React.FC<PhotoCaptureProps> = ({ onClose, navigation, onPhotoSelected }) => {
+export const PhotoCapture: React.FC<PhotoCaptureProps> = ({
+  onClose,
+  navigation,
+  onPhotoSelected,
+}) => {
+  const { theme } = useTheme()
   const [hasPermission, setHasPermission] = useState<boolean | null>(null)
   const [mode, setMode] = useState<'disease' | 'pest' | 'soil'>('disease')
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync()
-      setHasPermission(status === 'granted')
-    })()
+    Camera.requestCameraPermissionsAsync().then(({ status }) =>
+      setHasPermission(status === 'granted'),
+    )
   }, [])
 
   const handleGallerySelect = async () => {
     const uri = await photoService.selectPhotoFromGallery()
-    if (uri) {
-      processPhoto(uri)
-    }
+    if (uri) processPhoto(uri)
   }
 
-  const handleCapture = async () => {
-    // Standard mock capture to make it fully functional in emulator and web
+  const handleCapture = () => {
     setLoading(true)
     setTimeout(() => {
       setLoading(false)
       processPhoto('mock_captured_image_uri')
-    }, 1000)
+    }, 900)
   }
 
   const processPhoto = async (uri: string) => {
@@ -52,21 +61,18 @@ export const PhotoCapture: React.FC<PhotoCaptureProps> = ({ onClose, navigation,
     const result = await photoService.runDiseaseDetection(uri)
     setLoading(false)
     onClose()
-    
-    // Navigate to annotated result screen
-    navigation.navigate('SearchResult', {
+    navigation.navigate('AskResult', {
       query: `Treatment for ${result.disease}`,
       imageUri: uri,
       imageContext: result,
-      autoSubmit: true
     })
   }
 
   if (hasPermission === null) {
     return (
       <Modal visible transparent>
-        <View style={styles.overlay}>
-          <ActivityIndicator size="large" color={colors.green.bright} />
+        <View style={[styles.overlay, { backgroundColor: theme.bg.base }]}>
+          <ActivityIndicator size="large" color={theme.accent.primary} />
         </View>
       </Modal>
     )
@@ -74,94 +80,98 @@ export const PhotoCapture: React.FC<PhotoCaptureProps> = ({ onClose, navigation,
 
   return (
     <Modal visible transparent animationType="slide" onRequestClose={onClose}>
-      <View style={styles.overlay}>
+      <View style={[styles.overlay, { backgroundColor: theme.bg.base }]}>
         {/* Header */}
-        <View style={styles.header}>
+        <View style={[styles.header, { borderBottomColor: theme.border.subtle }]}>
           <TouchableOpacity onPress={onClose} style={styles.headerBtn}>
-            <X size={24} color={colors.text.primary} />
+            <X size={24} color={theme.text.primary} />
           </TouchableOpacity>
-          <VaaniText size="md" weight="bold">
-            Scan Crop
-          </VaaniText>
+          <KMText size="md" weight="semibold">Scan Crop</KMText>
           <TouchableOpacity style={styles.headerBtn}>
-            <Zap size={20} color={colors.text.primary} />
+            <Zap size={20} color={theme.text.secondary} />
           </TouchableOpacity>
         </View>
 
-        {/* Viewfinder Area */}
-        <View style={styles.viewfinderContainer}>
+        {/* Viewfinder */}
+        <View style={styles.viewfinder}>
           {hasPermission ? (
             <CameraView style={StyleSheet.absoluteFillObject} />
           ) : (
-            <View style={styles.cameraFallback}>
-              <VaaniText size="sm" color={colors.text.secondary} align="center">
-                Camera access not granted. Click "Gallery" to upload a leaf photo.
-              </VaaniText>
+            <View style={[styles.cameraFallback, { backgroundColor: theme.bg.subtle }]}>
+              <KMText size="sm" color={theme.text.secondary} align="center">
+                Camera permission not granted.{'\n'}Use Gallery to upload a leaf photo.
+              </KMText>
             </View>
           )}
 
-          {/* SVG Guide Overlay Frame */}
+          {/* Guide frame */}
           <Svg style={[StyleSheet.absoluteFillObject, { pointerEvents: 'none' } as any]}>
             <Rect
-              x="10%"
-              y="15%"
-              width="80%"
-              height="70%"
+              x="8%"
+              y="12%"
+              width="84%"
+              height="72%"
               rx={radii.md}
               fill="none"
-              stroke={colors.green.bright}
+              stroke={theme.accent.primary}
               strokeWidth="2"
-              strokeDasharray="10, 5"
+              strokeDasharray="12,6"
             />
           </Svg>
 
-          <View style={styles.guideTextContainer}>
-            <VaaniText size="sm" weight="semibold" color={colors.green.bright} align="center">
-              Position leaf inside the outline frame
-            </VaaniText>
+          <View style={styles.guideLabel}>
+            <KMText size="sm" weight="semibold" color={theme.accent.primary} align="center">
+              Centre the leaf within the frame
+            </KMText>
           </View>
         </View>
 
-        {/* Mode Selector tabs */}
-        <View style={styles.tabContainer}>
-          {(['disease', 'pest', 'soil'] as const).map((t) => {
-            const isSelected = mode === t
-            return (
-              <TouchableOpacity
-                key={t}
-                onPress={() => setMode(t)}
-                style={[styles.tab, isSelected && styles.tabSelected]}
+        {/* Mode tabs */}
+        <View style={[styles.tabs, { backgroundColor: theme.bg.surface, borderColor: theme.border.default }]}>
+          {(['disease', 'pest', 'soil'] as const).map((m) => (
+            <TouchableOpacity
+              key={m}
+              onPress={() => setMode(m)}
+              style={[
+                styles.tab,
+                mode === m && { backgroundColor: theme.accent.primary },
+              ]}
+            >
+              <KMText
+                size="xs"
+                weight="bold"
+                color={mode === m ? theme.text.inverse : theme.text.secondary}
               >
-                <VaaniText size="sm" color={isSelected ? colors.text.inverse : colors.text.secondary} weight="bold">
-                  {t.toUpperCase()}
-                </VaaniText>
-              </TouchableOpacity>
-            )
-          })}
+                {m.toUpperCase()}
+              </KMText>
+            </TouchableOpacity>
+          ))}
         </View>
 
-        {/* Action Controls */}
-        <View style={styles.controlsContainer}>
+        {/* Controls */}
+        <View style={styles.controls}>
           <TouchableOpacity onPress={handleGallerySelect} style={styles.controlBtn}>
-            <ImageIcon size={24} color={colors.text.primary} />
-            <VaaniText size="xs" color={colors.text.secondary} style={styles.controlText}>
-              Gallery
-            </VaaniText>
+            <ImageIcon size={24} color={theme.text.primary} />
+            <KMText size="xs" color={theme.text.secondary} style={styles.controlLabel}>Gallery</KMText>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={handleCapture} style={styles.captureBtn} disabled={loading}>
-            {loading ? (
-              <ActivityIndicator color={colors.text.inverse} />
-            ) : (
-              <View style={styles.captureInnerCircle} />
-            )}
+          <TouchableOpacity
+            onPress={handleCapture}
+            disabled={loading}
+            style={[styles.captureBtn, { borderColor: theme.text.inverse }]}
+          >
+            {loading
+              ? <ActivityIndicator color={theme.text.inverse} />
+              : <View style={[styles.captureInner, { backgroundColor: theme.text.inverse }]} />
+            }
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => Alert.alert('Batch mode', 'Batch processing coming soon.')} style={styles.controlBtn}>
-            <RefreshCw size={24} color={colors.text.primary} />
-            <VaaniText size="xs" color={colors.text.secondary} style={styles.controlText}>
-              Batch
-            </VaaniText>
+          <TouchableOpacity
+            onPress={() => Alert.alert('Batch mode', 'Batch processing coming soon.')}
+            style={styles.controlBtn}
+          >
+            <RefreshCw size={24} color={theme.text.primary} />
+            <KMText size="xs" color={theme.text.secondary} style={styles.controlLabel}>Batch</KMText>
           </TouchableOpacity>
         </View>
       </View>
@@ -170,23 +180,21 @@ export const PhotoCapture: React.FC<PhotoCaptureProps> = ({ onClose, navigation,
 }
 
 const styles = StyleSheet.create({
-  overlay: {
-    backgroundColor: colors.bg.base,
-    flex: 1,
-  },
+  overlay: { flex: 1 },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     height: 56,
     paddingHorizontal: spacing.base,
-    borderBottomColor: colors.border.default,
     borderBottomWidth: 1,
   },
   headerBtn: {
     padding: spacing.sm,
+    width: 40,
+    alignItems: 'center',
   },
-  viewfinderContainer: {
+  viewfinder: {
     flex: 1,
     backgroundColor: '#000',
     position: 'relative',
@@ -197,30 +205,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: spacing.xl,
   },
-  guideTextContainer: {
+  guideLabel: {
     position: 'absolute',
     bottom: spacing.lg,
     left: 0,
     right: 0,
     alignItems: 'center',
   },
-  tabContainer: {
+  tabs: {
     flexDirection: 'row',
-    backgroundColor: colors.bg.card,
     borderRadius: radii.md,
+    borderWidth: 1,
     margin: spacing.base,
-    padding: 2,
+    padding: 3,
   },
   tab: {
     flex: 1,
     alignItems: 'center',
     paddingVertical: spacing.sm,
-    borderRadius: radii.md,
+    borderRadius: radii.sm,
   },
-  tabSelected: {
-    backgroundColor: colors.green.bright,
-  },
-  controlsContainer: {
+  controls: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
@@ -232,7 +237,7 @@ const styles = StyleSheet.create({
     padding: spacing.sm,
     width: 80,
   },
-  controlText: {
+  controlLabel: {
     marginTop: spacing.xs,
   },
   captureBtn: {
@@ -240,15 +245,14 @@ const styles = StyleSheet.create({
     height: 76,
     borderRadius: 38,
     borderWidth: 4,
-    borderColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  captureInnerCircle: {
+  captureInner: {
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#fff',
   },
 })
-export default PhotoCapture;
+
+export default PhotoCapture

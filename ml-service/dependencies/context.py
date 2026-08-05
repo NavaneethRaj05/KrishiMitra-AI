@@ -4,7 +4,7 @@ import logging
 from fastapi import Request, Depends
 from services.context_service import context_service
 
-logger = logging.getLogger("krishimind.query")
+logger = logging.getLogger("krishimitra_ai.query")
 
 async def get_current_user(request: Request) -> dict:
     profile_header = request.headers.get("x-user-profile")

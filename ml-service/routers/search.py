@@ -1,15 +1,11 @@
-"""KrishiSearch SSE streaming endpoint."""
 import json
+from typing import Optional
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from services.krishi_search_service import krishi_search_service
 
 router = APIRouter(prefix="/search", tags=["KrishiSearch"])
-
-
-from typing import Optional
-
 
 class SearchRequest(BaseModel):
     query:          str

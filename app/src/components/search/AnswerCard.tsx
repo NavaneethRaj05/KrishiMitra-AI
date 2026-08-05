@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, ScrollView } from 'react-native'
 import { colors, spacing, radii, shadows } from '../ui/tokens'
-import { VaaniText } from '../ui/VaaniText'
+import { KrishiMitraAIText } from '../ui/KrishiMitraAIText'
 import { SourceCard } from './SourceCard'
 import { ConfidenceBar } from './ConfidenceBar'
 import { GenerationExplainer } from './GenerationExplainer'
@@ -49,9 +49,9 @@ const renderBoldSegments = (str: string) => {
   return parts.map((part, i) => {
     if (part.startsWith('**') && part.endsWith('**')) {
       return (
-        <VaaniText key={i} size="base" weight="bold" color={colors.text.primary}>
+        <KrishiMitraAIText key={i} size="base" weight="bold" color={colors.text.primary}>
           {part.slice(2, -2)}
-        </VaaniText>
+        </KrishiMitraAIText>
       )
     }
     return part
@@ -70,9 +70,9 @@ const renderFormattedText = (text: string) => {
     if (trimmed.startsWith('### ') || trimmed.startsWith('## ')) {
       const headerText = trimmed.replace(/^#+\s*/, '')
       return (
-        <VaaniText key={lineIdx} size="md" weight="bold" color={colors.text.primary} style={{ marginTop: 8, marginBottom: 4 }}>
+        <KrishiMitraAIText key={lineIdx} size="md" weight="bold" color={colors.text.primary} style={{ marginTop: 8, marginBottom: 4 }}>
           {headerText}
-        </VaaniText>
+        </KrishiMitraAIText>
       )
     }
     
@@ -80,18 +80,18 @@ const renderFormattedText = (text: string) => {
       const bulletContent = trimmed.substring(2)
       return (
         <View key={lineIdx} style={{ flexDirection: 'row', marginLeft: 8, marginBottom: 4, alignItems: 'flex-start' }}>
-          <VaaniText size="base" color={colors.green.bright} style={{ marginRight: 6 }}>•</VaaniText>
-          <VaaniText size="base" color={colors.text.primary} style={{ flex: 1, lineHeight: 22 }}>
+          <KrishiMitraAIText size="base" color={colors.green.bright} style={{ marginRight: 6 }}>•</KrishiMitraAIText>
+          <KrishiMitraAIText size="base" color={colors.text.primary} style={{ flex: 1, lineHeight: 22 }}>
             {renderBoldSegments(bulletContent)}
-          </VaaniText>
+          </KrishiMitraAIText>
         </View>
       )
     }
 
     return (
-      <VaaniText key={lineIdx} size="base" color={colors.text.primary} style={{ lineHeight: 22, marginBottom: 4 }}>
+      <KrishiMitraAIText key={lineIdx} size="base" color={colors.text.primary} style={{ lineHeight: 22, marginBottom: 4 }}>
         {renderBoldSegments(trimmed)}
-      </VaaniText>
+      </KrishiMitraAIText>
     )
   })
 }
@@ -131,11 +131,11 @@ export const AnswerCard: React.FC<AnswerCardProps> = ({
       {/* Header with KrishiMitra label, Confidence badge, and Language Toggle */}
       <View style={styles.header}>
         <View style={styles.headerLeft}>
-          <VaaniText size="sm" weight="bold" color={colors.green.bright}>
+          <KrishiMitraAIText size="sm" weight="bold" color={colors.green.bright}>
             {t('answer.krishimitra_answer')}
-          </VaaniText>
+          </KrishiMitraAIText>
           <View style={styles.confBadge}>
-            <VaaniText size="xs" color="#3B6D11" weight="bold">{t('answer.high_confidence')}</VaaniText>
+            <KrishiMitraAIText size="xs" color="#3B6D11" weight="bold">{t('answer.high_confidence')}</KrishiMitraAIText>
           </View>
         </View>
       </View>
@@ -147,11 +147,11 @@ export const AnswerCard: React.FC<AnswerCardProps> = ({
             {citations.map((cite) => (
               <View key={cite.index} style={styles.sourceChip}>
                 <View style={styles.sourceNum}>
-                  <VaaniText size="xs" color="#0F6E56" weight="bold">{cite.index}</VaaniText>
+                  <KrishiMitraAIText size="xs" color="#0F6E56" weight="bold">{cite.index}</KrishiMitraAIText>
                 </View>
-                <VaaniText size="xs" color={colors.text.secondary} weight="semibold" style={{ marginLeft: 4 }}>
+                <KrishiMitraAIText size="xs" color={colors.text.secondary} weight="semibold" style={{ marginLeft: 4 }}>
                   {cite.source}
-                </VaaniText>
+                </KrishiMitraAIText>
               </View>
             ))}
           </ScrollView>
@@ -166,62 +166,62 @@ export const AnswerCard: React.FC<AnswerCardProps> = ({
       {/* Immediate action highlight card */}
       {finalTreatment && (
         <View style={styles.highlightBox}>
-          <VaaniText size="xs" weight="bold" color="#085041" style={{ marginBottom: 4 }}>
+          <KrishiMitraAIText size="xs" weight="bold" color="#085041" style={{ marginBottom: 4 }}>
             {t('answer.immediate_action')}
-          </VaaniText>
-          <VaaniText size="sm" color="#085041" style={{ marginBottom: 6, lineHeight: 20 }}>
+          </KrishiMitraAIText>
+          <KrishiMitraAIText size="sm" color="#085041" style={{ marginBottom: 6, lineHeight: 20 }}>
             {finalTreatment.immediate}
-          </VaaniText>
-          <VaaniText size="xs" color="#0F6E56" weight="semibold">
+          </KrishiMitraAIText>
+          <KrishiMitraAIText size="xs" color="#0F6E56" weight="semibold">
             {t('answer.control')}: {finalTreatment.chemical} ({t('answer.est_cost')}: {finalTreatment.costEstimate})
-          </VaaniText>
+          </KrishiMitraAIText>
         </View>
       )}
 
       {/* SHAP EXPLAINER CARD */}
       <View style={styles.shapWrap}>
-        <VaaniText size="xs" weight="bold" color={colors.text.primary} style={styles.shapTitle}>
+        <KrishiMitraAIText size="xs" weight="bold" color={colors.text.primary} style={styles.shapTitle}>
           {t('answer.shap_title')}
-        </VaaniText>
+        </KrishiMitraAIText>
         
         <View style={styles.shapRow}>
-          <VaaniText size="xs" color={colors.text.secondary} style={styles.shapLabel}>{t('shap.humidity')}</VaaniText>
+          <KrishiMitraAIText size="xs" color={colors.text.secondary} style={styles.shapLabel}>{t('shap.humidity')}</KrishiMitraAIText>
           <View style={styles.shapBarWrap}>
             <View style={[styles.shapBar, { width: '85%', backgroundColor: '#1D9E75' }]} />
           </View>
-          <VaaniText size="xs" color={colors.text.tertiary} style={styles.shapVal}>+0.85</VaaniText>
+          <KrishiMitraAIText size="xs" color={colors.text.tertiary} style={styles.shapVal}>+0.85</KrishiMitraAIText>
         </View>
         
         <View style={styles.shapRow}>
-          <VaaniText size="xs" color={colors.text.secondary} style={styles.shapLabel}>{t('shap.season')}</VaaniText>
+          <KrishiMitraAIText size="xs" color={colors.text.secondary} style={styles.shapLabel}>{t('shap.season')}</KrishiMitraAIText>
           <View style={styles.shapBarWrap}>
             <View style={[styles.shapBar, { width: '72%', backgroundColor: '#1D9E75' }]} />
           </View>
-          <VaaniText size="xs" color={colors.text.tertiary} style={styles.shapVal}>+0.72</VaaniText>
+          <KrishiMitraAIText size="xs" color={colors.text.tertiary} style={styles.shapVal}>+0.72</KrishiMitraAIText>
         </View>
 
         <View style={styles.shapRow}>
-          <VaaniText size="xs" color={colors.text.secondary} style={styles.shapLabel}>{t('shap.location')}</VaaniText>
+          <KrishiMitraAIText size="xs" color={colors.text.secondary} style={styles.shapLabel}>{t('shap.location')}</KrishiMitraAIText>
           <View style={styles.shapBarWrap}>
             <View style={[styles.shapBar, { width: '60%', backgroundColor: '#534AB7' }]} />
           </View>
-          <VaaniText size="xs" color={colors.text.tertiary} style={styles.shapVal}>+0.60</VaaniText>
+          <KrishiMitraAIText size="xs" color={colors.text.tertiary} style={styles.shapVal}>+0.60</KrishiMitraAIText>
         </View>
 
         <View style={styles.shapRow}>
-          <VaaniText size="xs" color={colors.text.secondary} style={styles.shapLabel}>{t('shap.soil_type')}</VaaniText>
+          <KrishiMitraAIText size="xs" color={colors.text.secondary} style={styles.shapLabel}>{t('shap.soil_type')}</KrishiMitraAIText>
           <View style={styles.shapBarWrap}>
             <View style={[styles.shapBar, { width: '40%', backgroundColor: '#534AB7' }]} />
           </View>
-          <VaaniText size="xs" color={colors.text.tertiary} style={styles.shapVal}>+0.40</VaaniText>
+          <KrishiMitraAIText size="xs" color={colors.text.tertiary} style={styles.shapVal}>+0.40</KrishiMitraAIText>
         </View>
 
         <View style={styles.shapRow}>
-          <VaaniText size="xs" color={colors.text.secondary} style={styles.shapLabel}>{t('shap.temperature')}</VaaniText>
+          <KrishiMitraAIText size="xs" color={colors.text.secondary} style={styles.shapLabel}>{t('shap.temperature')}</KrishiMitraAIText>
           <View style={styles.shapBarWrap}>
             <View style={[styles.shapBar, { width: '25%', backgroundColor: '#EF9F27' }]} />
           </View>
-          <VaaniText size="xs" color={colors.text.tertiary} style={styles.shapVal}>−0.25</VaaniText>
+          <KrishiMitraAIText size="xs" color={colors.text.tertiary} style={styles.shapVal}>−0.25</KrishiMitraAIText>
         </View>
       </View>
 
@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
     padding: spacing.base,
     marginBottom: spacing.base,
     width: '100%',
-    ...shadows.card,
+    ...shadows.sm,
   },
   header: {
     flexDirection: 'row',

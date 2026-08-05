@@ -1,244 +1,229 @@
+/**
+ * SettingsScreen — detailed farm profile editor + preferences.
+ */
+
 import React, { useState } from 'react'
-import { StyleSheet, View, ScrollView, SafeAreaView, TouchableOpacity, Alert } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  SafeAreaView,
+  TouchableOpacity,
+  Alert,
+} from 'react-native'
 import { ArrowLeft, Save, LogOut } from 'lucide-react-native'
-import { colors, spacing, radii } from '../../components/ui/tokens'
-import { VaaniText } from '../../components/ui/VaaniText'
-import { VaaniInput } from '../../components/ui/VaaniInput'
-import { VaaniButton } from '../../components/ui/VaaniButton'
+import { useTheme } from '../../hooks/useTheme'
+import { spacing, radii } from '../../theme/tokens'
+import { KMText } from '../../components/ui/Text'
+import { KMInput } from '../../components/ui/Input'
+import { KMButton } from '../../components/ui/Button'
+import { KMStatusBar } from '../../components/ui/StatusBar'
 import { useAuthStore } from '../../store/useAuthStore'
-import { useThemeStore } from '../../store/useThemeStore'
 import { authService } from '../../services/authService'
 import { setLanguage, getLanguage, getLanguagesList, t } from '../../i18n'
 
-export const SettingsScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
+export default function SettingsScreen({ navigation }: any) {
+  const { theme } = useTheme()
   const authStore = useAuthStore()
   const farmer = authStore.farmer
 
-  const [name, setName] = useState(farmer?.name || '')
-  const [district, setDistrict] = useState(farmer?.district || '')
-  const [block, setBlock] = useState(farmer?.block || '')
-  const [selectedLanguage, setSelectedLanguage] = useState(getLanguage())
+  const [name, setName] = useState(farmer?.name ?? '')
+  const [district, setDistrict] = useState(farmer?.district ?? '')
+  const [block, setBlock] = useState(farmer?.block ?? '')
+  const [selectedLang, setSelectedLang] = useState(getLanguage())
 
-  const handleLanguageChange = (langCode: string) => {
-    setSelectedLanguage(langCode)
-    setLanguage(langCode)
-    if (farmer) {
-      useAuthStore.getState().setFarmer({
-        ...farmer,
-        preferredLanguage: langCode
-      })
-    }
+  const handleLangChange = (code: string) => {
+    setSelectedLang(code)
+    setLanguage(code)
+    if (farmer) authStore.setFarmer({ preferredLanguage: code })
   }
 
   const handleSave = async () => {
     if (!name.trim()) {
-      Alert.alert('Error', 'Name cannot be empty.')
+      Alert.alert('Required', 'Name cannot be empty.')
       return
     }
-
-    setLanguage(selectedLanguage)
-
-    const updatedProfile = {
-      ...farmer!,
-      name,
-      district,
-      block,
-      preferredLanguage: selectedLanguage
-    }
-
-    const success = await authService.saveSetup(updatedProfile)
-    if (success) {
-      Alert.alert('Success', t('settings.saved'))
+    const updated = { ...farmer!, name: name.trim(), district, block, preferredLanguage: selectedLang }
+    const ok = await authService.saveSetup(updated)
+    if (ok) {
+      Alert.alert('Saved', 'Profile updated.')
       navigation.goBack()
     } else {
-      Alert.alert('Error', 'Failed to update settings.')
+      authStore.setFarmer(updated)
+      navigation.goBack()
     }
   }
 
   const handleLogout = () => {
-    authStore.logout()
-    navigation.replace('Welcome')
+    Alert.alert('Log out', 'Are you sure?', [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Log out', style: 'destructive',
+        onPress: () => {
+          authStore.logout()
+          navigation.replace('Welcome')
+        },
+      },
+    ])
   }
 
+  const languages = getLanguagesList()
+
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: colors.bg.base }]}>
-      {/* Header */}
-      <View style={[styles.header, { borderBottomColor: colors.border.default }]}>
+    <SafeAreaView style={[styles.root, { backgroundColor: theme.bg.base }]}>
+      <KMStatusBar />
+
+      {/* App bar */}
+      <View style={[styles.appBar, { borderBottomColor: theme.border.subtle }]}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-          <ArrowLeft size={24} color={colors.text.primary} />
+          <ArrowLeft size={22} color={theme.text.primary} />
         </TouchableOpacity>
-        <VaaniText size="md" weight="bold" color={colors.text.primary}>
-          {t('tabs.settings')}
-        </VaaniText>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <TouchableOpacity onPress={handleSave} style={[styles.backBtn, { marginRight: spacing.sm }]}>
-            <Save size={20} color={colors.green.bright} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handleLogout} style={styles.backBtn}>
-            <LogOut size={20} color={colors.red} />
-          </TouchableOpacity>
-        </View>
+        <KMText size="md" weight="semibold">Settings</KMText>
+        <TouchableOpacity onPress={handleSave} style={[styles.saveBtn, { backgroundColor: theme.accent.primaryDim }]}>
+          <Save size={16} color={theme.accent.primary} />
+        </TouchableOpacity>
       </View>
 
-      <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
-        {/* Profile Details */}
-        <View style={styles.section}>
-          <VaaniText size="base" weight="semibold" style={styles.sectionTitle} color={colors.text.primary}>
-            {t('sidebar.farm_profile')}
-          </VaaniText>
-          
-          <VaaniInput
-            value={name}
-            onChangeText={setName}
-            label={t('onboarding.your_name')}
-          />
-          <VaaniInput
-            value={farmer?.phone || ''}
-            editable={false}
-            label={t('auth.enter_phone')}
-            style={styles.disabledInput}
-          />
-        </View>
+      <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
+        {/* Profile section */}
+        <KMText size="xs" weight="semibold" color={theme.text.tertiary} style={styles.sectionLabel}>
+          FARM PROFILE
+        </KMText>
+        <KMInput
+          label="Full Name"
+          value={name}
+          onChangeText={setName}
+          placeholder="e.g. Rajesh Gowda"
+        />
+        <KMInput
+          label="Phone"
+          value={farmer?.phone ?? ''}
+          editable={false}
+          style={{ opacity: 0.6 }}
+        />
 
-        {/* Location Details */}
-        <View style={styles.section}>
-          <VaaniText size="base" weight="semibold" style={styles.sectionTitle} color={colors.text.primary}>
-            {t('onboarding.step_location')}
-          </VaaniText>
-          
-          <VaaniInput
-            value={district}
-            onChangeText={setDistrict}
-            label={t('onboarding.district')}
-          />
-          <VaaniInput
-            value={block}
-            onChangeText={setBlock}
-            label={t('onboarding.block')}
-          />
-        </View>
+        {/* Location section */}
+        <KMText size="xs" weight="semibold" color={theme.text.tertiary} style={[styles.sectionLabel, { marginTop: spacing.md }]}>
+          LOCATION
+        </KMText>
+        <KMInput
+          label="District"
+          value={district}
+          onChangeText={setDistrict}
+          placeholder="e.g. Mandya"
+        />
+        <KMInput
+          label="Block / Village"
+          value={block}
+          onChangeText={setBlock}
+          placeholder="e.g. Maddur Block"
+        />
 
-        {/* Preferred Language */}
-        <View style={styles.section}>
-          <VaaniText size="base" weight="semibold" style={styles.sectionTitle} color={colors.text.primary}>
-            {t('home.choose_language')}
-          </VaaniText>
-          <View style={styles.languageGrid}>
-            {getLanguagesList().map((lang) => {
-              const isSelected = selectedLanguage === lang.code
-              return (
-                <TouchableOpacity
-                  key={lang.code}
-                  onPress={() => handleLanguageChange(lang.code)}
-                  style={[
-                    styles.langCard, 
-                    { backgroundColor: colors.bg.card, borderColor: colors.border.default },
-                    isSelected && { borderColor: colors.green.bright, backgroundColor: colors.green.dim }
-                  ]}
+        {/* Language section */}
+        <KMText size="xs" weight="semibold" color={theme.text.tertiary} style={[styles.sectionLabel, { marginTop: spacing.md }]}>
+          LANGUAGE
+        </KMText>
+        <View style={styles.langGrid}>
+          {languages.map((lang) => {
+            const isActive = selectedLang === lang.code
+            return (
+              <TouchableOpacity
+                key={lang.code}
+                onPress={() => handleLangChange(lang.code)}
+                style={[styles.langCard, {
+                  backgroundColor: isActive ? theme.accent.primaryDim : theme.bg.surface,
+                  borderColor: isActive ? theme.accent.primary : theme.border.default,
+                }]}
+              >
+                <KMText size="base" style={{ marginRight: spacing.sm }}>{lang.flag}</KMText>
+                <KMText
+                  size="sm"
+                  weight={isActive ? 'semibold' : 'regular'}
+                  color={isActive ? theme.accent.primary : theme.text.primary}
                 >
-                  <VaaniText size="base" style={styles.flag}>{lang.flag}</VaaniText>
-                  <VaaniText size="sm" weight={isSelected ? 'bold' : 'regular'} color={isSelected ? colors.green.bright : colors.text.primary}>
-                    {lang.name}
-                  </VaaniText>
-                </TouchableOpacity>
-              )
-            })}
-          </View>
+                  {lang.name}
+                </KMText>
+              </TouchableOpacity>
+            )
+          })}
         </View>
 
-        {/* Action Controls */}
-        <View style={styles.btnSection}>
-          <VaaniButton
-            title={t('onboarding.finish')}
-            onPress={handleSave}
-            style={styles.saveBtn}
-          />
-          
-          <TouchableOpacity onPress={handleLogout} style={styles.logoutBtn}>
-            <LogOut size={20} color={colors.red} style={styles.logoutIcon} />
-            <VaaniText size="sm" color={colors.red} weight="bold">
-              {t('sidebar.log_out')}
-            </VaaniText>
+        {/* Actions */}
+        <View style={styles.actions}>
+          <KMButton title="Save Changes" onPress={handleSave} fullWidth size="lg" />
+
+          <TouchableOpacity onPress={handleLogout} style={[styles.logoutRow, {
+            backgroundColor: theme.status.errorBg,
+            borderColor: theme.status.error + '40',
+          }]}>
+            <LogOut size={16} color={theme.status.error} />
+            <KMText size="base" weight="semibold" color={theme.status.error} style={{ marginLeft: spacing.sm }}>
+              Log out
+            </KMText>
           </TouchableOpacity>
         </View>
+
+        <View style={{ height: spacing.xxl }} />
       </ScrollView>
     </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: colors.bg.base,
-    flex: 1,
-  },
-  header: {
+  root: { flex: 1 },
+  appBar: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    justifyContent: 'space-between',
     height: 56,
     paddingHorizontal: spacing.base,
-    borderBottomColor: colors.border.default,
     borderBottomWidth: 1,
   },
   backBtn: {
-    padding: spacing.sm,
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  scrollContent: {
+  saveBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: radii.full,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  scroll: {
     padding: spacing.base,
-    paddingBottom: 120,
+    paddingBottom: spacing.xxl,
   },
-  scrollView: {
-    flex: 1,
-  },
-  section: {
-    marginBottom: spacing.xl,
-  },
-  sectionTitle: {
+  sectionLabel: {
+    letterSpacing: 0.8,
     marginBottom: spacing.md,
-    color: colors.sand.bright,
   },
-  disabledInput: {
-    opacity: 0.6,
-    backgroundColor: colors.bg.base,
-  },
-  languageGrid: {
+  langGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    gap: spacing.sm,
+    marginBottom: spacing.xl,
   },
   langCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.bg.card,
-    borderColor: colors.border.default,
-    borderRadius: radii.md,
+    borderRadius: radii.lg,
     borderWidth: 1,
     padding: spacing.md,
-    marginBottom: spacing.md,
-    width: '48%',
+    minWidth: '47%',
   },
-  langCardSelected: {
-    borderColor: colors.green.bright,
-    backgroundColor: colors.green.dim,
+  actions: {
+    marginTop: spacing.md,
+    gap: spacing.md,
   },
-  flag: {
-    marginRight: spacing.sm,
-  },
-  btnSection: {
-    marginTop: spacing.xl,
-    alignItems: 'center',
-  },
-  saveBtn: {
-    width: '100%',
-    marginBottom: spacing.lg,
-  },
-  logoutBtn: {
+  logoutRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: spacing.md,
-  },
-  logoutIcon: {
-    marginRight: spacing.sm,
+    justifyContent: 'center',
+    borderRadius: radii.lg,
+    borderWidth: 1,
+    padding: spacing.base,
   },
 })
-export default SettingsScreen;

@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity, Linking } from 'react-native'
 import { colors, spacing, radii } from '../ui/tokens'
-import { VaaniText } from '../ui/VaaniText'
+import { KrishiMitraAIText } from '../ui/KrishiMitraAIText'
 
 interface SourceBadgeProps {
   index: number
@@ -18,9 +18,9 @@ export const SourceBadge: React.FC<SourceBadgeProps> = ({ index, name, url }) =>
 
   return (
     <TouchableOpacity onPress={handlePress} style={styles.badge} activeOpacity={0.7}>
-      <VaaniText size="xs" weight="semibold" color={colors.sand.bright}>
+      <KrishiMitraAIText size="xs" weight="semibold" color={colors.sand.bright}>
         [{index}] {name}
-      </VaaniText>
+      </KrishiMitraAIText>
     </TouchableOpacity>
   )
 }
