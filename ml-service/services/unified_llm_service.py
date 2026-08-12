@@ -44,7 +44,8 @@ class UnifiedLLMService:
         """Check if Ollama is running and discover available models."""
         try:
             import ollama
-            models_res = ollama.list()
+            client = ollama.Client(host=OLLAMA_HOST, timeout=3.0)
+            models_res = client.list()
             self.ollama_models = [m.get("name", m.get("model", "")) for m in models_res.get("models", [])]
             if self.ollama_models:
                 self.ollama_available = True
@@ -52,6 +53,7 @@ class UnifiedLLMService:
             else:
                 logger.warning("⚠️ Ollama is running but no models found. Run: ollama pull llama3.1:8b")
         except Exception as e:
+            self.ollama_available = False
             logger.warning("⚠️ Ollama not available: %s. Text/vision will use Gemini fallback if configured.", e)
 
     def _init_gemini(self):
@@ -109,10 +111,10 @@ class UnifiedLLMService:
 
         # 1. Try Ollama
         model = self._select_ollama_model()
-        if model:
+        if model and self.ollama_available:
             try:
                 from ollama import AsyncClient
-                client = AsyncClient(host=OLLAMA_HOST)
+                client = AsyncClient(host=OLLAMA_HOST, timeout=8.0)
                 res = await client.chat(
                     model=model,
                     messages=[
@@ -121,25 +123,24 @@ class UnifiedLLMService:
                     ],
                     options={"temperature": temperature}
                 )
-                logger.info("🦙 Ollama chat completed (model: %s, temperature: %.2f)", model, temperature)
+                logger.info("✅ Ollama chat completed (model: %s, temperature: %.2f)", model, temperature)
                 return res["message"]["content"]
             except Exception as e:
-                logger.warning("Ollama async chat failed, trying sync: %s", e)
+                logger.warning("Ollama async chat failed: %s", e)
                 try:
                     import ollama
-                    def _sync():
-                        return ollama.chat(
-                            model=model,
-                            messages=[
-                                {"role": "system", "content": system_prompt},
-                                {"role": "user", "content": full_message}
-                            ],
-                            options={"temperature": temperature}
-                        )
-                    res = await asyncio.to_thread(_sync)
+                    client = ollama.Client(host=OLLAMA_HOST, timeout=8.0)
+                    res = client.chat(
+                        model=model,
+                        messages=[
+                            {"role": "system", "content": system_prompt},
+                            {"role": "user", "content": full_message}
+                        ],
+                        options={"temperature": temperature}
+                    )
                     return res["message"]["content"]
                 except Exception as e2:
-                    logger.warning("Ollama sync chat also failed: %s", e2)
+                    logger.warning("Ollama sync chat also failed: %s", e2)nc chat also failed: %s", e2)
 
         # 2. Fallback to Gemini
         if self.gemini_client:

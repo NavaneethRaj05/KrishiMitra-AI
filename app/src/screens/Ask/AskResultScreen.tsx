@@ -274,8 +274,7 @@ export default function AskResultScreen({ route, navigation }: Props) {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    // ✅ Fix: removed overflow:hidden — was blocking scroll on web
-    ...(Platform.OS === 'web' ? { height: ('100vh' as any) } : {}),
+    ...(Platform.OS === 'web' ? { height: ('100vh' as any), maxHeight: ('100vh' as any), display: 'flex' as const, flexDirection: 'column' as const } : {}),
   },
   appBar: {
     flexDirection: 'row',
@@ -295,11 +294,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginHorizontal: spacing.xs,
   },
-  scroll: { flex: 1 },
+  scroll: {
+    flex: 1,
+    ...(Platform.OS === 'web' ? { overflowY: 'auto' as any } : {}),
+  },
   scrollContent: {
     padding: spacing.lg,
-    // ✅ Fix: enough bottom padding so content clears the sticky input bar
-    paddingBottom: 120,
+    paddingBottom: 180,
     flexGrow: 1,
   },
   answerCardWrapper: {

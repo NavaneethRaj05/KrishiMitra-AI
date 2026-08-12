@@ -271,8 +271,7 @@ export default function ThreadScreen({ route, navigation }: any) {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    // ✅ Removed overflow:hidden — was blocking scroll on web
-    ...(Platform.OS === 'web' ? { height: ('100vh' as any) } : {}),
+    ...(Platform.OS === 'web' ? { height: ('100vh' as any), maxHeight: ('100vh' as any), display: 'flex' as const, flexDirection: 'column' as const } : {}),
   },
   appBar: {
     flexDirection: 'row',
@@ -297,10 +296,14 @@ const styles = StyleSheet.create({
   loadingCenter: {
     flex: 1, justifyContent: 'center', alignItems: 'center',
   },
-  scroll: { flex: 1 },
+  scroll: {
+    flex: 1,
+    ...(Platform.OS === 'web' ? { overflowY: 'auto' as any } : {}),
+  },
   scrollContent: {
     paddingHorizontal: spacing.base,
     paddingTop: spacing.md,
+    paddingBottom: 180,
     flexGrow: 1,
   },
   thinkingBubble: {
