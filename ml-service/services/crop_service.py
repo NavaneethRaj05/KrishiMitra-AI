@@ -42,12 +42,25 @@ class CropService:
 
         self.model     = joblib.load(str(model_path))
         self.labels    = json.loads(labels_path.read_text())
-        self.explainer = shap.TreeExplainer(self.model)
+        # SHAP explainer is lazy-loaded on first use to avoid version-compatibility
+        # issues at startup (shap vs xgboost model format mismatches).
+        self.explainer = None
+
+    def _get_explainer(self):
+        """Lazy-load SHAP explainer on first use (catches version-compat errors)."""
+        if self.explainer is None and self.model is not None:
+            try:
+                self.explainer = shap.TreeExplainer(self.model)
+            except Exception as e:
+                import logging
+                logging.getLogger("krishimitraai").warning("SHAP explainer unavailable: %s", e)
+                self.explainer = False  # sentinel: tried and failed
+        return self.explainer if self.explainer else None
 
     # ──────────────────────────────────────────
     def predict(self, soil_data: dict) -> dict:
         """Predict best crop and return SHAP explanation + chart."""
-        if self.model is None or self.explainer is None or self.labels is None:
+        if self.model is None or self.labels is None:
             raise RuntimeError("Crop model not found. Run scripts/train_crop_model.py first.")
         X = np.array([[soil_data[f] for f in FEATURES]], dtype=float)
 
@@ -55,28 +68,31 @@ class CropService:
         pred_proba = self.model.predict_proba(X)[0]
         top3_idx   = np.argsort(pred_proba)[::-1][:3]
 
-        # SHAP values (multi-class → pick class of interest)
-        shap_values = self.explainer.shap_values(X)
-        sv = shap_values[pred_idx][0] if isinstance(shap_values, list) else shap_values[0]
+        explainer   = self._get_explainer()
+        shap_dict   = {}
+        sorted_shap = []
+        chart_b64   = None
 
-        shap_dict = {
-            FEATURES[i]: {
-                "shap_value":    round(float(sv[i]), 4),
-                "feature_value": round(float(X[0][i]), 2),
-                "label":         FEATURE_LABELS[FEATURES[i]],
-                "impact":        "positive" if sv[i] > 0 else "negative",
+        if explainer is not None:
+            shap_values = explainer.shap_values(X)
+            sv = shap_values[pred_idx][0] if isinstance(shap_values, list) else shap_values[0]
+            shap_dict = {
+                FEATURES[i]: {
+                    "shap_value":    round(float(sv[i]), 4),
+                    "feature_value": round(float(X[0][i]), 2),
+                    "label":         FEATURE_LABELS[FEATURES[i]],
+                    "impact":        "positive" if sv[i] > 0 else "negative",
+                }
+                for i in range(len(FEATURES))
             }
-            for i in range(len(FEATURES))
-        }
-
-        sorted_shap = sorted(
-            shap_dict.items(),
-            key=lambda x: abs(x[1]["shap_value"]),
-            reverse=True,
-        )
+            sorted_shap = sorted(
+                shap_dict.items(),
+                key=lambda x: abs(x[1]["shap_value"]),
+                reverse=True,
+            )
+            chart_b64 = self._generate_shap_chart(sorted_shap, self.labels[pred_idx])
 
         explanation = self._generate_explanation(self.labels[pred_idx], sorted_shap)
-        chart_b64   = self._generate_shap_chart(sorted_shap, self.labels[pred_idx])
 
         return {
             "recommended_crop": self.labels[pred_idx],

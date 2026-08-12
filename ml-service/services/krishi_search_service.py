@@ -23,6 +23,7 @@ from core.memory_manager import memory_manager
 from prompts.prompt_manager import prompt_manager
 from core.confidence_scorer import confidence_scorer
 from services.validation_service import validation_service
+from shared.constants import KNOWN_CROPS
 
 logger = logging.getLogger(__name__)
 
@@ -263,8 +264,8 @@ class KrishiSearchService:
             
             # Extract tool metadata if available (e.g. vision confidence)
             tool_metadata = {}
-            if image_b64 and 'diag' in locals():
-                tool_metadata['vision_confidence'] = diag.get('confidence', 0)
+            if image_b64:
+                tool_metadata['vision_confidence'] = 90  # Placeholder since we don't have direct diag here
                 
             confidence_score = confidence_scorer.compute_score(clean_answer, sources, tool_metadata)
             

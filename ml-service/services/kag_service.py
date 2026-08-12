@@ -1,4 +1,4 @@
-﻿"""
+"""
 KAG Service — Knowledge Augmented Generation via Neo4j graph queries.
 Complements RAG: RAG handles unstructured document retrieval,
 KAG handles structured relational reasoning
@@ -14,7 +14,7 @@ from neo4j.exceptions import ServiceUnavailable
 
 logger = logging.getLogger("krishimitraai.kag")
 
-URI  = os.getenv("NEO4J_URI",      "bolt://neo4j:7687")
+URI  = os.getenv("NEO4J_URI",      "bolt://localhost:7687")
 USER = os.getenv("NEO4J_USER",     "neo4j")
 PASS = os.getenv("NEO4J_PASSWORD", "krishimitraai123")
 

@@ -144,47 +144,6 @@ Humidity is 84% — **DO NOT spray today**. Wait for humidity below 75% (early m
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 """
 
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-CRITICAL DIAGNOSTIC RULES:
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-1. VISUAL-FIRST APPROACH:
-   - Lead with what you ACTUALLY SEE in the image: lesion shape, color, distribution pattern, affected plant parts.
-   - The CNN result is a HINT — cross-validate it visually. If the image shows late blight symptoms but CNN says early blight, trust what you see.
-   - If the image is blurry or unclear, say so honestly rather than guessing.
-
-2. MANDATORY DIAGNOSTIC FORMAT:
-
-   ### 👁️ Visual Evidence
-   Describe exactly what you observe: leaf color changes, lesion shape (circular/angular/irregular), lesion color, location on leaf (tip/margin/center), any mold/spores, stem/fruit symptoms if visible.
-
-   ### 🌍 Epidemiological Context
-   Based on the farmer's GPS location, temperature, humidity, and soil type — explain how their specific conditions PROMOTE or SUPPRESS this disease/pest.
-   Example: "At 85% humidity and 26°C in your region, Phytophthora late blight spreads rapidly through water splash..."
-
-   ### 🔬 Diagnosis & Confidence
-   - Disease Name (scientific name in italics where possible)
-   - Causal agent (fungus / bacteria / virus / nutrient deficiency / physiological)
-   - Differentiate from similar-looking diseases (e.g., "This appears to be early blight, NOT late blight, because the lesions have concentric rings and appear on older lower leaves first")
-
-   ### 💊 Treatment Protocol
-   Provide a PRECISE treatment table:
-
-   | Treatment Type | Product | Dosage | Timing |
-   |---|---|---|---|
-   | Chemical | Mancozeb 75% WP | 2.5 g/litre | Every 7-10 days |
-   | Organic | Neem Oil 5ml/L + soap | 5 ml/litre | Every 5 days |
-   | Bio-control | Trichoderma viride | 4 g/kg seed | At sowing |
-
-   ### 🛡️ Prevention for Next Season
-   Bullet-point preventive measures: resistant varieties, crop rotation, sanitation.
-
-   ### ⚠️ Weather Warning
-   If the farmer's current weather shows rain or high humidity (>75%), warn: "DO NOT spray fungicides now — wait for dry weather to maximize absorption."
-
-3. If the crop appears HEALTHY — say so clearly with confidence and suggest preventive care.
-"""
-
 SOIL_ADVISOR_PROMPT = """You are KrishiMitra AI's soil health expert and crop recommendation specialist.
 You have been given soil NPK test values, pH, temperature, and humidity, along with an XGBoost ML model prediction and SHAP feature importance values.
 

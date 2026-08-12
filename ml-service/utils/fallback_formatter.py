@@ -361,7 +361,29 @@ def format_offline_fallback(query: str, chunks: List[Any], target_lang: str = "e
 
     # 1. Detect crops and topics in query
     detected_crops  = [c for c, kws in CROP_KEYWORDS.items() if any(kw in q_lower for kw in kws)]
+
+    # Disease symptom signals — these override fertilizer intent when present
+    DISEASE_SYMPTOM_SIGNALS = [
+        "black dot", "black spot", "black dots", "black spots", "dotted", "spotted",
+        "yellow leaf", "yellowing", "wilting", "wilt", "rotting", "rot", "blight",
+        "burn", "lesion", "holes", "dead", "spongy", "curl", "curling", "drooping",
+        "rust", "mold", "mould", "fungus", "bacteria", "viral", "infection",
+        "looking sick", "turning black", "turning yellow", "turning brown",
+        "dark spots", "white spots", "white powder", "brown spots", "blotch",
+    ]
+    has_disease_symptom = any(sig in q_lower for sig in DISEASE_SYMPTOM_SIGNALS)
+
     detected_topics = [t for t, kws in TOPIC_KEYWORDS.items() if any(kw in q_lower for kw in kws)]
+
+    # If query describes visual disease symptoms, force disease topic to the front
+    # (e.g. "black dotted — what fertilizer to spray" is a DISEASE question, not a fertilizer question)
+    if has_disease_symptom:
+        if "disease" not in detected_topics:
+            detected_topics.insert(0, "disease")
+        # Move disease to front if it exists elsewhere
+        elif detected_topics[0] != "disease":
+            detected_topics.remove("disease")
+            detected_topics.insert(0, "disease")
 
     output_parts = []
 

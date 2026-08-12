@@ -16,8 +16,9 @@ import {
   ScrollView,
   SafeAreaView,
   ActivityIndicator,
-  Alert,
   TouchableOpacity,
+  Platform,
+  Alert,
 } from 'react-native'
 import { ArrowLeft } from 'lucide-react-native'
 import Animated, {
@@ -160,8 +161,10 @@ export default function AskResultScreen({ route, navigation }: Props) {
     })
   }
 
+  const Container = Platform.OS === 'web' ? View : SafeAreaView
+
   return (
-    <SafeAreaView style={[styles.root, { backgroundColor: theme.bg.base }]}>
+    <Container style={[styles.root, { backgroundColor: theme.bg.base }]}>
       <KMStatusBar />
 
       {/* App bar */}
@@ -218,7 +221,7 @@ export default function AskResultScreen({ route, navigation }: Props) {
           </View>
         )}
 
-        <View style={{ height: 140 }} />
+        <View style={{ height: 24 }} />
       </ScrollView>
 
       {/* Bottom sticky input */}
@@ -264,12 +267,16 @@ export default function AskResultScreen({ route, navigation }: Props) {
           }}
         />
       )}
-    </SafeAreaView>
+    </Container>
   )
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1 },
+  root: {
+    flex: 1,
+    // ✅ Fix: removed overflow:hidden — was blocking scroll on web
+    ...(Platform.OS === 'web' ? { height: ('100vh' as any) } : {}),
+  },
   appBar: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -291,7 +298,9 @@ const styles = StyleSheet.create({
   scroll: { flex: 1 },
   scrollContent: {
     padding: spacing.lg,
-    paddingBottom: spacing.xxl,
+    // ✅ Fix: enough bottom padding so content clears the sticky input bar
+    paddingBottom: 120,
+    flexGrow: 1,
   },
   answerCardWrapper: {
     marginTop: spacing.md,
@@ -307,10 +316,6 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   bottomBar: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
     paddingHorizontal: spacing.lg,
     paddingTop: spacing.md,
     paddingBottom: spacing.lg,

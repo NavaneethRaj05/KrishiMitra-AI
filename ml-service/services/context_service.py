@@ -14,7 +14,7 @@ try:
     from pymongo import MongoClient
     from bson import ObjectId
     mongo_uri = os.getenv("MONGODB_URI", "mongodb://localhost:27017/krishimitraai")
-    mongo_client = MongoClient(mongo_uri)
+    mongo_client = MongoClient(mongo_uri, serverSelectionTimeoutMS=3000)
     db = mongo_client.get_database()
 except Exception as e:
     logger.warning("pymongo client initiation failed, using fallback mock: %s", e)

@@ -11,8 +11,7 @@ import logging
 from pathlib import Path
 
 import numpy as np
-import ollama
-import tensorflow as tf
+import numpy as np
 from PIL import Image
 
 logger = logging.getLogger("krishimitraai.disease")
@@ -185,6 +184,7 @@ class DiseaseService:
         else:
             arr  = self.preprocess_image(image_bytes)
             if hasattr(self.model, "signatures") and "serving_default" in self.model.signatures:
+                import tensorflow as tf
                 infer = self.model.signatures["serving_default"]
                 tensor_input = tf.constant(arr)
                 input_key = list(infer.structured_input_signature[1].keys())[0]

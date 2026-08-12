@@ -9,7 +9,6 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 import chromadb
-import ollama
 from chromadb.config import Settings
 from sentence_transformers import SentenceTransformer
 
@@ -254,8 +253,7 @@ class RAGService:
         kag_context = ""
         try:
             from services.kag_service import kag_service
-            KNOWN_CROPS = ["tomato", "rice", "wheat", "maize", "potato",
-                           "cotton", "soybean", "banana", "coffee"]
+            from shared.constants import KNOWN_CROPS
             mentioned = [c for c in KNOWN_CROPS if c in query.lower()]
             if mentioned:
                 profile = kag_service.get_full_crop_profile(mentioned[0].title())
@@ -335,6 +333,7 @@ class RAGService:
             used_model = getattr(unified_llm_service, "_last_used_model", used_model)
         except Exception:
             try:
+                import ollama
                 response = ollama.chat(
                     model=used_model,
                     messages=[

@@ -177,6 +177,7 @@ export const AskBar: React.FC<AskBarProps> = ({
               {
                 color: theme.text.primary,
                 fontSize: typography.sizes.base,
+                ...(Platform.OS === 'web' && { outlineStyle: 'none' } as any),
               },
             ]}
             placeholder={

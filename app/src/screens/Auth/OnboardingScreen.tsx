@@ -15,7 +15,7 @@ import {
   ChevronLeft, Check,
 } from 'lucide-react-native'
 import { useTheme } from '../../hooks/useTheme'
-import { spacing, radii, typography, shadows } from '../../theme/tokens'
+import { spacing, radii, shadows } from '../../theme/tokens'
 import { KMText } from '../../components/ui/Text'
 import { KMInput } from '../../components/ui/Input'
 import { KMButton } from '../../components/ui/Button'

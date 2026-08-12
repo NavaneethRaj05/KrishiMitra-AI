@@ -19,8 +19,8 @@ import logging
 import re
 from dataclasses import dataclass
 from typing import Optional
-import ollama
 import os
+from shared.constants import KNOWN_CROPS
 
 logger = logging.getLogger("krishimitraai.intent")
 
@@ -107,18 +107,7 @@ class IntentResult:
             self.locations_mentioned = []
 
 
-KNOWN_CROPS = [
-    "rice", "wheat", "corn", "maize", "tomato", "potato", "onion", "garlic", "pepper",
-    "cotton", "soybean", "sugarcane", "banana", "mango", "coffee", "tea", "groundnut",
-    "sunflower", "mustard", "chickpea", "lentil", "pea", "ragi", "bajra", "jowar",
-    "sorghum", "barley", "oats", "eggplant", "brinjal", "cucumber", "pumpkin",
-    "okra", "cabbage", "cauliflower", "carrot", "spinach", "lettuce", "strawberry",
-    "grapes", "apple", "orange", "pomegranate", "guava", "papaya", "watermelon",
-    "ginger", "turmeric", "chilli", "coriander", "cumin", "cardamom", "rubber",
-    "coconut", "jute", "hemp", "tobacco", "vanilla", "saffron",
-    # Indian regional names
-    "takkali", "batata", "tamatar", "gehun", "chawal", "makka",
-]
+
 
 URGENCY_KEYWORDS = [
     "urgent", "emergency", "immediate", "critical", "dying", "all leaves",

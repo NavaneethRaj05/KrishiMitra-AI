@@ -1,4 +1,4 @@
-# Core
+﻿# Core
 fastapi
 uvicorn[standard]
 pydantic
@@ -10,7 +10,7 @@ sentence-transformers
 
 # LLM
 ollama
-google-genai  # Gemini fallback — requires GEMINI_API_KEY env var
+google-genai  # Gemini fallback - requires GEMINI_API_KEY env var
 
 # Disease Detection (CNN)
 tensorflow>=2.16.1
@@ -30,10 +30,10 @@ spacy
 skl2onnx
 onnx
 
-# KAG — Neo4j knowledge graph
+# KAG - Neo4j knowledge graph
 neo4j==5.20.0
 
-# AgriPerplexity — web search + reranking
+# AgriPerplexity - web search + reranking
 tavily-python==0.3.3
 beautifulsoup4==4.12.3
 # lxml (Removed to use built-in html.parser and avoid compiler dependency)
@@ -41,8 +41,8 @@ beautifulsoup4==4.12.3
 
 rank-bm25==0.2.2
 
-# TTS==0.22.0
-
+# Voice / TTS
+TTS==0.22.0
 
 # Utilities
 numpy
@@ -52,3 +52,4 @@ python-dotenv
 PyPDF2
 httpx
 pymongo
+librosa

@@ -185,7 +185,9 @@ export const AnswerBlock: React.FC<AnswerBlockProps> = ({
   }
 
   const toggleExplainer = () => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+    if (Platform.OS !== 'web') {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+    }
     setShowExplainer(!showExplainer)
   }
 
@@ -438,6 +440,7 @@ const styles = StyleSheet.create({
     paddingTop: spacing.lg,
     borderTopWidth: 1,
     marginBottom: 0,
+    ...(Platform.OS === 'web' && { outlineStyle: 'none' } as any),
   },
   explainerBody: {
     borderRadius: radii.lg,

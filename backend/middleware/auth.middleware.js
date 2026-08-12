@@ -18,7 +18,8 @@ export const protect = (req, res, next) => {
 
   // Allow 'demo_token' for local development bypass
   if (token === 'demo_token') {
-    req.farmer = { id: 'demo_user', name: 'Demo Farmer' };
+    // Use a valid 24-character hex string so Mongoose doesn't throw CastError
+    req.farmer = { id: '000000000000000000000000', name: 'Demo Farmer' };
     return next();
   }
 

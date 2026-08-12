@@ -118,7 +118,7 @@ async def llm_chat(system_prompt: str, user_message: str, context: list = None, 
         return {"answer": formatted_answer}
 
 
-async def llm_vision(system_prompt: str, image_b64: str, user_prompt: str = "Analyze this image.", cnn_result: dict = None):
+async def llm_vision(system_prompt: str, image_b64: str, user_prompt: str = "Analyze this image.", cnn_result: dict = None, temperature: float = 0.1):
     """
     Call unified vision model (LLaVA-first, Gemini fallback).
     """
@@ -175,7 +175,7 @@ async def chromadb_search(query: str, soil_type: str = None, district: str = Non
 
 async def neo4j_lookup(query: str, agro_zone: str = None, soil_type: str = None) -> list:
     try:
-        from services.krishi_search_service import KNOWN_CROPS
+        from shared.constants import KNOWN_CROPS
         q = query.lower()
         mentioned_crops = [c for c in KNOWN_CROPS if c in q]
         

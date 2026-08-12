@@ -25,7 +25,15 @@ const PORT = process.env.PORT || 5000;
 app.use(helmet());
 
 // Secure CORS configuration
-const allowedOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : ['http://localhost:5173', 'http://127.0.0.1:5173'];
+const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(',')
+  : [
+      'http://localhost:5173',
+      'http://127.0.0.1:5173',
+      'http://localhost:8081',   // Expo web dev
+      'http://127.0.0.1:8081',
+      'http://localhost:19006',  // Expo web legacy port
+    ];
 app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (mobile apps, curl, etc)
@@ -110,7 +118,7 @@ app.use(errorHandler);
 // ── Start ──
 // Start the server even if MongoDB is unavailable (demo mode)
 const startServer = () => {
-  app.listen(PORT, '0.0.0.0', () => logger.info(`🌾 KrishiMitraAI API on port ${PORT}`));
+  app.listen(PORT, () => logger.info(`🌾 KrishiMitraAI API on port ${PORT}`));
 };
 
 mongoose

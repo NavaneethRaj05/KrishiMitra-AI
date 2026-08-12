@@ -21,19 +21,25 @@ import { BottomTabNavigator } from './BottomTabNavigator'
 // Screens
 import WelcomeScreen from '../screens/Auth/WelcomeScreen'
 import OnboardingScreen from '../screens/Auth/OnboardingScreen'
+import RegisterScreen from '../screens/Auth/RegisterScreen'
+import FarmerSetupScreen from '../screens/Auth/FarmerSetupScreen'
 import AskResultScreen from '../screens/Ask/AskResultScreen'
+import SearchResultScreen from '../screens/Search/SearchResultScreen'
 import ThreadScreen from '../screens/Search/ThreadScreen'
 import HistoryScreen from '../screens/History/HistoryScreen'
 import SettingsScreen from '../screens/Settings/SettingsScreen'
 
 export type RootStackParamList = {
-  Welcome:     undefined
-  Onboarding:  undefined
-  MainTabs:    undefined
-  AskResult:   { query: string; threadId?: string | null; imageUri?: string | null; imageB64?: string | null; detectedLanguage?: string }
-  Thread:      { threadId: string; threadTitle?: string; initialFollowUpQuery?: string; imageUri?: string | null; imageB64?: string | null }
-  History:     undefined
-  Settings:    undefined
+  Welcome:      undefined
+  Onboarding:   undefined
+  Register:     undefined
+  FarmerSetup:  undefined
+  MainTabs:     undefined
+  AskResult:    { query: string; threadId?: string | null; imageUri?: string | null; imageB64?: string | null; detectedLanguage?: string }
+  SearchResult: { query?: string; imageUri?: string | null; imageB64?: string | null; detectedLanguage?: string }
+  Thread:       { threadId: string; threadTitle?: string; initialFollowUpQuery?: string; imageUri?: string | null; imageB64?: string | null }
+  History:      undefined
+  Settings:     undefined
 }
 
 const Stack = createStackNavigator<RootStackParamList>()
@@ -109,8 +115,10 @@ export function RootNavigator() {
         initialRouteName={initialRoute as any}
       >
         {/* Auth */}
-        <Stack.Screen name="Welcome"    component={WelcomeScreen}   />
-        <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+        <Stack.Screen name="Welcome"     component={WelcomeScreen}     />
+        <Stack.Screen name="Onboarding"  component={OnboardingScreen}  />
+        <Stack.Screen name="Register"    component={RegisterScreen}    />
+        <Stack.Screen name="FarmerSetup" component={FarmerSetupScreen} />
 
         {/* Main app with bottom tabs */}
         <Stack.Screen
@@ -123,6 +131,14 @@ export function RootNavigator() {
         <Stack.Screen
           name="AskResult"
           component={AskResultScreen}
+          options={{
+            presentation: Platform.OS === 'ios' ? 'card' : 'card',
+            gestureEnabled: true,
+          }}
+        />
+        <Stack.Screen
+          name="SearchResult"
+          component={SearchResultScreen}
           options={{
             presentation: Platform.OS === 'ios' ? 'card' : 'card',
             gestureEnabled: true,

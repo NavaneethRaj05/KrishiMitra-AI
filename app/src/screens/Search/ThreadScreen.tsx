@@ -1,15 +1,23 @@
 /**
  * ThreadScreen — full conversation thread view.
- * Loads message history from WatermelonDB and allows follow-up Q&A.
+ *
+ * Fixes applied:
+ *  1. Scroll: removed onContentSizeChange (was fighting user scroll).
+ *             overflow:hidden removed on web. flexGrow:1 + 120px spacer.
+ *             KeyboardAvoidingView lifts input on iOS keyboard open.
+ *  2. Offline badge: offlineFallback correctly passed per message from DB.
+ *  3. Connectivity indicator in app bar so user always knows live/offline.
  */
 
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useCallback } from 'react'
 import {
   StyleSheet, View, ScrollView, SafeAreaView,
-  ActivityIndicator, Alert, TouchableOpacity,
+  ActivityIndicator, Alert, TouchableOpacity, Platform,
+  KeyboardAvoidingView,
 } from 'react-native'
-import { ArrowLeft } from 'lucide-react-native'
+import { ArrowLeft, Wifi, WifiOff } from 'lucide-react-native'
 import { useTheme } from '../../hooks/useTheme'
+import { useOfflineStore } from '../../store/useOfflineStore'
 import { spacing, radii } from '../../theme/tokens'
 import { KMText } from '../../components/ui/Text'
 import { KMStatusBar } from '../../components/ui/StatusBar'
@@ -21,22 +29,32 @@ import { PhotoCapture } from '../../components/photo/PhotoCapture'
 import { database } from '../../db/database'
 import { searchService } from '../../services/searchService'
 import { photoService } from '../../services/photoService'
-import { t } from '../../i18n'
 import * as FileSystem from 'expo-file-system'
 
 export default function ThreadScreen({ route, navigation }: any) {
   const { theme } = useTheme()
-  const { threadId, threadTitle, initialFollowUpQuery, imageUri: initImgUri, imageB64: initImgB64 } = route.params
+  const isConnected = useOfflineStore((s) => s.isConnected)
+  const {
+    threadId, threadTitle,
+    initialFollowUpQuery,
+    imageUri: initImgUri,
+    imageB64: initImgB64,
+  } = route.params
 
-  const [messages, setMessages]   = useState<any[]>([])
+  const [messages, setMessages]             = useState<any[]>([])
   const [loadingHistory, setLoadingHistory] = useState(true)
   const [loadingReply, setLoadingReply]     = useState(false)
-  const [followUps, setFollowUps] = useState<string[]>([])
-  const [showMic, setShowMic]     = useState(false)
-  const [showCamera, setShowCamera] = useState(false)
-  const [attachedUri, setAttachedUri]   = useState<string | null>(null)
-  const [attachedB64, setAttachedB64]   = useState<string | null>(null)
+  const [followUps, setFollowUps]           = useState<string[]>([])
+  const [showMic, setShowMic]               = useState(false)
+  const [showCamera, setShowCamera]         = useState(false)
+  const [attachedUri, setAttachedUri]       = useState<string | null>(null)
+  const [attachedB64, setAttachedB64]       = useState<string | null>(null)
+
   const scrollRef = useRef<ScrollView>(null)
+
+  const scrollToBottom = useCallback((animated = true) => {
+    setTimeout(() => scrollRef.current?.scrollToEnd({ animated }), 100)
+  }, [])
 
   useEffect(() => { loadHistory() }, [threadId])
 
@@ -47,16 +65,21 @@ export default function ThreadScreen({ route, navigation }: any) {
       const all: any[] = await record.messages.fetch()
       const sorted = [...all].sort((a, b) => a.createdAt - b.createdAt)
       setMessages(sorted)
-      const last = sorted.filter(m => m.role === 'assistant').at(-1)
+
+      const last = sorted.filter((m: any) => m.role === 'assistant').at(-1)
       if (last) {
         try { setFollowUps(JSON.parse(last.followUps) || []) } catch {}
       }
-      if (initialFollowUpQuery) sendReply(initialFollowUpQuery, initImgUri, initImgB64)
-    } catch (e) {
+
+      if (initialFollowUpQuery) {
+        // Delay so history renders before reply starts
+        setTimeout(() => sendReply(initialFollowUpQuery, initImgUri, initImgB64), 120)
+      }
+    } catch {
       Alert.alert('Error', 'Could not load conversation history.')
     } finally {
       setLoadingHistory(false)
-      setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 300)
+      scrollToBottom(false)
     }
   }
 
@@ -69,25 +92,33 @@ export default function ThreadScreen({ route, navigation }: any) {
     if (loadingReply) return
     setLoadingReply(true)
 
-    // Optimistic user bubble
-    const tempUser = { id: `tmp_${Date.now()}`, role: 'user', content: text, imageUri: imgUri ?? '', createdAt: Date.now() }
-    setMessages(prev => [...prev, tempUser])
-    setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 80)
+    // Optimistic user bubble — shown immediately
+    const tempId = `tmp_${Date.now()}`
+    setMessages(prev => [
+      ...prev,
+      { id: tempId, role: 'user', content: text, imageUri: imgUri ?? '', createdAt: Date.now(), offlineFallback: false },
+    ])
+    scrollToBottom()
 
     try {
       const res = await searchService.search(text, threadId, null, imgB64 ?? null, lang)
       await searchService.saveMessageToLocalDB(threadId, 'user', text, undefined, imgUri ?? undefined)
       await searchService.saveMessageToLocalDB(threadId, 'assistant', res.answer, res)
 
+      // Reload from DB so persisted IDs + offlineFallback flag are correct
       const record = await database.get('threads').find(threadId) as any
       const all: any[] = await record.messages.fetch()
       setMessages([...all].sort((a, b) => a.createdAt - b.createdAt))
       setFollowUps(res.followUps || [])
-    } catch {
-      Alert.alert('Error', 'Could not get an answer.')
+    } catch (e: any) {
+      // Remove the optimistic bubble on failure
+      setMessages(prev => prev.filter(m => m.id !== tempId))
+      Alert.alert('Error', e?.message?.includes('API')
+        ? `Server error: ${e.message}`
+        : 'Could not get an answer. Check your connection and try again.')
     } finally {
       setLoadingReply(false)
-      setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 300)
+      scrollToBottom()
     }
   }
 
@@ -96,97 +127,123 @@ export default function ThreadScreen({ route, navigation }: any) {
     try {
       b64 = await FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64 })
     } catch {}
-    const result = await photoService.runDiseaseDetection(uri)
-    sendReply(`Treatment for ${result.disease}`, uri, b64)
+    try {
+      const result = await photoService.runDiseaseDetection(uri)
+      sendReply(`Treatment for ${result.disease}`, uri, b64)
+    } catch {
+      sendReply('Diagnose this crop image', uri, b64)
+    }
   }
 
+  const Container = Platform.OS === 'web' ? View : SafeAreaView
+
   return (
-    <SafeAreaView style={[styles.root, { backgroundColor: theme.bg.base }]}>
+    <Container style={[styles.root, { backgroundColor: theme.bg.base }]}>
       <KMStatusBar />
 
       {/* App bar */}
-      <View style={[styles.appBar, { borderBottomColor: theme.border.subtle }]}>
+      <View style={[styles.appBar, {
+        borderBottomColor: theme.border.subtle,
+        backgroundColor: theme.bg.base,
+      }]}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
           <ArrowLeft size={22} color={theme.text.primary} />
         </TouchableOpacity>
         <KMText size="sm" weight="semibold" numberOfLines={1} style={styles.barTitle}>
           {threadTitle ?? 'Conversation'}
         </KMText>
-        <View style={{ width: 40 }} />
-      </View>
-
-      {/* Messages */}
-      {loadingHistory ? (
-        <View style={styles.loadingCenter}>
-          <ActivityIndicator size="large" color={theme.accent.primary} />
+        {/* Live connectivity badge */}
+        <View style={[styles.connBadge, {
+          backgroundColor: isConnected ? '#E6FBF3' : '#FEF3C7',
+          borderColor: isConnected ? '#6EE7B7' : '#FCD34D',
+        }]}>
+          {isConnected
+            ? <Wifi size={11} color="#059669" strokeWidth={2.5} />
+            : <WifiOff size={11} color="#D97706" strokeWidth={2.5} />}
         </View>
-      ) : (
-        <ScrollView
-          ref={scrollRef}
-          style={styles.scroll}
-          contentContainerStyle={styles.scrollContent}
-          onContentSizeChange={() => scrollRef.current?.scrollToEnd({ animated: true })}
-        >
-          {messages.map(msg => {
-            let citations: any[] = []
-            try { citations = msg.citations ? JSON.parse(msg.citations) : [] } catch {}
-            return (
-              <MessageBubble
-                key={msg.id}
-                role={msg.role}
-                content={msg.content}
-                imageUri={msg.imageUri}
-                citations={citations}
-                intent={msg.intent}
-                offlineFallback={msg.offlineFallback}
-              />
-            )
-          })}
-
-          {loadingReply && (
-            <View style={[styles.thinkingBubble, {
-              backgroundColor: theme.bg.surface,
-              borderColor: theme.border.default,
-            }]}>
-              <ActivityIndicator size="small" color={theme.accent.primary} />
-              <KMText size="sm" color={theme.text.secondary} style={{ marginLeft: spacing.sm }}>
-                {t('search.typing')}
-              </KMText>
-            </View>
-          )}
-
-          {!loadingReply && followUps.length > 0 && (
-            <View style={styles.followUpsWrap}>
-              <KMText size="xs" weight="semibold" color={theme.text.tertiary} style={styles.followUpsLabel}>
-                FOLLOW-UP QUESTIONS
-              </KMText>
-              <FollowUpChips chips={followUps} onChipPress={(q) => sendReply(q)} />
-            </View>
-          )}
-
-          <View style={{ height: 140 }} />
-        </ScrollView>
-      )}
-
-      {/* Sticky input */}
-      <View style={[styles.bottomBar, {
-        backgroundColor: theme.bg.base,
-        borderTopColor: theme.border.subtle,
-      }]}>
-        <AskBar
-          placeholder="Ask a follow-up…"
-          layout="thread"
-          onSubmit={(q) => {
-            sendReply(q, attachedUri, attachedB64)
-            setAttachedUri(null); setAttachedB64(null)
-          }}
-          onMicPress={() => setShowMic(true)}
-          onCameraPress={() => setShowCamera(true)}
-          onImageSelected={(uri, b64) => { setAttachedUri(uri); setAttachedB64(b64) }}
-          attachedImageUri={attachedUri}
-          onRemoveImage={() => { setAttachedUri(null); setAttachedB64(null) }}
-        />
       </View>
+
+      {/* KeyboardAvoidingView lifts input bar on iOS keyboard */}
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
+        {loadingHistory ? (
+          <View style={styles.loadingCenter}>
+            <ActivityIndicator size="large" color={theme.accent.primary} />
+          </View>
+        ) : (
+          <ScrollView
+            ref={scrollRef}
+            style={styles.scroll}
+            contentContainerStyle={styles.scrollContent}
+            showsVerticalScrollIndicator={false}
+            // ✅ No onContentSizeChange — it was fighting user scroll
+            keyboardShouldPersistTaps="handled"
+          >
+            {messages.map(msg => {
+              let citations: any[] = []
+              try { citations = msg.citations ? JSON.parse(msg.citations) : [] } catch {}
+              return (
+                <MessageBubble
+                  key={msg.id}
+                  role={msg.role}
+                  content={msg.content}
+                  imageUri={msg.imageUri}
+                  citations={citations}
+                  intent={msg.intent}
+                  // ✅ Correctly read offlineFallback from DB record
+                  offlineFallback={Boolean(msg.offlineFallback)}
+                />
+              )
+            })}
+
+            {loadingReply && (
+              <View style={[styles.thinkingBubble, {
+                backgroundColor: theme.bg.surface,
+                borderColor: theme.border.default,
+              }]}>
+                <ActivityIndicator size="small" color={theme.accent.primary} />
+                <KMText size="sm" color={theme.text.secondary} style={{ marginLeft: spacing.sm }}>
+                  {isConnected ? 'KrishiMitra is thinking…' : 'Searching offline…'}
+                </KMText>
+              </View>
+            )}
+
+            {!loadingReply && followUps.length > 0 && (
+              <View style={styles.followUpsWrap}>
+                <KMText size="xs" weight="semibold" color={theme.text.tertiary} style={styles.followUpsLabel}>
+                  FOLLOW-UP QUESTIONS
+                </KMText>
+                <FollowUpChips chips={followUps} onChipPress={(q) => sendReply(q)} />
+              </View>
+            )}
+
+            {/* ✅ Extra bottom padding so last message clears the input bar */}
+            <View style={{ height: 120 }} />
+          </ScrollView>
+        )}
+
+        {/* Sticky input — inside KAV so it lifts with keyboard on iOS */}
+        <View style={[styles.bottomBar, {
+          backgroundColor: theme.bg.base,
+          borderTopColor: theme.border.subtle,
+        }]}>
+          <AskBar
+            placeholder="Ask a follow-up…"
+            layout="thread"
+            onSubmit={(q) => {
+              sendReply(q, attachedUri, attachedB64)
+              setAttachedUri(null); setAttachedB64(null)
+            }}
+            onMicPress={() => setShowMic(true)}
+            onCameraPress={() => setShowCamera(true)}
+            onImageSelected={(uri, b64) => { setAttachedUri(uri); setAttachedB64(b64) }}
+            attachedImageUri={attachedUri}
+            onRemoveImage={() => { setAttachedUri(null); setAttachedB64(null) }}
+          />
+        </View>
+      </KeyboardAvoidingView>
 
       <VoiceModal
         visible={showMic}
@@ -207,12 +264,16 @@ export default function ThreadScreen({ route, navigation }: any) {
           }}
         />
       )}
-    </SafeAreaView>
+    </Container>
   )
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1 },
+  root: {
+    flex: 1,
+    // ✅ Removed overflow:hidden — was blocking scroll on web
+    ...(Platform.OS === 'web' ? { height: ('100vh' as any) } : {}),
+  },
   appBar: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -221,24 +282,26 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   backBtn: {
-    width: 40,
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: 40, height: 40,
+    justifyContent: 'center', alignItems: 'center',
   },
   barTitle: {
     flex: 1,
     textAlign: 'center',
     marginHorizontal: spacing.xs,
   },
+  connBadge: {
+    width: 28, height: 28, borderRadius: 99,
+    borderWidth: 1, justifyContent: 'center', alignItems: 'center',
+  },
   loadingCenter: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    flex: 1, justifyContent: 'center', alignItems: 'center',
   },
   scroll: { flex: 1 },
   scrollContent: {
-    padding: spacing.base,
+    paddingHorizontal: spacing.base,
+    paddingTop: spacing.md,
+    flexGrow: 1,
   },
   thinkingBubble: {
     flexDirection: 'row',
@@ -249,20 +312,12 @@ const styles = StyleSheet.create({
     padding: spacing.md,
     marginVertical: spacing.sm,
   },
-  followUpsWrap: {
-    marginTop: spacing.xl,
-  },
-  followUpsLabel: {
-    letterSpacing: 0.8,
-    marginBottom: spacing.sm,
-  },
+  followUpsWrap: { marginTop: spacing.xl },
+  followUpsLabel: { letterSpacing: 0.8, marginBottom: spacing.sm },
   bottomBar: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
     paddingHorizontal: spacing.base,
     paddingVertical: spacing.sm,
     borderTopWidth: 1,
+    paddingBottom: Platform.OS === 'ios' ? spacing.md : spacing.sm,
   },
 })

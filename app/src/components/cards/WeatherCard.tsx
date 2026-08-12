@@ -67,7 +67,7 @@ export const WeatherCard: React.FC<WeatherCardProps> = ({ data, onPress }) => {
       }]}>
         {/* Header row */}
         <View style={styles.headerRow}>
-          <View>
+          <View style={{ flex: 1, marginRight: 12 }}>
             <KMText size="xs" weight="semibold" color={theme.text.tertiary} style={{ letterSpacing: 0.5, textTransform: 'uppercase' }}>
               {d.location}
             </KMText>
@@ -156,9 +156,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   cardHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
     padding: spacing.lg,
     borderBottomWidth: 1,
   },
@@ -169,7 +166,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    marginBottom: spacing.md,
   },
   tempRow: {
     flexDirection: 'row',

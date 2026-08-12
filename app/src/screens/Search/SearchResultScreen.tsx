@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, View, ScrollView, SafeAreaView, ActivityIndicator, Alert, TouchableOpacity, useWindowDimensions } from 'react-native'
+import { StyleSheet, View, ScrollView, SafeAreaView, ActivityIndicator, Alert, TouchableOpacity, useWindowDimensions, Platform } from 'react-native'
 import { colors, spacing, radii, shadows } from '../../components/ui/tokens'
 import { KrishiMitraAIText } from '../../components/ui/KrishiMitraAIText'
 import { MessageBubble } from '../../components/thread/MessageBubble'
@@ -114,9 +114,11 @@ export const SearchResultScreen: React.FC<{ route: any; navigation: any }> = ({ 
     })
   }
 
+  const Container = Platform.OS === 'web' ? View : SafeAreaView
+
   if (isLargeScreen) {
     return (
-      <SafeAreaView style={styles.container}>
+      <Container style={styles.container}>
         {/* TOP WEB NAV BAR */}
         <View style={styles.topNavBar}>
           <TouchableOpacity onPress={() => navigation.navigate('MainTabs')} style={styles.topNavLogo}>
@@ -266,12 +268,12 @@ export const SearchResultScreen: React.FC<{ route: any; navigation: any }> = ({ 
             }}
           />
         )}
-      </SafeAreaView>
+      </Container>
     )
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <Container style={styles.container}>
       <OfflineBanner />
       
       {/* Header */}
@@ -377,7 +379,7 @@ export const SearchResultScreen: React.FC<{ route: any; navigation: any }> = ({ 
           }}
         />
       </View>
-    </SafeAreaView>
+    </Container>
   )
 }
 
@@ -385,6 +387,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.bg.base,
     flex: 1,
+    ...(Platform.OS === 'web' ? { height: ('100vh' as any), maxHeight: ('100vh' as any) } : {}),
   },
   header: {
     flexDirection: 'row',
