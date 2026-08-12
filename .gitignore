@@ -39,6 +39,7 @@ data/
 .DS_Store
 Thumbs.db
 desktop.ini
+.expo/
 
 # Docker
 mongo_data/
