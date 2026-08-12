@@ -1,11 +1,11 @@
 import { useAuthStore, FarmerContext } from '../store/useAuthStore'
 
 const getApiBase = () => {
-  if (typeof window !== 'undefined' && window.location && window.location.hostname) {
-    const hostname = window.location.hostname
-    return `http://${hostname}:5000/api`
+  if (process.env.EXPO_PUBLIC_API_URL) return process.env.EXPO_PUBLIC_API_URL
+  if (typeof window !== 'undefined' && window.location?.hostname) {
+    return `http://${window.location.hostname}:5000/api`
   }
-  return 'http://localhost:5000/api'
+  return 'http://10.0.2.2:5000/api'
 }
 const API_BASE = getApiBase()
 

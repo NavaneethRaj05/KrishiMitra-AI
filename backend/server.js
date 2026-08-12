@@ -48,7 +48,7 @@ app.use(cors({
     }
     
     // Development fallback
-    if (origin.includes('localhost') || origin.includes('127.0.0.1') || origin.includes('192.168.') || origin.includes('exp://') || origin.includes('expo')) {
+    if (origin.includes('localhost') || origin.includes('127.0.0.1') || origin.includes('192.168.') || origin.includes('10.') || origin.includes('172.') || origin.includes('exp://') || origin.includes('expo')) {
       return callback(null, true);
     }
     

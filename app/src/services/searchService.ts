@@ -10,7 +10,7 @@ const getApiBase = () => {
   if (typeof window !== 'undefined' && window.location?.hostname) {
     return `http://${window.location.hostname}:5000/api`
   }
-  return 'http://localhost:5000/api'
+  return 'http://10.0.2.2:5000/api'
 }
 const API_BASE = getApiBase()
 const API_TIMEOUT = 30000

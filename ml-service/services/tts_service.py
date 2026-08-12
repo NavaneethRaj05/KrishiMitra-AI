@@ -9,6 +9,8 @@ Subsequent calls are fast (in-memory inference).
 import base64
 import io
 import logging
+import os
+import tempfile
 
 logger = logging.getLogger("krishimitraai.tts")
 
@@ -58,16 +60,24 @@ class TTSService:
         text_trimmed = text[:500].strip()  # cap for inference speed
 
         model = self._get_model()
-        buf   = io.BytesIO()
 
-        model.tts_to_file(
-            text=text_trimmed,
-            language=tts_lang,
-            file_path=buf,
-            speaker_wav=None,   # use default XTTS voice
-        )
-        buf.seek(0)
-        return base64.b64encode(buf.read()).decode("utf-8")
+        with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp:
+            tmp_path = tmp.name
+
+        try:
+            model.tts_to_file(
+                text=text_trimmed,
+                language=tts_lang,
+                file_path=tmp_path,
+                speaker_wav=None,   # use default XTTS voice
+            )
+            with open(tmp_path, "rb") as f:
+                audio_bytes = f.read()
+        finally:
+            if os.path.exists(tmp_path):
+                os.remove(tmp_path)
+
+        return base64.b64encode(audio_bytes).decode("utf-8")
 
     def is_available(self) -> bool:
         """Check if TTS model can be loaded (non-blocking probe)."""

@@ -56,7 +56,7 @@ export const t = (key: string, params?: Record<string, string | number>): string
         break
       }
     }
-    current = typeof fallback === 'string' ? fallback : key
+    current = typeof fallback === 'string' ? fallback : (parts.length > 1 ? parts[parts.length - 1] : key)
   }
 
   let text = current

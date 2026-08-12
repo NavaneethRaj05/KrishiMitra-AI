@@ -3,10 +3,13 @@ RAG Service — Retrieval Augmented Generation
 Uses ChromaDB (offline vector store) + sentence-transformers + Ollama LLM
 """
 import hashlib
+import logging
 import os
 import re
 from pathlib import Path
 from typing import Dict, List, Optional
+
+logger = logging.getLogger("krishimitraai.rag")
 
 import chromadb
 from chromadb.config import Settings

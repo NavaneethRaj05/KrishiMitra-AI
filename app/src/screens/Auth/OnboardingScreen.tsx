@@ -195,7 +195,7 @@ export const OnboardingScreen: React.FC<{ navigation: any }> = ({ navigation }) 
         <KMInput
           placeholder="Search district…"
           value={districtSearch || t(`districts.${district}`)}
-          onChangeText={v => { setDistrictSearch(v); setDistrict(v) }}
+          onChangeText={v => setDistrictSearch(v)}
         />
         {districtSearch.length > 0 && filteredDistricts.length > 0 && (
           <View style={[s.dropdown, { backgroundColor: theme.bg.elevated, borderColor: theme.border.default }]}>

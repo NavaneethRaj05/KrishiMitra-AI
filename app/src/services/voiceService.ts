@@ -2,6 +2,14 @@ import { Audio } from 'expo-av'
 import { Platform } from 'react-native'
 import { useAuthStore } from '../store/useAuthStore'
 
+const getApiBase = () => {
+  if (process.env.EXPO_PUBLIC_API_URL) return process.env.EXPO_PUBLIC_API_URL
+  if (typeof window !== 'undefined' && window.location?.hostname) {
+    return `http://${window.location.hostname}:5000/api`
+  }
+  return 'http://10.0.2.2:5000/api'
+}
+
 const COMMANDS: Record<string, string[]> = {
   photo: ['photo', 'ಚಿತ್ರ', 'फोटो', 'படம்', 'ఫోటో', 'camera', 'ಕ್ಯಾಮೆರಾ', 'कैमरा', 'கேமரா', 'కెమెరా'],
   stop:  ['stop', 'ನಿಲ್ಲಿಸು', 'रुको', 'நிறுத்து', 'ఆపు', 'ಸಾಕು', 'बस']
@@ -161,7 +169,7 @@ class VoiceService {
       console.log(`Audio recorded at ${uri}`)
       if (uri) {
         try {
-          const apiBase = typeof window !== 'undefined' && window.location && window.location.hostname ? `http://${window.location.hostname}:5000/api` : 'http://localhost:5000/api'
+          const apiBase = getApiBase()
           const preferredLang = useAuthStore.getState().farmer?.preferredLanguage || 'en'
           const formData = new FormData()
           formData.append('file', {

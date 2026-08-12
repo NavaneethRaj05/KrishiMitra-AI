@@ -114,7 +114,8 @@ class UnifiedLLMService:
         if model and self.ollama_available:
             try:
                 from ollama import AsyncClient
-                client = AsyncClient(host=OLLAMA_HOST, timeout=8.0)
+                ollama_timeout = float(os.getenv("OLLAMA_TIMEOUT", 90.0))
+                client = AsyncClient(host=OLLAMA_HOST, timeout=ollama_timeout)
                 res = await client.chat(
                     model=model,
                     messages=[
@@ -129,7 +130,7 @@ class UnifiedLLMService:
                 logger.warning("Ollama async chat failed: %s", e)
                 try:
                     import ollama
-                    client = ollama.Client(host=OLLAMA_HOST, timeout=8.0)
+                    client = ollama.Client(host=OLLAMA_HOST, timeout=ollama_timeout)
                     res = client.chat(
                         model=model,
                         messages=[
@@ -140,7 +141,7 @@ class UnifiedLLMService:
                     )
                     return res["message"]["content"]
                 except Exception as e2:
-                    logger.warning("Ollama sync chat also failed: %s", e2)nc chat also failed: %s", e2)
+                    logger.warning("Ollama sync chat also failed: %s", e2)
 
         # 2. Fallback to Gemini
         if self.gemini_client:
