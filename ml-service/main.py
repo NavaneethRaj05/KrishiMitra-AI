@@ -11,6 +11,16 @@ import os
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger("krishimitraai")
 
+from pathlib import Path
+
+# Clean up any stale ingest lock on startup
+lock_path = Path("knowledge_base/ingest.lock")
+try:
+    if lock_path.exists():
+        lock_path.unlink()
+except Exception:
+    pass
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -31,13 +41,28 @@ async def lifespan(app: FastAPI):
             from pathlib import Path
             docs_path = Path("knowledge_base/documents")
             if docs_path.exists() and any(docs_path.glob("*.txt")):
-                logger.info("📚 Knowledge base is empty — auto-ingesting documents from %s ...", docs_path)
+                acquired_lock = False
                 try:
-                    new_chunks = rag_service.ingest_documents(docs_path)
-                    count = new_chunks
-                    logger.info("✅ Auto-ingested %d chunks into ChromaDB", new_chunks)
-                except Exception as ingest_err:
-                    logger.warning("⚠️  Auto-ingest failed: %s", ingest_err)
+                    with open(lock_path, "x") as lock_file:
+                        lock_file.write(str(os.getpid()))
+                    acquired_lock = True
+                except FileExistsError:
+                    logger.info("📚 Another worker is already ingesting documents. Skipping duplicate ingest.")
+                
+                if acquired_lock:
+                    logger.info("📚 Knowledge base is empty — auto-ingesting documents from %s ...", docs_path)
+                    try:
+                        new_chunks = rag_service.ingest_documents(docs_path)
+                        count = new_chunks
+                        logger.info("✅ Auto-ingested %d chunks into ChromaDB", new_chunks)
+                    except Exception as ingest_err:
+                        logger.warning("⚠️  Auto-ingest failed: %s", ingest_err)
+                    finally:
+                        try:
+                            if lock_path.exists():
+                                lock_path.unlink()
+                        except Exception:
+                            pass
             else:
                 logger.warning("⚠️  knowledge_base/documents/ has no .txt files — RAG will not have context")
 

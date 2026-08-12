@@ -10,7 +10,7 @@ sentence-transformers==3.0.1
 
 # LLM
 ollama==0.2.1
-google-genai==0.1.1  # Gemini fallback - requires GEMINI_API_KEY env var
+google-genai>=1.0.0  # Gemini fallback - requires GEMINI_API_KEY env var
 
 # Disease Detection (CNN)
 tensorflow==2.16.1

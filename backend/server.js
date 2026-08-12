@@ -18,6 +18,21 @@ import searchRoutes from './routes/search.routes.js';
 import queryRoutes from './routes/query.js';
 import errorHandler from './middleware/errorHandler.js';
 import { logger } from './utils/logger.js';
+
+// Validate required environment variables on startup
+const requiredEnvVars = ['JWT_SECRET', 'MONGODB_URI'];
+requiredEnvVars.forEach((envVar) => {
+  const val = process.env[envVar];
+  if (!val) {
+    logger.error(`❌ CRITICAL: Environment variable ${envVar} is missing!`);
+    if (process.env.NODE_ENV === 'production') {
+      process.exit(1);
+    }
+  } else if (val.includes('your_') || val.includes('placeholder') || val === 'your_jwt_secret_here') {
+    logger.warn(`⚠️ WARNING: Environment variable ${envVar} is using a default placeholder/insecure value: "${val}"`);
+  }
+});
+
 const app  = express();
 const PORT = process.env.PORT || 5000;
 

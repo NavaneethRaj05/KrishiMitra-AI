@@ -65,12 +65,29 @@ class TTSService:
             tmp_path = tmp.name
 
         try:
-            model.tts_to_file(
-                text=text_trimmed,
-                language=tts_lang,
-                file_path=tmp_path,
-                speaker_wav=None,   # use default XTTS voice
-            )
+            # XTTS-v2 requires speaker or speaker_wav.
+            # If the model has built-in speakers, pick one (e.g. "Ana Florence" or first available).
+            speaker_name = None
+            if hasattr(model, "speakers") and model.speakers:
+                if "Ana Florence" in model.speakers:
+                    speaker_name = "Ana Florence"
+                else:
+                    speaker_name = model.speakers[0]
+
+            if speaker_name:
+                model.tts_to_file(
+                    text=text_trimmed,
+                    language=tts_lang,
+                    file_path=tmp_path,
+                    speaker=speaker_name,
+                )
+            else:
+                model.tts_to_file(
+                    text=text_trimmed,
+                    language=tts_lang,
+                    file_path=tmp_path,
+                    speaker_wav=None,
+                )
             with open(tmp_path, "rb") as f:
                 audio_bytes = f.read()
         finally:
@@ -80,10 +97,35 @@ class TTSService:
         return base64.b64encode(audio_bytes).decode("utf-8")
 
     def is_available(self) -> bool:
-        """Check if TTS model can be loaded (non-blocking probe)."""
+        """Check if TTS model is installed and already downloaded locally."""
         try:
-            from TTS.api import TTS  # type: ignore # noqa
-            return True
+            from TTS.api import TTS  # checks if library is installed
+            import os
+            from pathlib import Path
+            
+            # Determine local tts path
+            tts_home = os.environ.get("TTS_HOME")
+            if not tts_home:
+                xdg_data = os.environ.get("XDG_DATA_HOME")
+                if xdg_data:
+                    tts_home = os.path.join(xdg_data, "tts")
+                else:
+                    if os.name == "nt":
+                        local_appdata = os.environ.get("LOCALAPPDATA")
+                        if local_appdata:
+                            tts_home = os.path.join(local_appdata, "tts")
+                        else:
+                            tts_home = os.path.expanduser("~/AppData/Local/tts")
+                    else:
+                        tts_home = os.path.expanduser("~/.local/share/tts")
+            
+            # The model subfolder is named by replacing "/" with "--"
+            model_dir_name = MODEL_NAME.replace("/", "--")
+            model_path = Path(tts_home) / model_dir_name
+            
+            # Check if config.json exists in the directory (indicating download is complete)
+            config_file = model_path / "config.json"
+            return config_file.exists()
         except Exception:
             return False
 

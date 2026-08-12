@@ -22,6 +22,7 @@
     "expo-av": "~14.0.5",
     "expo-background-fetch": "~12.0.1",
     "expo-camera": "~15.0.13",
+    "expo-crypto": "~13.0.2",
     "expo-file-system": "~17.0.1",
     "expo-image-picker": "~15.1.0",
     "expo-local-authentication": "~14.0.1",

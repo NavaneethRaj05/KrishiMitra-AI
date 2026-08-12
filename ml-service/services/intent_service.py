@@ -239,6 +239,7 @@ class IntentService:
                     options={"temperature": 0.1, "num_predict": 20}
                 )
             except Exception:
+                import ollama
                 def run_sync_chat():
                     return ollama.chat(
                         model=os.getenv("OLLAMA_MODEL", "llama3.1:8b"),

@@ -327,17 +327,21 @@ class UnifiedLLMService:
 
         # Check Gemini
         if self.gemini_client:
-            try:
-                from google.genai import types
-                response = self.gemini_client.models.generate_content(
-                    model=self.gemini_model,
-                    contents="ping",
-                    config=types.GenerateContentConfig(max_output_tokens=5, temperature=0.1)
-                )
-                if response.text:
-                    status["gemini"]["available"] = True
-            except Exception:
-                pass
+            import time
+            now = time.time()
+            if not hasattr(self, "_gemini_available") or (now - getattr(self, "_last_gemini_check", 0) > 300):
+                try:
+                    from google.genai import types
+                    response = self.gemini_client.models.generate_content(
+                        model=self.gemini_model,
+                        contents="ping",
+                        config=types.GenerateContentConfig(max_output_tokens=5, temperature=0.1)
+                    )
+                    self._gemini_available = bool(response.text)
+                except Exception:
+                    self._gemini_available = False
+                self._last_gemini_check = now
+            status["gemini"]["available"] = self._gemini_available
 
         # Determine primary
         if status["ollama"]["available"]:

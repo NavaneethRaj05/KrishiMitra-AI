@@ -22,6 +22,7 @@ import { KMButton } from '../../components/ui/Button'
 import { useAuthStore, FarmerContext } from '../../store/useAuthStore'
 import { authService } from '../../services/authService'
 import { getLanguage, t } from '../../i18n'
+import * as Crypto from 'expo-crypto'
 
 const { width } = Dimensions.get('window')
 
@@ -96,7 +97,7 @@ export const OnboardingScreen: React.FC<{ navigation: any }> = ({ navigation }) 
   const handleComplete = async () => {
     setLoading(true)
     const profile: FarmerContext = {
-      farmerId: authStore.farmer?.farmerId ?? `farmer_${Math.random().toString(36).slice(2, 9)}`,
+      farmerId: authStore.farmer?.farmerId ?? `farmer_${Crypto.randomUUID()}`,
       name: name.trim(),
       phone: authStore.farmer?.phone ?? '9876543210',
       state: farmState,
@@ -111,12 +112,22 @@ export const OnboardingScreen: React.FC<{ navigation: any }> = ({ navigation }) 
     }
     try {
       await authService.onboard(profile)
-    } catch {
       authStore.setFarmer(profile)
       authStore.setOnboarded(true)
-    } finally {
       setLoading(false)
       navigation.reset({ index: 0, routes: [{ name: 'MainTabs' }] })
+    } catch (err) {
+      console.warn("Failed to sync profile online:", err)
+      setLoading(false)
+      Alert.alert(
+        t('onboarding.offline_mode_title') || 'Offline Mode',
+        t('onboarding.offline_mode_desc') || "We couldn't connect to the server to sync your profile. Your profile has been saved offline on this device.",
+        [{ text: 'OK', onPress: () => {
+          authStore.setFarmer(profile)
+          authStore.setOnboarded(true)
+          navigation.reset({ index: 0, routes: [{ name: 'MainTabs' }] })
+        }}]
+      )
     }
   }
 

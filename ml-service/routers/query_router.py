@@ -22,7 +22,6 @@ from services.intent_service import intent_service
 from services.unified_llm_service import unified_llm_service
 from services.context_service import context_service
 from services.location_service import location_service
-import json
 
 logger = logging.getLogger("krishimitra_ai.query")
 
@@ -267,7 +266,7 @@ async def handle_text_query(request: TextQueryRequest, gps_ctx: dict = Depends(g
             cnn_info_str = f"Classifier finding: Crop '{diag.get('crop')}', Condition '{diag.get('disease')}' ({diag.get('confidence')}% confidence, Severity: {diag.get('severity')})."
             img_system = build_system_prompt(IMAGE_DIAGNOSIS_PROMPT + context_injection, user)
             user_prompt = f"{request.query or 'Examine this crop leaf image carefully. Identify the crop and diagnose any disease, pest, or nutrient issue.'}\n\n[Context: {cnn_info_str}]"
-            res = await llm_vision(img_system, request.image_b64, user_prompt=user_prompt)
+            res = await llm_vision(img_system, request.image_b64, user_prompt=user_prompt, cnn_result=diag)
             preferred_lang = user.get("preferredLanguage", "en")
             translated_answer = translate_fallback_text(res["answer"], preferred_lang)
             return {
@@ -414,7 +413,7 @@ async def handle_image_query(
         f"{query or 'Examine this crop leaf image carefully. Identify the crop and diagnose any disease, pest, or nutrient issue.'}"
         f"\n\n[{cnn_info_str}]{rag_section}"
     )
-    res = await llm_vision(system, image_b64, user_prompt=user_prompt, temperature=0.1)
+    res = await llm_vision(system, image_b64, user_prompt=user_prompt, cnn_result=diag, temperature=0.1)
 
     # Always respect user's preferred language for image diagnosis responses
     preferred_lang = user.get("preferredLanguage", "en")

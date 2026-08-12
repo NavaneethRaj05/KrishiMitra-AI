@@ -69,7 +69,10 @@ class KAGService:
         try:
             return self._run(query, **params)
         except (ServiceUnavailable, Exception) as e:
-            logger.debug("KAG query failed: %s", e)
+            global _KAG_AVAILABLE, _KAG_LAST_CHECK
+            _KAG_AVAILABLE = False
+            _KAG_LAST_CHECK = time.monotonic()
+            logger.info("KAG query failed, marking KAG as unavailable: %s", e)
             return []
 
     # ──────────────────────────────────────────
