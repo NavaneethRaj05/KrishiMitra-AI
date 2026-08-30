@@ -36,9 +36,10 @@ class ValidationService:
         # 2. Weather Contradiction Check
         if farmer_context and farmer_context.get("weather"):
             weather = farmer_context["weather"]
-            rain_forecast = weather.get("precipitation_sum", 0) > 10
-            is_raining_now = "rain" in weather.get("description", "").lower()
-            wind_speed = weather.get("wind_speed", 0)
+            forecast_precip = weather.get("forecast_3day", {}).get("precipitation", [])
+            rain_forecast = sum(forecast_precip) > 10 if (isinstance(forecast_precip, list) and forecast_precip) else weather.get("precipitation", 0) > 10
+            is_raining_now = "rain" in weather.get("description", "").lower() or weather.get("precipitation", 0) > 0
+            wind_speed = weather.get("windspeed", 0)
             
             recommends_spraying = any(word in response_lower for word in ["spray", "spraying", "apply fungicide", "apply pesticide"])
             

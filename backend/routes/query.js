@@ -39,11 +39,14 @@ const ML_TIMEOUT = 60000; // 60 seconds
 // 1. Text Query Handler (KrishiSearch RAG + KAG)
 router.post('/query/text', protect, attachUserProfile, async (req, res, next) => {
   try {
+    const lang = req.body.language || req.headers['accept-language'] || req.userProfile?.preferredLanguage || 'en';
+    if (req.userProfile) req.userProfile.preferredLanguage = lang;
     const response = await axios.post(
       `${config.ML_SERVICE_URL}/query/text`,
       { 
         query: req.body.query,
         image_b64: req.body.image_b64,
+        language: lang,
         latitude: req.body.latitude,
         longitude: req.body.longitude
       },
@@ -248,6 +251,29 @@ router.get('/location/details', protect, async (req, res, next) => {
       params: { district },
       timeout: 10000
     });
+    res.json(response.data);
+  } catch (err) {
+    if (err.code === 'ECONNREFUSED' || err.code === 'ENOTFOUND') {
+      return res.status(503).json({
+        success: false,
+        error: 'ML service is not reachable'
+      });
+    }
+    next(err);
+  }
+});
+
+// 9. Multilingual Vernacular Voice Analyzer (Gemini 3.6 Flash)
+router.post('/query/voice-analyze', protect, attachUserProfile, async (req, res, next) => {
+  try {
+    const response = await axios.post(
+      `${config.ML_SERVICE_URL}/voice/analyze`,
+      req.body,
+      {
+        headers: getHeadersWithProfile(req),
+        timeout: ML_TIMEOUT
+      }
+    );
     res.json(response.data);
   } catch (err) {
     if (err.code === 'ECONNREFUSED' || err.code === 'ENOTFOUND') {

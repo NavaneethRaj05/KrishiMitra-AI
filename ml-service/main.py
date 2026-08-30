@@ -140,10 +140,17 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# Allow ALL origins in development for cross-platform support (iOS, Android, web, Expo)
+# Build CORS origin allowlist from env — never use wildcard in production
+_raw_origins = os.getenv(
+    "ALLOWED_ORIGINS",
+    "http://localhost:5000,http://localhost:8081,http://127.0.0.1:5000,http://127.0.0.1:8081,http://localhost:5173,http://localhost:19006"
+)
+CORS_ORIGINS = [o.strip() for o in _raw_origins.split(",") if o.strip()]
+logger.info("🌐 CORS allowed origins: %s", CORS_ORIGINS)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

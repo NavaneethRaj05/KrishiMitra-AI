@@ -14,78 +14,84 @@
  */
 
 export const palette = {
-  // Forest teal — primary brand
-  teal50:  '#E6F7F2',
-  teal100: '#C0EAD9',
-  teal200: '#8DD4BA',
-  teal300: '#5BBE9B',
-  teal400: '#34A982',
-  teal500: '#1D9E75', // brand accent
-  teal600: '#17815F',
-  teal700: '#0F6047',
-  teal800: '#085041',
-  teal900: '#042E25',
+  // Electric Emerald & Forest teal — primary brand
+  teal50:  '#ECFDF5',
+  teal100: '#D1FAE5',
+  teal200: '#A7F3D0',
+  teal300: '#6EE7B7',
+  teal400: '#34D399',
+  teal500: '#10B981', // brand accent (Stitch emerald)
+  teal600: '#059669',
+  teal700: '#047857',
+  teal800: '#065F46',
+  teal900: '#064E3B',
 
-  // Warm amber — advisory / warning
-  amber50:  '#FDF5E6',
-  amber100: '#FAECC2',
-  amber200: '#F5D483',
-  amber300: '#F0BD45',
-  amber400: '#E8A31D',
-  amber500: '#D4860A', // warning accent
-  amber600: '#AB6A07',
-  amber700: '#835005',
-  amber800: '#633B04',
-  amber900: '#3D2202',
+  // Warm amber / Harvest gold — advisory & alerts
+  amber50:  '#FFFBEB',
+  amber100: '#FEF3C7',
+  amber200: '#FDE68A',
+  amber300: '#FCD34D',
+  amber400: '#FBBF24',
+  amber500: '#F59E0B', // warning accent
+  amber600: '#D97706',
+  amber700: '#B45309',
+  amber800: '#92400E',
+  amber900: '#78350F',
 
   // Meadow green — success
-  green50:  '#EDFAF2',
-  green100: '#C8F0D8',
-  green200: '#90E0B1',
-  green300: '#59D18A',
-  green400: '#3DBF72',
-  green500: '#3DAF6E', // success
-  green600: '#2F8D57',
-  green700: '#226B41',
-  green800: '#164A2C',
-  green900: '#0B2918',
+  green50:  '#F0FDF4',
+  green100: '#DCFCE7',
+  green200: '#BBF7D0',
+  green300: '#86EFAC',
+  green400: '#4ADE80',
+  green500: '#22C55E', // success
+  green600: '#16A34A',
+  green700: '#15803D',
+  green800: '#166534',
+  green900: '#14532D',
 
   // Terra red — error / danger
-  red50:   '#FCF0EE',
-  red100:  '#F7D5D0',
-  red200:  '#F0A89F',
-  red300:  '#E87B6E',
-  red400:  '#DB4F3F',
-  red500:  '#C0392B', // error
-  red600:  '#992D22',
-  red700:  '#73221A',
-  red800:  '#4D1611',
-  red900:  '#260B09',
+  red50:   '#FEF2F2',
+  red100:  '#FEE2E2',
+  red200:  '#FECACA',
+  red300:  '#FCA5A5',
+  red400:  '#F87171',
+  red500:  '#EF4444', // error
+  red600:  '#DC2626',
+  red700:  '#B91C1C',
+  red800:  '#991B1B',
+  red900:  '#7F1D1D',
 
-  // Dusk indigo — info / knowledge
-  indigo50:  '#EEEDFE',
-  indigo100: '#D5D3FD',
-  indigo200: '#ADA9FB',
-  indigo300: '#857FF8',
-  indigo400: '#6960F5',
-  indigo500: '#4F46A8', // info
-  indigo600: '#3E3884',
-  indigo700: '#2E2A63',
-  indigo800: '#1E1C42',
-  indigo900: '#0F0E21',
+  // Dusk indigo / violet — info / knowledge
+  indigo50:  '#EEF2FF',
+  indigo100: '#E0E7FF',
+  indigo200: '#C7D2FE',
+  indigo300: '#A5B4FC',
+  indigo400: '#818CF8',
+  indigo500: '#6366F1', // info
+  indigo600: '#4F46E5',
+  indigo700: '#4338CA',
+  indigo800: '#3730A3',
+  indigo900: '#312E81',
 
-  // Neutral — earthy base
-  stone50:  '#FAFAF9',
-  stone100: '#F4F3F1',
-  stone150: '#EDECEA',
-  stone200: '#E3E1DE',
-  stone300: '#CBC9C4',
-  stone400: '#A8A49E',
-  stone500: '#847E77',
-  stone600: '#615D58',
-  stone700: '#433F3B',
-  stone800: '#2A2825',
-  stone900: '#181614',
+  // Obsidian & Neutral Base
+  stone50:  '#F8FAFC',
+  stone100: '#F1F5F9',
+  stone150: '#E2E8F0',
+  stone200: '#CBD5E1',
+  stone300: '#94A3B8',
+  stone400: '#64748B',
+  stone500: '#475569',
+  stone600: '#334155',
+  stone700: '#1E293B',
+  stone800: '#0F172A',
+  stone900: '#020617',
+
+  // Obsidian Dark Palette
+  obsidian950: '#070D09',
+  obsidian900: '#0A130E',
+  obsidian800: '#111D16',
+  obsidian700: '#182B21',
 
   // Pure
   white: '#FFFFFF',

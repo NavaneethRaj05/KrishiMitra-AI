@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KrishiMitra AI — Smart Agriculture & Direct Farming Platform</title>
+  <meta name="description" content="AI-Powered Agricultural Intelligence, Direct Produce Marketplace, and Vernacular Advisory Platform for Farmers and Buyers." />
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌾</text></svg>">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Ambient Agricultural Video/Photo Canvas Overlay -->
+  <div class="bg-wrapper">
+    <div class="bg-image" style="background-image: url('assets/bg.jpg');"></div>
+    <div class="bg-gradient-overlay"></div>
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+  </div>
+
+  <!-- Main Container -->
+  <div class="page-layout">
+    
+    <!-- Top Navigation Header -->
+    <header class="top-nav">
+      <div class="nav-container">
+        <!-- Live Status Pill -->
+        <div class="status-badge" id="network-status">
+          <span class="pulse-dot"></span>
+          <span class="status-text" data-i18n="status_online">System Operational • Live MSP Feed</span>
+        </div>
+
+        <!-- Language Selector Dropdown -->
+        <div class="lang-dropdown-wrapper">
+          <div class="lang-selector" id="lang-btn" tabindex="0" role="button" aria-haspopup="listbox" aria-expanded="false">
+            <i data-lucide="globe" class="icon-globe"></i>
+            <span id="current-lang-label">English</span>
+            <i data-lucide="chevron-down" class="icon-chevron"></i>
+          </div>
+          <ul class="lang-menu" id="lang-menu" role="listbox">
+            <li class="lang-option active" data-lang="en">
+              <span class="flag">🌐</span>
+              <div class="lang-meta"><span class="lang-name">English</span><span class="lang-native">Default</span></div>
+            </li>
+            <li class="lang-option" data-lang="kn">
+              <span class="flag">🇮🇳</span>
+              <div class="lang-meta"><span class="lang-name">ಕನ್ನಡ</span><span class="lang-native">Kannada</span></div>
+            </li>
+            <li class="lang-option" data-lang="hi">
+              <span class="flag">🇮🇳</span>
+              <div class="lang-meta"><span class="lang-name">हिंदी</span><span class="lang-native">Hindi</span></div>
+            </li>
+            <li class="lang-option" data-lang="te">
+              <span class="flag">🇮🇳</span>
+              <div class="lang-meta"><span class="lang-name">తెలుగు</span><span class="lang-native">Telugu</span></div>
+            </li>
+            <li class="lang-option" data-lang="ta">
+              <span class="flag">🇮🇳</span>
+              <div class="lang-meta"><span class="lang-name">தமிழ்</span><span class="lang-native">Tamil</span></div>
+            </li>
+            <li class="lang-option" data-lang="mr">
+              <span class="flag">🇮🇳</span>
+              <div class="lang-meta"><span class="lang-name">मराठी</span><span class="lang-native">Marathi</span></div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </header>
+
+    <!-- Centered Hero Section -->
+    <main class="hero-section">
+      <div class="hero-card">
+        
+        <!-- Centered Platform Logo -->
+        <div class="logo-wrapper">
+          <div class="logo-badge">
+            <div class="logo-icon-box">
+              <span class="leaf-emoji">🌾</span>
+              <div class="logo-ring"></div>
+            </div>
+            <div class="logo-text-group">
+              <h1 class="brand-title">KrishiMitra<span class="brand-highlight">AI</span></h1>
+              <span class="brand-badge" data-i18n="badge_text">PRECISION AGRI-PLATFORM</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Agriculture Tagline (One short agriculture-related line below logo) -->
+        <p class="hero-tagline" data-i18n="tagline">
+          Empowering Indian Agriculture with AI-Driven Intelligence & Direct Market Access.
+        </p>
+
+        <!-- Portal Actions Grid: Farmer | Buyer | AI Bot -->
+        <div class="action-grid">
+          
+          <!-- 1. Farmer Action Card -->
+          <button class="action-btn card-farmer" id="btn-farmer" onclick="handleRoleSelect('farmer')">
+            <div class="card-glow"></div>
+            <div class="icon-avatar avatar-farmer">
+              <i data-lucide="sprout"></i>
+            </div>
+            <div class="card-body">
+              <div class="card-title-row">
+                <h2 class="card-title" data-i18n="btn_farmer">Farmer Portal</h2>
+                <i data-lucide="arrow-up-right" class="arrow-icon"></i>
+              </div>
+              <p class="card-desc" data-i18n="desc_farmer">
+                Crop Advisory · Disease Scan · Soil Health · Mandi MSP
+              </p>
+              <div class="card-tags">
+                <span class="tag">Instant Diagnosis</span>
+                <span class="tag">Offline Ready</span>
+              </div>
+            </div>
+          </button>
+
+          <!-- 2. Buyer Action Card -->
+          <button class="action-btn card-buyer" id="btn-buyer" onclick="handleRoleSelect('buyer')">
+            <div class="card-glow"></div>
+            <div class="icon-avatar avatar-buyer">
+              <i data-lucide="shopping-bag"></i>
+            </div>
+            <div class="card-body">
+              <div class="card-title-row">
+                <h2 class="card-title" data-i18n="btn_buyer">Buyer & Trader</h2>
+                <i data-lucide="arrow-up-right" class="arrow-icon"></i>
+              </div>
+              <p class="card-desc" data-i18n="desc_buyer">
+                Direct Farm Sourcing · APMC Market Rates · Bulk Orders
+              </p>
+              <div class="card-tags">
+                <span class="tag">0% Commission</span>
+                <span class="tag">Verified Harvest</span>
+              </div>
+            </div>
+          </button>
+
+          <!-- 3. AI Bot Action Card -->
+          <button class="action-btn card-bot" id="btn-bot" onclick="handleRoleSelect('bot')">
+            <div class="card-glow"></div>
+            <div class="icon-avatar avatar-bot">
+              <i data-lucide="bot"></i>
+              <div class="pulse-aura"></div>
+            </div>
+            <div class="card-body">
+              <div class="card-title-row">
+                <h2 class="card-title" data-i18n="btn_bot">Krishi AI Bot</h2>
+                <i data-lucide="sparkles" class="sparkle-icon"></i>
+              </div>
+              <p class="card-desc" data-i18n="desc_bot">
+                Voice Assistant · Multilingual Chat · ICAR Grounded
+              </p>
+              <div class="card-tags">
+                <span class="tag tag-gold">24/7 Agronomist</span>
+                <span class="tag">Voice Enabled</span>
+              </div>
+            </div>
+          </button>
+
+        </div>
+
+        <!-- Quick Live Metrics Ticker -->
+        <div class="metrics-ticker">
+          <div class="ticker-item">
+            <i data-lucide="shield-check" class="ticker-icon"></i>
+            <span data-i18n="ticker_icar">ICAR & KVK Verified Practice Data</span>
+          </div>
+          <div class="ticker-dot">•</div>
+          <div class="ticker-item">
+            <i data-lucide="mic" class="ticker-icon"></i>
+            <span data-i18n="ticker_voice">Kannada, Hindi, English Voice Audio</span>
+          </div>
+          <div class="ticker-dot">•</div>
+          <div class="ticker-item">
+            <i data-lucide="wifi-off" class="ticker-icon"></i>
+            <span data-i18n="ticker_offline">Edge Offline-First Inference</span>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <p>© 2026 KrishiMitra-AI Platform. Built for Indian Agriculture & Sustainable Farming.</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Interactive Role Modal -->
+  <div class="modal-backdrop" id="role-modal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal()">
+        <i data-lucide="x"></i>
+      </button>
+      <div class="modal-header">
+        <div class="modal-icon-badge" id="modal-icon-box">
+          <i data-lucide="sprout" id="modal-icon"></i>
+        </div>
+        <h3 id="modal-title">Farmer Portal</h3>
+        <p id="modal-subtitle">Welcome to your smart farming workspace</p>
+      </div>
+      <div class="modal-body" id="modal-content">
+        <!-- Injected via JavaScript -->
+      </div>
+      <div class="modal-footer">
+        <button class="modal-primary-btn" id="modal-action-btn" onclick="executeRoleAction()">
+          Launch Module
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="script.js"></script>
+</body>
+</html>

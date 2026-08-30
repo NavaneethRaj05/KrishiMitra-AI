@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Mandi Prices — KrishiMitra AI</title>
+  <meta name="description" content="Real-time agricultural market prices across APMC mandis with filtering, historical trends, and price analysis.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📈</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/common.css">
+  <link rel="stylesheet" href="/buyer/styles.css">
+</head>
+<body class="buyer-portal">
+  <div class="portal-layout">
+    <aside id="buyer-sidebar"></aside>
+    <div class="sidebar-overlay" onclick="KrishiNav.toggleSidebar()"></div>
+
+    <main class="portal-main">
+      <header id="buyer-topbar"></header>
+
+      <div class="portal-content">
+        <!-- Filter Bar -->
+        <div class="card" style="margin-bottom:20px;">
+          <div class="filter-bar">
+            <input type="text" id="crop-search" class="form-input" placeholder="🔍 Search crop (e.g., Tomato, Rice)" style="flex:1;min-width:200px;">
+            <select class="form-select" id="state-select">
+              <option value="">All States</option>
+              <option value="Karnataka" selected>Karnataka</option>
+              <option value="Maharashtra">Maharashtra</option>
+              <option value="Andhra Pradesh">Andhra Pradesh</option>
+            </select>
+            <select class="form-select" id="mandi-select">
+              <option value="">All Mandis</option>
+              <option value="Hassan APMC">Hassan APMC</option>
+              <option value="Mandya APMC">Mandya APMC</option>
+              <option value="Mysore APMC">Mysore APMC</option>
+              <option value="Hubli APMC">Hubli APMC</option>
+            </select>
+            <button class="btn btn-primary btn-sm" onclick="filterMandi()">Apply Filters</button>
+          </div>
+        </div>
+
+        <!-- Mandi Table -->
+        <div class="card">
+          <div class="card-header">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+              <div class="card-title">📊 APMC Mandi Price Board</div>
+              <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;
+                           padding:3px 10px;border-radius:99px;background:#ecfdf5;color:#059669;
+                           border:1px solid #a7f3d0;">
+                <span style="width:7px;height:7px;border-radius:50%;background:#10b981;display:inline-block;"></span> Live APMC Intelligence
+              </span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <button class="btn btn-sm btn-secondary" onclick="syncLiveMandiData(this)" id="sync-mandi-btn">
+                🔄 Sync Live Rates
+              </button>
+              <span class="text-xs text-muted" id="mandi-update-time">Updated: Today</span>
+            </div>
+          </div>
+          <div id="mandi-table-full"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/shared/api.js"></script>
+  <script src="/shared/nav.js"></script>
+  <script src="/shared/charts.js"></script>
+  <script src="/buyer/buyer.js"></script>
+  <script>
+    async function syncLiveMandiData(btn) {
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = '⏳ Syncing APMC Rates...';
+      }
+      try {
+        await BuyerPortal.refreshLiveMandiPrices();
+        const q = document.getElementById('crop-search').value;
+        await BuyerPortal.renderMandiTable('mandi-table-full', q);
+        const timeEl = document.getElementById('mandi-update-time');
+        if (timeEl) timeEl.textContent = `Updated: ${new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}`;
+      } catch (err) {
+        console.warn('Sync notice:', err);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = '🔄 Sync Live Rates';
+        }
+      }
+    }
+
+    function filterMandi() {
+      const q = document.getElementById('crop-search').value;
+      const state = document.getElementById('state-select').value;
+      const mandi = document.getElementById('mandi-select').value;
+      BuyerPortal.renderMandiTable('mandi-table-full', q, { state, mandi });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      KrishiNav.renderSidebar('buyer-sidebar');
+      KrishiNav.renderTopbar('buyer-topbar', 'Live Mandi Prices');
+      BuyerPortal.renderMandiTable('mandi-table-full');
+
+      document.getElementById('crop-search').addEventListener('input', (e) => {
+        const state = document.getElementById('state-select').value;
+        const mandi = document.getElementById('mandi-select').value;
+        BuyerPortal.renderMandiTable('mandi-table-full', e.target.value, { state, mandi });
+      });
+    });
+  </script>
+</body>
+</html>

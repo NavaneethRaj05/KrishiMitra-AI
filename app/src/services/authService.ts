@@ -21,9 +21,12 @@ class AuthService {
       const data = await response.json()
       return data.success
     } catch (e) {
-      console.warn('sendOTP request failed, simulating SMS OTP console log local bypass:', e)
+      // In offline/dev mode the OTP is printed to the debug console only — no hardcoded value in source.
+      // Set EXPO_PUBLIC_DEMO_OTP in your .env (app/.env) to control the bypass value.
+      console.warn('sendOTP request failed — offline fallback active:', e)
+      const demoOtp = process.env.EXPO_PUBLIC_DEMO_OTP || '(see EXPO_PUBLIC_DEMO_OTP in app/.env)';
       console.log(`\n==========================================`);
-      console.log(`[SMS OTP BYPASS] OTP is '123456'`);
+      console.log(`[SMS OTP BYPASS — OFFLINE DEV ONLY] Use OTP: ${demoOtp}`);
       console.log(`==========================================\n`);
       return true
     }
@@ -64,8 +67,10 @@ class AuthService {
       }
       return { success: false }
     } catch (e) {
-      console.warn('verifyOTP request failed, running mock authentication bypass (code: 123456):', e)
-      if (otp === '123456') {
+      // Offline bypass: OTP must match EXPO_PUBLIC_DEMO_OTP env var (not hardcoded in source)
+      const demoOtp = process.env.EXPO_PUBLIC_DEMO_OTP;
+      console.warn('verifyOTP request failed, running offline mock bypass:', e)
+      if (demoOtp && otp === demoOtp) {
         const mockToken = 'mock_jwt_token_for_offline_setup'
         const mockProfile: FarmerContext = {
           farmerId: 'farmer_' + Math.random().toString(36).substring(7),

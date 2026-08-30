@@ -248,9 +248,10 @@ class RAGService:
         self, query: str, language: str = "en", farmer_history: Optional[list] = None
     ) -> Dict:
         """Full RAG pipeline: retrieve → build prompt → call LLM → return answer + sources."""
+        import asyncio
         # Sanitize query before use in prompts
         safe_query = self._sanitize_query(query)
-        chunks  = self.retrieve(safe_query, top_k=TOP_K)
+        chunks  = await asyncio.to_thread(self.retrieve, safe_query, top_k=TOP_K)
 
         # KAG enrichment: if a crop is mentioned, add graph knowledge to context
         kag_context = ""

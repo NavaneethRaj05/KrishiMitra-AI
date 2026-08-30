@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Direct Produce Sourcing — KrishiMitra AI</title>
+  <meta name="description" content="Directly source verified harvest lots from farmers with quality scores, organic certification, and location tracking.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📦</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/common.css">
+  <link rel="stylesheet" href="/buyer/styles.css">
+</head>
+<body class="buyer-portal">
+  <div class="portal-layout">
+    <aside id="buyer-sidebar"></aside>
+    <div class="sidebar-overlay" onclick="KrishiNav.toggleSidebar()"></div>
+
+    <main class="portal-main">
+      <header id="buyer-topbar"></header>
+
+      <div class="portal-content">
+        <div class="card-header" style="margin-bottom:16px;">
+          <div>
+            <h2 class="heading-lg">🌾 Direct Produce Sourcing</h2>
+            <p class="text-sm text-secondary">Connect directly with verified farmers to procure high-quality crops with quality grading.</p>
+          </div>
+          <button class="btn btn-primary" onclick="BuyerPortal.requestQuote(0)">+ Request Bulk Quote</button>
+        </div>
+
+        <!-- Filter & Search Bar -->
+        <div class="card" style="margin-bottom:16px;">
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <input type="text" id="sourcing-search" class="form-input" placeholder="🔍 Search by crop, farmer, or district (e.g. Tomato, Hassan)..." style="flex:1;min-width:220px;" oninput="filterSourcing()">
+            <select class="form-select" id="sourcing-cert-filter" onchange="filterSourcing()" style="width:160px;">
+              <option value="">All Certifications</option>
+              <option value="Organic">Organic</option>
+              <option value="FSSAI">FSSAI</option>
+              <option value="Non-GMO">Non-GMO</option>
+              <option value="Chemical-Free">Chemical-Free</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Harvest Lots Grid -->
+        <div id="sourcing-grid" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));gap:16px;"></div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/shared/api.js"></script>
+  <script src="/shared/nav.js"></script>
+  <script src="/buyer/buyer.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      KrishiNav.renderSidebar('buyer-sidebar');
+      KrishiNav.renderTopbar('buyer-topbar', 'Direct Sourcing');
+      BuyerPortal.renderSourcingLots('sourcing-grid');
+    });
+
+    function filterSourcing() {
+      const q = (document.getElementById('sourcing-search')?.value || '').toLowerCase();
+      const cert = document.getElementById('sourcing-cert-filter')?.value || '';
+      const lots = BuyerPortal.SOURCING_LOTS.filter(lot => {
+        const matchesQ = !q || lot.crop.toLowerCase().includes(q) || lot.farmer.toLowerCase().includes(q) || lot.location.toLowerCase().includes(q);
+        const matchesCert = !cert || lot.certs.includes(cert);
+        return matchesQ && matchesCert;
+      });
+
+      const el = document.getElementById('sourcing-grid');
+      if (!el) return;
+      if (lots.length === 0) {
+        el.innerHTML = '<div style="grid-column:1/-1;padding:32px;text-align:center;color:#94a3b8;">No harvest lots match your filters.</div>';
+        return;
+      }
+      el.innerHTML = lots.map((lot, idx) => `
+        <div class="lot-card">
+          <div class="lot-header">
+            <div><span style="font-size:20px;margin-right:6px;">${lot.icon}</span><span class="lot-crop">${lot.crop}</span></div>
+            <span class="badge badge-emerald">Quality: ${lot.quality}%</span>
+          </div>
+          <div class="lot-meta">
+            <div class="lot-meta-item"><span class="lot-meta-label">Farmer</span><span class="lot-meta-value">${lot.farmer}</span></div>
+            <div class="lot-meta-item"><span class="lot-meta-label">Location</span><span class="lot-meta-value">${lot.location}</span></div>
+            <div class="lot-meta-item"><span class="lot-meta-label">Quantity</span><span class="lot-meta-value">${lot.qty}</span></div>
+            <div class="lot-meta-item"><span class="lot-meta-label">Price</span><span class="lot-meta-value">${lot.price}</span></div>
+          </div>
+          <div class="flex gap-2" style="flex-wrap:wrap;">
+            ${lot.certs.map(c => `<span class="badge badge-emerald">${c}</span>`).join('')}
+            <span class="badge badge-slate">${lot.id}</span>
+          </div>
+          <div class="lot-actions">
+            <button class="btn btn-primary btn-sm" style="flex:1;" onclick="BuyerPortal.requestQuote(${idx})">Request Quote</button>
+            <button class="btn btn-secondary btn-sm" style="flex:1;" onclick="BuyerPortal.viewLotDetails(${idx})">View Details</button>
+          </div>
+        </div>
+      `).join('');
+    }
+  </script>
+</body>
+</html>

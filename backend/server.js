@@ -5,7 +5,13 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import rateLimit from 'express-rate-limit';
 
+import path from 'path';
+import { fileURLToPath } from 'url';
+
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 import authRoutes   from './routes/auth.routes.js';
 import farmerRoutes from './routes/farmer.routes.js';
@@ -37,7 +43,19 @@ const app  = express();
 const PORT = process.env.PORT || 5000;
 
 // ── Security ──
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://unpkg.com", "https://cdn.jsdelivr.net"],
+      scriptSrcAttr: ["'unsafe-inline'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com", "data:"],
+      imgSrc: ["'self'", "data:", "blob:", "https:"],
+      connectSrc: ["'self'", "http://localhost:*", "http://127.0.0.1:*", "ws://localhost:*", "ws://127.0.0.1:*", "https:"],
+    },
+  },
+}));
 
 // Secure CORS configuration
 const allowedOrigins = process.env.ALLOWED_ORIGINS
@@ -73,8 +91,9 @@ app.use(cors({
 }));
 app.use(rateLimit({ windowMs: 1 * 60 * 1000, max: 100, standardHeaders: true, legacyHeaders: false }));
 
-// ── Body parsing ──
+// ── Body parsing & Static Files ──
 app.use(express.json({ limit: '15mb' }));  // allow image uploads as base64
+app.use(express.static(path.join(__dirname, '../landing')));
 
 // ── Routes ──
 app.use('/api/auth',   authRoutes);

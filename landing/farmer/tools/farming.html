@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Farming Calculator — KrishiMitra AI</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌾</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/common.css"><link rel="stylesheet" href="/farmer/styles.css">
+</head>
+<body class="farmer-portal">
+  <div class="portal-layout">
+    <aside id="farmer-sidebar"></aside><div class="sidebar-overlay" onclick="KrishiNav.toggleSidebar()"></div>
+    <main class="portal-main">
+      <header id="farmer-topbar"></header>
+      <div class="portal-content" style="max-width:800px;">
+        <a href="/farmer/tools.html" style="font-size:13px;color:#10b981;font-weight:600;margin-bottom:8px;display:inline-block;">← Tools</a>
+        <h1 class="heading-2xl" style="color:#0f372a;margin-bottom:4px;">🔢 Farming Calculator</h1>
+        <p style="color:#64748b;font-size:14px;margin-bottom:24px;">Seed rate, plant spacing, yield estimation, and area conversions.</p>
+
+        <!-- Seed Rate Calculator -->
+        <div class="card" style="margin-bottom:16px;">
+          <div class="card-title" style="margin-bottom:12px;">🌱 Seed Rate Calculator</div>
+          <form class="calc-form" onsubmit="calcSeedRate(event)">
+            <div class="form-group"><label class="form-label">Crop</label>
+              <select class="form-select" id="seed-crop"><option value="80">Rice</option><option value="100">Wheat</option><option value="20">Maize</option><option value="0.3">Tomato (transplant)</option><option value="3">Cotton</option></select>
+            </div>
+            <div class="form-group"><label class="form-label">Area (acres)</label><input type="number" class="form-input" id="seed-area" value="2" min="0.1" step="0.1"></div>
+            <div style="grid-column:1/-1;"><button type="submit" class="btn btn-primary" style="width:100%;">Calculate Seed Needed</button></div>
+          </form>
+          <div id="seed-result" style="margin-top:12px;"></div>
+        </div>
+
+        <!-- Yield Estimator -->
+        <div class="card" style="margin-bottom:16px;">
+          <div class="card-title" style="margin-bottom:12px;">📊 Yield Estimator</div>
+          <form class="calc-form" onsubmit="calcYield(event)">
+            <div class="form-group"><label class="form-label">Crop</label>
+              <select class="form-select" id="yield-crop"><option value="4500">Rice</option><option value="4000">Wheat</option><option value="6000">Maize</option><option value="25000">Tomato</option><option value="1500">Cotton</option></select>
+            </div>
+            <div class="form-group"><label class="form-label">Area (acres)</label><input type="number" class="form-input" id="yield-area" value="2" min="0.1" step="0.1"></div>
+            <div class="form-group"><label class="form-label">Expected Price (₹/quintal)</label><input type="number" class="form-input" id="yield-price" value="2000" min="100"></div>
+            <div style="grid-column:1/-1;"><button type="submit" class="btn btn-primary" style="width:100%;">Estimate Yield & Revenue</button></div>
+          </form>
+          <div id="yield-result" style="margin-top:12px;"></div>
+        </div>
+
+        <!-- Area Converter -->
+        <div class="card">
+          <div class="card-title" style="margin-bottom:12px;">📐 Area Converter</div>
+          <form class="calc-form" onsubmit="convertArea(event)">
+            <div class="form-group"><label class="form-label">Value</label><input type="number" class="form-input" id="area-val" value="1" min="0.01" step="0.01"></div>
+            <div class="form-group"><label class="form-label">From</label>
+              <select class="form-select" id="area-from"><option value="4046.86">Acres</option><option value="10000">Hectares</option><option value="1">Square Meters</option><option value="836.127">Bigha (UP)</option><option value="4046.86">Gunta (100)</option></select>
+            </div>
+            <div style="grid-column:1/-1;"><button type="submit" class="btn btn-primary" style="width:100%;">Convert</button></div>
+          </form>
+          <div id="area-result" style="margin-top:12px;"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="/shared/api.js"></script><script src="/shared/nav.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => { KrishiNav.renderSidebar('farmer-sidebar'); KrishiNav.renderTopbar('farmer-topbar', 'Farming Calculator'); });
+    async function calcSeedRate(e) {
+      e.preventDefault();
+      const sel = document.getElementById('seed-crop');
+      const cropName = sel.options[sel.selectedIndex].text;
+      const rate = parseFloat(sel.value);
+      const area = parseFloat(document.getElementById('seed-area').value);
+      const areaHa = area * 0.4047;
+      const total = Math.round(rate * areaHa * 10) / 10;
+      const resEl = document.getElementById('seed-result');
+      resEl.innerHTML = `
+        <div class="calc-result">
+          <div style="font-weight:700;font-size:15px;color:#059669;margin-bottom:6px;">🌱 Seed Required: ${total} kg for ${area} acres</div>
+          <div style="font-size:12px;color:#64748b;">Formula: ${rate} kg/ha × ${areaHa.toFixed(2)} ha</div>
+          <div id="seed-ai-tip" style="margin-top:10px;padding:8px 12px;background:#f0fdf4;border-radius:8px;font-size:12px;color:#166534;">
+            ⚡ Fetching top certified seed varieties and spacing from Gemini AI...
+          </div>
+        </div>
+      `;
+      try {
+        const prompt = `For ${cropName} cultivation in India, list 3 top high-yielding certified seed varieties with seed treatment tips and recommended plant-to-plant spacing in 3 concise bullet points.`;
+        const raw = await KrishiAPI.callGemini(prompt);
+        let clean = raw.trim();
+        if (clean.startsWith('```')) { const lines = clean.split('\n'); if (lines[0].startsWith('```')) lines.shift(); if (lines[lines.length-1].startsWith('```')) lines.pop(); clean = lines.join('\n').trim(); }
+        document.getElementById('seed-ai-tip').innerHTML = `<strong>✨ AI Variety & Spacing Recommendations:</strong><br>${clean}`;
+      } catch (err) {
+        document.getElementById('seed-ai-tip').style.display = 'none';
+      }
+    }
+
+    async function calcYield(e) {
+      e.preventDefault();
+      const sel = document.getElementById('yield-crop');
+      const cropName = sel.options[sel.selectedIndex].text;
+      const yieldPerHa = parseFloat(sel.value);
+      const area = parseFloat(document.getElementById('yield-area').value);
+      const price = parseFloat(document.getElementById('yield-price').value);
+      const areaHa = area * 0.4047;
+      const totalKg = Math.round(yieldPerHa * areaHa);
+      const quintals = Math.round(totalKg / 100 * 10) / 10;
+      const revenue = Math.round(quintals * price);
+      const resEl = document.getElementById('yield-result');
+      resEl.innerHTML = `
+        <div class="calc-result">
+          <div class="grid grid-3" style="gap:12px;">
+            <div style="text-align:center;padding:12px;background:#10b98110;border-radius:8px;">
+              <div style="font-size:11px;color:#64748b;">Expected Yield</div>
+              <div style="font-size:20px;font-weight:800;color:#059669;">${totalKg.toLocaleString()} kg</div>
+              <div style="font-size:11px;color:#94a3b8;">(${quintals} quintals)</div>
+            </div>
+            <div style="text-align:center;padding:12px;background:#f59e0b10;border-radius:8px;">
+              <div style="font-size:11px;color:#64748b;">Estimated Revenue</div>
+              <div style="font-size:20px;font-weight:800;color:#f59e0b;">₹${revenue.toLocaleString()}</div>
+            </div>
+            <div style="text-align:center;padding:12px;background:#3b82f610;border-radius:8px;">
+              <div style="font-size:11px;color:#64748b;">Per Acre</div>
+              <div style="font-size:20px;font-weight:800;color:#3b82f6;">₹${Math.round(revenue / area).toLocaleString()}</div>
+            </div>
+          </div>
+          <div id="yield-ai-tip" style="margin-top:10px;padding:8px 12px;background:#eff6ff;border-radius:8px;font-size:12px;color:#1e40af;">
+            ⚡ Fetching yield booster tips from Gemini AI...
+          </div>
+        </div>
+      `;
+      try {
+        const prompt = `Give 2 scientifically proven agronomy tips to maximize ${cropName} yield and achieve higher market prices in India. 2 concise bullet points.`;
+        const raw = await KrishiAPI.callGemini(prompt);
+        let clean = raw.trim();
+        if (clean.startsWith('```')) { const lines = clean.split('\n'); if (lines[0].startsWith('```')) lines.shift(); if (lines[lines.length-1].startsWith('```')) lines.pop(); clean = lines.join('\n').trim(); }
+        document.getElementById('yield-ai-tip').innerHTML = `<strong>✨ AI Yield Maximization Insights:</strong><br>${clean}`;
+      } catch (err) {
+        document.getElementById('yield-ai-tip').style.display = 'none';
+      }
+    }
+
+    function convertArea(e) {
+      e.preventDefault();
+      const val = parseFloat(document.getElementById('area-val').value);
+      const factor = parseFloat(document.getElementById('area-from').value);
+      const sqm = val * factor;
+      const res = `<div class="calc-result"><strong>${val}</strong> = <br>• ${(sqm / 4046.86).toFixed(4)} Acres<br>• ${(sqm / 10000).toFixed(4)} Hectares<br>• ${sqm.toFixed(2)} sq meters<br>• ${(sqm / 836.127).toFixed(4)} Bigha (UP)</div>`;
+      document.getElementById('area-result').innerHTML = res;
+    }
+  </script>
+</body>
+</html>

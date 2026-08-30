@@ -16,33 +16,76 @@ KrishiMitraAI enables farmers to:
 3. **Understand** exactly *why* the AI made its recommendation (Explainable AI)
 4. **Work offline** — all features available without internet after initial setup
 
-## 🏗️ Architecture
+## 🏗️ System Architecture & Methodology Diagram
 
+### 🌐 Complete Platform Architecture Flow
+
+```mermaid
+flowchart TD
+    %% Level 1: Mobile App / PWA Client
+    Client["📱 React Native Mobile App / React 18 PWA<br/>(Voice Assistant | Leaf Scanner | Soil Advisor | Buyer Mandi & Sourcing Portal)"]
+
+    %% Level 2: Express Gateway
+    Gateway["🛑 Express.js Gateway<br/>(JWT Auth Security, Proxy & Offline Sync Queue)"]
+
+    %% Level 3: Storage & ML Microservice
+    MongoDB[("🛢️ MongoDB<br/>(Saves User Profiles, Harvest Lots & Contracts)")]
+    FastAPI["⚙️ FastAPI ML Service<br/>(Async Model Pipelines & Analytics Controller)"]
+
+    %% Level 4: Core Knowledge DBs & Processing Engines
+    ChromaDB[("🛢️ ChromaDB Vector Store<br/>(ICAR Handbook Embeddings)")]
+    Neo4j[("🛢️ Neo4j Graph Database<br/>(KAG Knowledge Graph)")]
+    CNNModels["🍂 PyTorch CNN & XGBoost Models<br/>(Leaf Pathogen 95.4% + SHAP Soil XAI)"]
+    LLMFallback["🤖 Gemini Cloud / Ollama Fallback<br/>(LLaMA 3.1 8B & LLaVA 7B Generative XAI)"]
+
+    %% Connections with Edge Labels (matching reference slide)
+    Client -->|"HTTPS / Voice / Leaf Photo / Sourcing API"| Gateway
+    Gateway -->|"Saves Profile / Coordinates"| MongoDB
+    Gateway -->|"Proxies ML Queries"| FastAPI
+
+    FastAPI -->|"RAG Semantic Search"| ChromaDB
+    FastAPI -->|"KAG Structured Facts"| Neo4j
+    FastAPI -->|"Local Pathogen Analysis"| CNNModels
+    FastAPI -->|"Generates Advisor Response"| LLMFallback
 ```
-┌─────────────────────────────────────────────────────┐
-│                   React PWA (Vite)                   │
-│   ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐    │
-│   │ RAG  │ │Disease│ │ Crop │ │Voice │ │Market│    │
-│   │ Chat │ │Detect │ │Advise│ │ NLP  │ │Price │    │
-│   └──┬───┘ └──┬───┘ └──┬───┘ └──┬───┘ └──┬───┘    │
-│      │  ONNX Runtime (Offline ML)  │       │        │
-└──────┼─────────┼───────┼──────────┼───────┼────────┘
-       │         │       │          │       │
-┌──────▼─────────▼───────▼──────────▼───────▼────────┐
-│              Express.js API Gateway                  │
-│         (JWT Auth, Proxy, Sync Queue)                │
-└──────┬─────────┬───────────────────┬───────────────┘
-       │         │                   │
-┌──────▼──┐ ┌───▼────────────┐ ┌───▼──────┐
-│ MongoDB │ │ FastAPI ML Svc  │ │  Neo4j   │
-│  (Data) │ │ RAG│CNN│XGB│ASR│ │  (KAG)   │
-└─────────┘ └───┬────────────┘ └──────────┘
-                │
-         ┌──────▼──────┐
-         │   Ollama     │
-         │ LLaMA│LLaVA  │
-         └─────────────┘
-```
+
+---
+
+### 📐 Standard Shape Conventions Legend
+
+| Shape Symbol | Standard Notation | Architectural Role & Description |
+| :--- | :--- | :--- |
+| `[ ... ]` | **Rectangle** | **Client Apps & Processing Microservices**: React Native App, Express.js Gateway, FastAPI ML Service, CNN/XGBoost Models, Ollama/Gemini |
+| `[( ... )]` | **Cylinder** | **Databases & Vector Stores**: MongoDB (Profiles/Lots), ChromaDB Vector Store (RAG Embeddings), Neo4j Graph Database (KAG) |
+| `-- Label -->` | **Labeled Arrow** | **Protocol / Action Label**: Explicit grey-boxed label explaining the exact operation/data passed along each connection |
+
+---
+
+### 🧩 Methodology & Section Breakdown
+
+1. **📱 React Native Mobile App / React 18 PWA**:
+   - Captures voice audio in Kannada/Hindi, leaf photo matrices, soil parameters, and buyer mandi/sourcing requests.
+
+2. **🛑 Express.js Gateway**:
+   - Central entry point performing JWT authentication, request proxying, and offline transaction sync queueing.
+
+3. **🛢️ MongoDB Database**:
+   - Saves farmer profiles, geo-coordinates, harvest lot listings, and smart procurement contracts.
+
+4. **⚙️ FastAPI ML Service**:
+   - Asynchronous orchestrator dispatching ML inference and RAG/KAG retrieval tasks.
+
+5. **🛢️ ChromaDB Vector Store**:
+   - High-dimensional vector database executing semantic search across ICAR handbooks.
+
+6. **🛢️ Neo4j Graph Database**:
+   - Knowledge-Augmented Generation graph providing structured agricultural facts and crop-disease relationships.
+
+7. **🍂 PyTorch CNN & XGBoost Models**:
+   - Deep learning leaf disease classifier (95.4% accuracy) and XGBoost soil-to-crop recommender with SHAP explainability.
+
+8. **🤖 Gemini Cloud / Ollama Fallback**:
+   - Generative LLM engine (LLaMA 3.1 8B & LLaVA 7B) synthesizing grounded advisories and visual XAI narratives.
 
 ## 🚀 Quick Start
 

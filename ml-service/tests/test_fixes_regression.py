@@ -84,3 +84,68 @@ async def test_llm_vision_fallback():
         assert "Tomato" in res["answer"]
         assert "Early Blight" in res["answer"]
         assert "95.0%" in res["answer"]
+
+
+# 4. Test batched translation logic
+def test_translate_fallback_text_batched(monkeypatch):
+    from utils.language import translate_fallback_text
+    
+    # Mock requests.get response
+    mock_response = MagicMock()
+    mock_response.status_code = 200
+    mock_response.json.return_value = [
+        [
+            ["ಹಲೋ ವರ್ಲ್ಡ್\nಟೊಮೆಟೊ", "Hello world\nTomato", None, None, 0]
+        ]
+    ]
+    monkeypatch.setattr("requests.get", MagicMock(return_value=mock_response))
+    
+    res = translate_fallback_text("Hello world\nTomato", "kn")
+    assert "ಹಲೋ ವರ್ಲ್ಡ್" in res
+    assert "ಟೊಮೆಟೊ" in res
+
+
+# 5. Test reverse_geocode pruning logic
+def test_reverse_geocode_pruning():
+    from services.location_service import location_service
+    
+    # Let's save original districts and restore them later
+    original_districts = location_service.districts
+    original_global = location_service.global_regions
+    
+    try:
+        location_service.districts = [
+            {"name": "Bengaluru", "state": "Karnataka", "lat": 12.97, "lon": 77.59, "typical_soil": "Red Soil"},
+            {"name": "Hassan", "state": "Karnataka", "lat": 13.06, "lon": 76.10, "typical_soil": "Sandy Loam"},
+        ]
+        location_service.global_regions = []
+        
+        res = location_service.reverse_geocode(12.98, 77.60)
+        assert res is not None
+        assert res["name"] == "Bengaluru"
+    finally:
+        location_service.districts = original_districts
+        location_service.global_regions = original_global
+
+
+# 6. Test weather key corrections in validation_service
+def test_validation_weather_keys():
+    from services.validation_service import validation_service
+    
+    farmer_context = {
+        "weather": {
+            "precipitation": 12.0,   # Correct key
+            "windspeed": 18.0,       # Correct key
+            "description": "Rainy"
+        }
+    }
+    
+    is_valid, msg = validation_service.validate_response(
+        "Please spray Mancozeb on your crops.",
+        "pest_control",
+        farmer_context
+    )
+    
+    assert "WEATHER ALERT" in msg
+    assert "WIND ALERT" in msg
+

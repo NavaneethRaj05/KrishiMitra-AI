@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crop Recommendation — KrishiMitra AI</title>
+  <meta name="description" content="AI-powered crop recommendation based on soil composition and environmental conditions with SHAP explanations.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌾</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/common.css">
+  <link rel="stylesheet" href="/farmer/styles.css">
+</head>
+<body class="farmer-portal">
+  <div class="portal-layout">
+    <aside id="farmer-sidebar"></aside>
+    <div class="sidebar-overlay" onclick="KrishiNav.toggleSidebar()"></div>
+    <main class="portal-main">
+      <header id="farmer-topbar"></header>
+      <div class="portal-content" style="max-width:900px;">
+
+        <!-- Page Title -->
+        <div style="margin-bottom:24px;">
+          <a href="/farmer/" style="font-size:13px;color:#10b981;font-weight:600;display:inline-flex;align-items:center;gap:4px;margin-bottom:8px;">← Back to Dashboard</a>
+          <h1 class="heading-2xl" style="color:#0f372a;">🌱 Crop Recommendation</h1>
+          <p style="color:#64748b;font-size:14px;margin-top:4px;">Enter your soil and environmental values to get AI-powered crop recommendations with explanations.</p>
+        </div>
+
+        <!-- Input Form -->
+        <div class="card" style="margin-bottom:24px;">
+          <div class="card-title" style="margin-bottom:16px;">Soil & Environment Data</div>
+          <form id="recommendation-form" class="calc-form" onsubmit="handleRecommendation(event)">
+            <div class="form-group">
+              <label class="form-label">Nitrogen (N) <span style="color:#94a3b8;font-weight:400;">kg/ha</span></label>
+              <input type="number" class="form-input" name="N" value="90" min="0" max="200" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Phosphorus (P) <span style="color:#94a3b8;font-weight:400;">kg/ha</span></label>
+              <input type="number" class="form-input" name="P" value="42" min="0" max="200" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Potassium (K) <span style="color:#94a3b8;font-weight:400;">kg/ha</span></label>
+              <input type="number" class="form-input" name="K" value="43" min="0" max="200" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">pH <span style="color:#94a3b8;font-weight:400;">0-14</span></label>
+              <input type="number" class="form-input" name="ph" value="6.5" min="0" max="14" step="0.1" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Temperature <span style="color:#94a3b8;font-weight:400;">°C</span></label>
+              <input type="number" class="form-input" name="temperature" value="25" min="-10" max="60" step="0.1" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Humidity <span style="color:#94a3b8;font-weight:400;">%</span></label>
+              <input type="number" class="form-input" name="humidity" value="80" min="0" max="100" step="0.1" required>
+            </div>
+            <div class="form-group" style="grid-column:1/-1;">
+              <label class="form-label">Rainfall <span style="color:#94a3b8;font-weight:400;">mm</span></label>
+              <input type="number" class="form-input" name="rainfall" value="200" min="0" max="3000" step="0.1" required>
+            </div>
+            <div style="grid-column:1/-1;">
+              <button type="submit" class="btn btn-primary btn-lg" style="width:100%;" id="recommend-btn">
+                🌱 Get Crop Recommendation
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Result -->
+        <div id="recommendation-result"></div>
+
+        <!-- Info Section -->
+        <div class="card" style="margin-top:24px;background:#f0fdf4;border-color:#10b98120;">
+          <div class="card-title" style="color:#059669;margin-bottom:8px;">💡 How it works</div>
+          <ul style="font-size:13px;color:#475569;line-height:1.8;padding-left:16px;">
+            <li>Our AI model uses <strong>XGBoost</strong> trained on 2,200+ soil samples from Indian agricultural regions</li>
+            <li>It considers all 7 soil and environmental factors to predict the best crop</li>
+            <li><strong>SHAP explanations</strong> show which factors contributed most to the recommendation</li>
+            <li>Green bars = factor supports this crop, Red bars = factor slightly reduces suitability</li>
+            <li>Results work offline when the ML service has been previously accessed</li>
+          </ul>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/shared/api.js"></script>
+  <script src="/shared/nav.js"></script>
+  <script src="/farmer/farmer.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      KrishiNav.renderSidebar('farmer-sidebar');
+      KrishiNav.renderTopbar('farmer-topbar', 'Crop Recommendation');
+    });
+
+    function handleRecommendation(e) {
+      e.preventDefault();
+      const form = e.target;
+      const btn = document.getElementById('recommend-btn');
+      btn.disabled = true;
+      btn.textContent = '⏳ Analyzing...';
+
+      const formData = {};
+      new FormData(form).forEach((val, key) => { formData[key] = val; });
+
+      FarmerPortal.submitCropRecommendation(formData).finally(() => {
+        btn.disabled = false;
+        btn.textContent = '🌱 Get Crop Recommendation';
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Knowledge Library — KrishiMitra AI</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌾</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/common.css"><link rel="stylesheet" href="/farmer/styles.css">
+</head>
+<body class="farmer-portal">
+  <div class="portal-layout">
+    <aside id="farmer-sidebar"></aside><div class="sidebar-overlay" onclick="KrishiNav.toggleSidebar()"></div>
+    <main class="portal-main">
+      <header id="farmer-topbar"></header>
+      <div class="portal-content" style="max-width:1000px;">
+        <a href="/farmer/" style="font-size:13px;color:#10b981;font-weight:600;margin-bottom:8px;display:inline-block;">← Dashboard</a>
+        <h1 class="heading-2xl" style="color:#0f372a;margin-bottom:4px;">📚 Knowledge Library</h1>
+        <p style="color:#64748b;font-size:14px;margin-bottom:24px;">Comprehensive agricultural knowledge from ICAR and KVK verified sources.</p>
+
+        <!-- Instant AI Knowledge Search -->
+        <div class="card" style="margin-bottom:20px;padding:16px;">
+          <div style="display:flex;gap:8px;">
+            <input type="text" id="library-search-input" class="form-input" placeholder="🔍 Search any crop, disease, fertilizer, or ICAR guide..." style="flex:1;" onkeydown="if(event.key==='Enter') searchKnowledgeAI()">
+            <button class="btn btn-primary" onclick="searchKnowledgeAI()">Ask Gemini AI</button>
+          </div>
+          <div id="ai-search-result" style="margin-top:12px;display:none;"></div>
+        </div>
+
+        <div class="library-categories" id="categories"></div>
+
+        <!-- Knowledge Articles Section -->
+        <div id="articles-section" style="margin-top:24px;display:none;">
+          <div class="flex justify-between items-center" style="margin-bottom:16px;">
+            <h2 class="heading-lg" id="category-title"></h2>
+            <button class="btn btn-secondary btn-sm" onclick="showCategories()">← All Categories</button>
+          </div>
+          <div id="articles-list" style="display:flex;flex-direction:column;gap:12px;"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="/shared/api.js"></script><script src="/shared/nav.js"></script>
+  <script>
+    const LIBRARY = {
+      crops: { icon: '🌾', name: 'Crops', count: 42, articles: [
+        { title: 'Rice Cultivation Guide', desc: 'Complete guide for paddy cultivation including varieties, land preparation, transplanting, and harvest timing.' },
+        { title: 'Wheat Growing Practices', desc: 'Best practices for wheat farming in North and South India including irrigation scheduling.' },
+        { title: 'Tomato Production', desc: 'Season-wise tomato cultivation, staking, pruning, and yield optimization.' },
+        { title: 'Maize Hybrid Selection', desc: 'Choosing the right maize hybrid for your region and soil type.' },
+      ]},
+      diseases: { icon: '🦠', name: 'Pests & Diseases', count: 38, articles: [
+        { title: 'Common Tomato Diseases', desc: 'Early blight, late blight, leaf curl, and bacterial wilt — symptoms and management.' },
+        { title: 'Rice Blast Management', desc: 'Identification, prevention, and chemical/organic control of rice blast fungus.' },
+        { title: 'Fall Armyworm Control', desc: 'IPM strategies for fall armyworm in maize and sorghum crops.' },
+        { title: 'Integrated Pest Management', desc: 'Principles of IPM: cultural, biological, and chemical control methods.' },
+      ]},
+      fertilizers: { icon: '🧪', name: 'Fertilizers', count: 24, articles: [
+        { title: 'NPK Guide for Major Crops', desc: 'Recommended nitrogen, phosphorus, and potassium dosages for Indian crops.' },
+        { title: 'Organic Fertilizers', desc: 'Vermicompost, farmyard manure, green manure — preparation and application.' },
+        { title: 'Micronutrient Deficiency', desc: 'Identifying and correcting zinc, boron, iron, and manganese deficiencies.' },
+      ]},
+      practices: { icon: '🚜', name: 'Farming Practices', count: 31, articles: [
+        { title: 'Drip Irrigation Setup', desc: 'Complete guide to drip irrigation: layout design, emitter spacing, and maintenance.' },
+        { title: 'Soil Health Management', desc: 'Soil testing, organic amendments, crop rotation, and cover cropping.' },
+        { title: 'Mulching Techniques', desc: 'Types of mulch, benefits for moisture retention, and weed suppression.' },
+      ]},
+      schemes: { icon: '🏛️', name: 'Government Schemes', count: 18, articles: [
+        { title: 'PM-KISAN Yojana', desc: 'Direct income support of ₹6,000/year — eligibility and application process.' },
+        { title: 'PMFBY Crop Insurance', desc: 'Pradhan Mantri Fasal Bima Yojana — coverage, premium, and claim process.' },
+        { title: 'Soil Health Card Scheme', desc: 'Free soil testing and nutrient-based recommendations from the government.' },
+        { title: 'Kisan Credit Card', desc: 'Short-term agricultural loans at subsidized interest rates for farmers.' },
+      ]},
+      tips: { icon: '💡', name: 'Agricultural Tips', count: 56, articles: [
+        { title: 'Monsoon Farming Tips', desc: 'Preparing fields, drainage management, and crop protection during heavy rains.' },
+        { title: 'Post-Harvest Handling', desc: 'Drying, grading, storage, and reducing post-harvest losses.' },
+        { title: 'Water Conservation', desc: 'Rainwater harvesting, farm pond construction, and efficient water use.' },
+      ]},
+      cultivation: { icon: '🌿', name: 'Crop Cultivation', count: 35, articles: [
+        { title: 'Seed Treatment Guide', desc: 'Chemical and biological seed treatment methods for better germination.' },
+        { title: 'Nursery Management', desc: 'Raising healthy vegetable and rice nurseries for transplanting.' },
+        { title: 'Intercropping Systems', desc: 'Compatible crop combinations for maximizing land productivity.' },
+      ]}
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      KrishiNav.renderSidebar('farmer-sidebar');
+      KrishiNav.renderTopbar('farmer-topbar', 'Knowledge Library');
+      showCategories();
+    });
+
+    function showCategories() {
+      document.getElementById('articles-section').style.display = 'none';
+      const el = document.getElementById('categories');
+      el.style.display = '';
+      el.innerHTML = Object.entries(LIBRARY).map(([key, cat]) => `
+        <div class="library-category-card" onclick="showArticles('${key}')">
+          <div class="library-category-icon">${cat.icon}</div>
+          <div class="library-category-name">${cat.name}</div>
+          <div class="library-category-count">${cat.count} articles</div>
+        </div>
+      `).join('');
+    }
+
+    function showArticles(key) {
+      const cat = LIBRARY[key];
+      if (!cat) return;
+      document.getElementById('categories').style.display = 'none';
+      document.getElementById('articles-section').style.display = '';
+      document.getElementById('category-title').textContent = `${cat.icon} ${cat.name}`;
+      document.getElementById('articles-list').innerHTML = cat.articles.map(a => `
+        <div class="card" style="cursor:pointer;" onclick="window.location.href='/ai/?prefill=${encodeURIComponent('Provide a detailed ICAR Package of Practices guide for: ' + a.title + '. ' + a.desc)}'">
+          <div class="heading-md" style="margin-bottom:4px;">${a.title}</div>
+          <p style="font-size:13px;color:#64748b;">${a.desc}</p>
+          <div style="margin-top:8px;font-size:12px;color:#10b981;font-weight:600;">Ask KrishiMitra AI about this →</div>
+        </div>
+      `).join('');
+    }
+
+    async function searchKnowledgeAI() {
+      const query = document.getElementById('library-search-input').value.trim();
+      if (!query) return;
+      const resEl = document.getElementById('ai-search-result');
+      resEl.style.display = 'block';
+      resEl.innerHTML = '<div style="padding:12px;font-size:13px;color:#8b5cf6;">⚡ Searching ICAR Knowledge Base with Gemini AI...</div>';
+      try {
+        const prompt = `You are KrishiMitra AI precision knowledge base. Answer the farmer query: "${query}".
+Provide a concise, practical, and highly actionable guide with ICAR package of practices, dosages, and Indian agricultural context.
+Format in clean HTML with bullet points and bold highlights.`;
+        const raw = await KrishiAPI.callGemini(prompt);
+        let clean = raw.trim();
+        if (clean.startsWith('```')) {
+          const lines = clean.split('\n');
+          if (lines[0].startsWith('```')) lines.shift();
+          if (lines[lines.length - 1].startsWith('```')) lines.pop();
+          clean = lines.join('\n').trim();
+        }
+        resEl.innerHTML = `
+          <div style="background:#faf5ff;border:1px solid #c084fc40;padding:16px;border-radius:10px;color:#1e293b;font-size:13px;line-height:1.6;">
+            <div style="font-weight:700;color:#7c3aed;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;">
+              <span>🤖 Gemini AI Verified Advisory: "${query}"</span>
+              <button class="btn btn-sm btn-ghost" onclick="document.getElementById('ai-search-result').style.display='none'">✕ Close</button>
+            </div>
+            ${clean}
+            <div style="margin-top:12px;">
+              <a href="/ai/?prefill=${encodeURIComponent(query)}" style="font-size:12px;color:#7c3aed;font-weight:700;text-decoration:none;">Open in Full KrishiMitra Chat →</a>
+            </div>
+          </div>
+        `;
+      } catch (err) {
+        resEl.innerHTML = `<div style="color:#ef4444;font-size:12px;">Failed to fetch knowledge: ${err.message}</div>`;
+      }
+    }
+  </script>
+</body>
+</html>

@@ -75,7 +75,17 @@ class CropService:
 
         if explainer is not None:
             shap_values = explainer.shap_values(X)
-            sv = shap_values[pred_idx][0] if isinstance(shap_values, list) else shap_values[0]
+            if isinstance(shap_values, list):
+                sv = shap_values[pred_idx][0]
+            elif isinstance(shap_values, np.ndarray) and len(shap_values.shape) == 3:
+                # Standard tree explainer multi-class output shape: (N, F, C) or (C, N, F)
+                if shap_values.shape[0] == X.shape[0]: # N matches
+                    sv = shap_values[0, :, pred_idx]
+                else: # C matches
+                    sv = shap_values[pred_idx, 0, :]
+            else:
+                sv = shap_values[0]
+                
             shap_dict = {
                 FEATURES[i]: {
                     "shap_value":    round(float(sv[i]), 4),

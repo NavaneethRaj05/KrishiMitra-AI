@@ -1,9 +1,13 @@
 """
-Unified LLM Service — Ollama-First with Optional Gemini Fallback
+Unified LLM Service — Configurable LLM Priority (Gemini-First by default)
 
-Priority chain:
-  1. Ollama (always tried first — works offline, no token limits)
-  2. Gemini (only if GEMINI_API_KEY exists AND Ollama fails)
+Priority chain (controlled by LLM_PRIMARY env var):
+  Default (LLM_PRIMARY=gemini or unset when GEMINI_API_KEY exists):
+    1. Gemini (fast cloud API, ~2s response)
+    2. Ollama (offline fallback — works without internet)
+  When LLM_PRIMARY=ollama:
+    1. Ollama (local inference, no token limits)
+    2. Gemini (cloud fallback if Ollama fails)
   3. Structured fallback (if both LLMs fail)
 
 Provides: chat(), chat_stream(), vision(), health_check()
@@ -32,29 +36,38 @@ class UnifiedLLMService:
         self.ollama_available = False
         self.ollama_models = []
         self.gemini_client = None
-        self.gemini_model = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
+        self.gemini_model = os.getenv("GEMINI_MODEL", "gemini-3.5-flash")
 
-        # Initialize Ollama
+        # Initialize both backends
         self._init_ollama()
-
-        # Initialize Gemini as optional fallback
         self._init_gemini()
+
+        # Determine priority: gemini-first by default when API key is available
+        env_primary = os.getenv("LLM_PRIMARY", "").lower().strip()
+        if env_primary == "ollama":
+            self._primary = "ollama"
+        elif env_primary == "gemini":
+            self._primary = "gemini"
+        else:
+            # Auto-detect: prefer gemini if available (faster), ollama if offline
+            self._primary = "gemini" if self.gemini_client else "ollama"
+        logger.info("🧠 LLM priority: %s-first (configurable via LLM_PRIMARY env var)", self._primary)
 
     def _init_ollama(self):
         """Check if Ollama is running and discover available models."""
         try:
             import ollama
-            client = ollama.Client(host=OLLAMA_HOST, timeout=3.0)
+            client = ollama.Client(host=OLLAMA_HOST, timeout=0.5)
             models_res = client.list()
             self.ollama_models = [m.get("name", m.get("model", "")) for m in models_res.get("models", [])]
             if self.ollama_models:
                 self.ollama_available = True
                 logger.info("✅ Ollama ready with models: %s", ", ".join(self.ollama_models))
             else:
-                logger.warning("⚠️ Ollama is running but no models found. Run: ollama pull llama3.1:8b")
+                logger.warning("⚠️ Ollama is running but no models found.")
         except Exception as e:
             self.ollama_available = False
-            logger.warning("⚠️ Ollama not available: %s. Text/vision will use Gemini fallback if configured.", e)
+            logger.info("ℹ️ Ollama offline: %s", e)
 
     def _init_gemini(self):
         """Initialize Gemini as optional fallback."""
@@ -98,25 +111,32 @@ class UnifiedLLMService:
                     return m
         return None
 
-    async def chat(self, system_prompt: str, user_message: str,
-                   context: Optional[List[str]] = None,
-                   temperature: float = 0.25) -> str:
-        """
-        Send a chat query. Tries Ollama first, falls back to Gemini.
-        Accepts optional temperature for per-modality precision control.
-        """
-        context_str = "\n\n".join(context) if context else ""
-        full_message = (f"Agricultural Reference Context (use this as primary evidence):\n{context_str}\n\n"
-                        f"User Question:\n{user_message}") if context_str else user_message
-
-        # 1. Try Ollama
+    async def _chat_ollama(self, system_prompt: str, full_message: str, temperature: float) -> str:
+        """Try Ollama chat (async then sync fallback)."""
         model = self._select_ollama_model()
-        if model and self.ollama_available:
+        if not model or not self.ollama_available:
+            raise RuntimeError("Ollama not available")
+        try:
+            from ollama import AsyncClient
+            ollama_timeout = float(os.getenv("OLLAMA_TIMEOUT", 90.0))
+            client = AsyncClient(host=OLLAMA_HOST, timeout=ollama_timeout)
+            res = await client.chat(
+                model=model,
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": full_message}
+                ],
+                options={"temperature": temperature}
+            )
+            logger.info("✅ Ollama chat completed (model: %s, temperature: %.2f)", model, temperature)
+            return res["message"]["content"]
+        except Exception as e:
+            logger.warning("Ollama async chat failed: %s", e)
             try:
-                from ollama import AsyncClient
+                import ollama
                 ollama_timeout = float(os.getenv("OLLAMA_TIMEOUT", 90.0))
-                client = AsyncClient(host=OLLAMA_HOST, timeout=ollama_timeout)
-                res = await client.chat(
+                client = ollama.Client(host=OLLAMA_HOST, timeout=ollama_timeout)
+                res = client.chat(
                     model=model,
                     messages=[
                         {"role": "system", "content": system_prompt},
@@ -124,54 +144,66 @@ class UnifiedLLMService:
                     ],
                     options={"temperature": temperature}
                 )
-                logger.info("✅ Ollama chat completed (model: %s, temperature: %.2f)", model, temperature)
                 return res["message"]["content"]
-            except Exception as e:
-                logger.warning("Ollama async chat failed: %s", e)
-                try:
-                    import ollama
-                    client = ollama.Client(host=OLLAMA_HOST, timeout=ollama_timeout)
-                    res = client.chat(
-                        model=model,
-                        messages=[
-                            {"role": "system", "content": system_prompt},
-                            {"role": "user", "content": full_message}
-                        ],
-                        options={"temperature": temperature}
-                    )
-                    return res["message"]["content"]
-                except Exception as e2:
-                    logger.warning("Ollama sync chat also failed: %s", e2)
+            except Exception as e2:
+                logger.warning("Ollama sync chat also failed: %s", e2)
+                raise RuntimeError(f"Ollama chat failed: {e2}")
 
-        # 2. Fallback to Gemini
-        if self.gemini_client:
+    async def _chat_gemini(self, system_prompt: str, full_message: str, temperature: float) -> str:
+        """Try Gemini chat."""
+        if not self.gemini_client:
+            raise RuntimeError("Gemini not configured")
+        from google.genai import types
+        def _gemini_gen():
+            config = types.GenerateContentConfig(
+                system_instruction=system_prompt,
+                temperature=temperature,
+            )
+            response = self.gemini_client.models.generate_content(
+                model=self.gemini_model,
+                contents=full_message,
+                config=config
+            )
+            return response.text
+        result = await asyncio.to_thread(_gemini_gen)
+        logger.info("☁️ Gemini chat completed (temperature: %.2f)", temperature)
+        return result
+
+    async def chat(self, system_prompt: str, user_message: str,
+                   context: Optional[List[str]] = None,
+                   temperature: float = 0.25) -> str:
+        """
+        Send a chat query. Priority order determined by LLM_PRIMARY env var.
+        Default: Gemini first (fast), Ollama fallback (offline).
+        Accepts optional temperature for per-modality precision control.
+        """
+        context_str = "\n\n".join(context) if context else ""
+        full_message = (f"Agricultural Reference Context (use this as primary evidence):\n{context_str}\n\n"
+                        f"User Question:\n{user_message}") if context_str else user_message
+
+        # Build ordered list of backends based on priority
+        if self._primary == "ollama":
+            backends = [("ollama", self._chat_ollama), ("gemini", self._chat_gemini)]
+        else:
+            backends = [("gemini", self._chat_gemini), ("ollama", self._chat_ollama)]
+
+        last_error = None
+        for name, fn in backends:
             try:
-                from google.genai import types
-                def _gemini_gen():
-                    config = types.GenerateContentConfig(
-                        system_instruction=system_prompt,
-                        temperature=temperature,
-                    )
-                    response = self.gemini_client.models.generate_content(
-                        model=self.gemini_model,
-                        contents=full_message,
-                        config=config
-                    )
-                    return response.text
-                result = await asyncio.to_thread(_gemini_gen)
-                logger.info("☁️ Gemini fallback used for chat (temperature: %.2f)", temperature)
-                return result
+                return await fn(system_prompt, full_message, temperature)
             except Exception as e:
-                logger.error("Gemini fallback also failed: %s", e)
+                logger.warning("%s chat failed: %s", name.capitalize(), e)
+                last_error = e
 
-        # 3. No LLM available
-        raise RuntimeError("No LLM available. Ensure Ollama is running (ollama serve) or set GEMINI_API_KEY.")
+        # No LLM available
+        raise RuntimeError(f"No LLM available. Last error: {last_error}. "
+                           "Ensure Ollama is running (ollama serve) or set GEMINI_API_KEY.")
 
     async def chat_stream(self, system_prompt: str, query: str,
                           history: Optional[List[dict]] = None,
                           context: Optional[List[str]] = None) -> AsyncIterator[str]:
         """
-        Stream a chat response. Ollama-first with Gemini fallback.
+        Stream a chat response. Priority order determined by LLM_PRIMARY.
         """
         context_str = "\n\n".join(context) if context else ""
         full_message = (f"Agricultural Reference Context:\n{context_str}\n\n"
@@ -187,115 +219,142 @@ class UnifiedLLMService:
                 messages.append({"role": role, "content": turn.get("content", "")})
         messages.append({"role": "user", "content": full_message})
 
-        # 1. Try Ollama streaming
-        model = self._select_ollama_model()
-        if model:
-            try:
-                from ollama import AsyncClient
-                client = AsyncClient(host=OLLAMA_HOST)
-                stream = await client.chat(
-                    model=model,
-                    messages=messages,
-                    stream=True
-                )
-                async for chunk in stream:
-                    token = chunk.get("message", {}).get("content", "")
-                    if token:
-                        yield token
-                logger.info("🦙 Ollama streaming completed (model: %s)", model)
-                return
-            except Exception as e:
-                logger.warning("Ollama streaming failed: %s", e)
+        async def _stream_ollama():
+            model = self._select_ollama_model()
+            if not model:
+                raise RuntimeError("No Ollama model available")
+            from ollama import AsyncClient
+            client = AsyncClient(host=OLLAMA_HOST)
+            stream = await client.chat(model=model, messages=messages, stream=True)
+            tokens = []
+            async for chunk in stream:
+                token = chunk.get("message", {}).get("content", "")
+                if token:
+                    tokens.append(token)
+            logger.info("🦙 Ollama streaming completed (model: %s)", model)
+            return tokens
 
-        # 2. Fallback to Gemini streaming
-        if self.gemini_client:
-            try:
-                from google.genai import types
-                gemini_contents = []
-                for msg in messages:
-                    if msg["role"] == "system":
-                        continue
-                    role = "model" if msg["role"] in ("assistant", "model") else "user"
-                    gemini_contents.append(
-                        types.Content(
-                            role=role,
-                            parts=[types.Part.from_text(text=msg["content"])]
-                        )
+        async def _stream_gemini():
+            if not self.gemini_client:
+                raise RuntimeError("Gemini not configured")
+            from google.genai import types
+            gemini_contents = []
+            for msg in messages:
+                if msg["role"] == "system":
+                    continue
+                role = "model" if msg["role"] in ("assistant", "model") else "user"
+                gemini_contents.append(
+                    types.Content(
+                        role=role,
+                        parts=[types.Part.from_text(text=msg["content"])]
                     )
+                )
+            config = types.GenerateContentConfig(
+                system_instruction=system_prompt,
+                temperature=0.2,
+            )
+            stream = await self.gemini_client.aio.models.generate_content_stream(
+                model=self.gemini_model,
+                contents=gemini_contents,
+                config=config
+            )
+            tokens = []
+            async for chunk in stream:
+                if chunk.text:
+                    tokens.append(chunk.text)
+            logger.info("☁️ Gemini streaming completed")
+            return tokens
 
-                config = types.GenerateContentConfig(
-                    system_instruction=system_prompt,
-                    temperature=0.2,
-                )
-                stream = await self.gemini_client.aio.models.generate_content_stream(
-                    model=self.gemini_model,
-                    contents=gemini_contents,
-                    config=config
-                )
-                async for chunk in stream:
-                    if chunk.text:
-                        yield chunk.text
-                logger.info("☁️ Gemini streaming fallback used")
+        # Build ordered list of backends based on priority
+        if self._primary == "ollama":
+            backends = [("ollama", _stream_ollama), ("gemini", _stream_gemini)]
+        else:
+            backends = [("gemini", _stream_gemini), ("ollama", _stream_ollama)]
+
+        for name, fn in backends:
+            try:
+                tokens = await fn()
+                for token in tokens:
+                    yield token
                 return
             except Exception as e:
-                logger.error("Gemini streaming also failed: %s", e)
+                logger.warning("%s streaming failed: %s", name.capitalize(), e)
 
         yield "⚠️ No LLM available. Please ensure Ollama is running (`ollama serve`) for offline use."
+
+    async def _vision_ollama(self, system_prompt: str, image_b64: str, user_prompt: str) -> str:
+        """Try Ollama LLaVA vision."""
+        vision_model = self._select_vision_model()
+        if not vision_model:
+            raise RuntimeError("No Ollama vision model available")
+        from ollama import AsyncClient
+        client = AsyncClient(host=OLLAMA_HOST)
+        full_prompt = f"{system_prompt}\n\n{user_prompt}"
+        res = await client.chat(
+            model=vision_model,
+            messages=[{
+                "role": "user",
+                "content": full_prompt,
+                "images": [image_b64]
+            }]
+        )
+        logger.info("👁️ LLaVA vision completed (model: %s)", vision_model)
+        return res["message"]["content"]
+
+    async def _vision_gemini(self, system_prompt: str, image_b64: str, user_prompt: str,
+                             mime_type: str, temperature: float) -> str:
+        """Try Gemini vision."""
+        if not self.gemini_client:
+            raise RuntimeError("Gemini not configured")
+        image_bytes = base64.b64decode(image_b64)
+        from google.genai import types
+        def _gemini_vision():
+            config = types.GenerateContentConfig(
+                system_instruction=system_prompt,
+                temperature=temperature,
+            )
+            image_part = types.Part.from_bytes(data=image_bytes, mime_type=mime_type)
+            text_part = types.Part.from_text(text=user_prompt)
+            response = self.gemini_client.models.generate_content(
+                model=self.gemini_model,
+                contents=[image_part, text_part],
+                config=config
+            )
+            return response.text
+        result = await asyncio.to_thread(_gemini_vision)
+        logger.info("☁️ Gemini vision completed (temperature: %.2f)", temperature)
+        return result
 
     async def vision(self, system_prompt: str, image_b64: str,
                      mime_type: str = "image/jpeg",
                      user_prompt: str = "Analyze this leaf image.",
                      temperature: float = 0.1) -> str:
         """
-        Analyze an image. Uses LLaVA (Ollama) first, Gemini fallback.
+        Analyze an image. Priority order determined by LLM_PRIMARY.
         Lower default temperature (0.1) for precise factual disease diagnosis.
         """
-        image_bytes = base64.b64decode(image_b64)
+        # Build ordered list of backends based on priority
+        if self._primary == "ollama":
+            backends = [
+                ("ollama", lambda: self._vision_ollama(system_prompt, image_b64, user_prompt)),
+                ("gemini", lambda: self._vision_gemini(system_prompt, image_b64, user_prompt, mime_type, temperature)),
+            ]
+        else:
+            backends = [
+                ("gemini", lambda: self._vision_gemini(system_prompt, image_b64, user_prompt, mime_type, temperature)),
+                ("ollama", lambda: self._vision_ollama(system_prompt, image_b64, user_prompt)),
+            ]
 
-        # 1. Try Ollama LLaVA
-        vision_model = self._select_vision_model()
-        if vision_model:
+        last_error = None
+        for name, fn in backends:
             try:
-                from ollama import AsyncClient
-                client = AsyncClient(host=OLLAMA_HOST)
-                full_prompt = f"{system_prompt}\n\n{user_prompt}"
-                res = await client.chat(
-                    model=vision_model,
-                    messages=[{
-                        "role": "user",
-                        "content": full_prompt,
-                        "images": [image_b64]
-                    }]
-                )
-                logger.info("👁️ LLaVA vision completed (model: %s)", vision_model)
-                return res["message"]["content"]
+                return await fn()
             except Exception as e:
-                logger.warning("LLaVA vision failed: %s", e)
+                logger.warning("%s vision failed: %s", name.capitalize(), e)
+                last_error = e
 
-        # 2. Fallback to Gemini Vision
-        if self.gemini_client:
-            try:
-                from google.genai import types
-                def _gemini_vision():
-                    config = types.GenerateContentConfig(
-                        system_instruction=system_prompt,
-                        temperature=temperature,  # Use per-call temperature for vision
-                    )
-                    image_part = types.Part.from_bytes(data=image_bytes, mime_type=mime_type)
-                    text_part = types.Part.from_text(text=user_prompt)
-                    response = self.gemini_client.models.generate_content(
-                        model=self.gemini_model,
-                        contents=[image_part, text_part],
-                        config=config
-                    )
-                    return response.text
-                result = await asyncio.to_thread(_gemini_vision)
-                logger.info("☁️ Gemini vision fallback used (temperature: %.2f)", temperature)
-                return result
-            except Exception as e:
-                logger.error("Gemini vision also failed: %s", e)
-
-        raise RuntimeError("No vision model available. Install LLaVA: ollama pull llava:7b")
+        raise RuntimeError(f"No vision model available. Last error: {last_error}. "
+                           "Install LLaVA: ollama pull llava:7b or set GEMINI_API_KEY.")
 
     async def analyze_image(self, image_b64: str, user_prompt: str = "Analyze this leaf image.",
                             system_prompt: str = "You are a crop pathology system.",
@@ -306,49 +365,12 @@ class UnifiedLLMService:
                                  mime_type=mime_type, user_prompt=user_prompt, temperature=temperature)
 
     def health_check(self) -> dict:
-        """Check availability of all LLM backends."""
+        """Check availability of all LLM backends (non-blocking fast check)."""
         status = {
-            "ollama": {"available": False, "models": []},
-            "gemini": {"available": False},
-            "primary": "none"
+            "ollama": {"available": self.ollama_available, "models": self.ollama_models},
+            "gemini": {"available": bool(self.gemini_client)},
+            "primary": self._primary
         }
-
-        # Check Ollama
-        try:
-            import ollama
-            models_res = ollama.list()
-            models = [m.get("name", m.get("model", "")) for m in models_res.get("models", [])]
-            if models:
-                status["ollama"] = {"available": True, "models": models}
-                self.ollama_available = True
-                self.ollama_models = models
-        except Exception:
-            pass
-
-        # Check Gemini
-        if self.gemini_client:
-            import time
-            now = time.time()
-            if not hasattr(self, "_gemini_available") or (now - getattr(self, "_last_gemini_check", 0) > 300):
-                try:
-                    from google.genai import types
-                    response = self.gemini_client.models.generate_content(
-                        model=self.gemini_model,
-                        contents="ping",
-                        config=types.GenerateContentConfig(max_output_tokens=5, temperature=0.1)
-                    )
-                    self._gemini_available = bool(response.text)
-                except Exception:
-                    self._gemini_available = False
-                self._last_gemini_check = now
-            status["gemini"]["available"] = self._gemini_available
-
-        # Determine primary
-        if status["ollama"]["available"]:
-            status["primary"] = "ollama"
-        elif status["gemini"]["available"]:
-            status["primary"] = "gemini"
-
         return status
 
     def refresh_models(self):

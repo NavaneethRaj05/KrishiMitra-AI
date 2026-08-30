@@ -1,0 +1,232 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tasks &amp; Crop Calendar — KrishiMitra AI</title>
+  <meta name="description" content="Upcoming farming tasks and crop calendar derived from your sowing dates and growth stages.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📅</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/common.css">
+  <link rel="stylesheet" href="/farmer/styles.css">
+  <style>
+    .tasks-empty { text-align:center; padding:40px; color:#94a3b8; font-size:14px; }
+    .task-item {
+      display:flex; align-items:flex-start; gap:14px;
+      padding:14px 16px; border-radius:12px;
+      background:#ffffff; border:1px solid #e2e8f0;
+      transition:box-shadow 0.15s;
+    }
+    .task-item:hover { box-shadow:0 4px 12px rgba(0,0,0,0.06); }
+    .task-dot {
+      width:10px; height:10px; border-radius:50%;
+      flex-shrink:0; margin-top:5px;
+    }
+    .task-due-badge {
+      display:inline-flex; align-items:center; gap:4px;
+      font-size:11px; font-weight:600; padding:2px 8px;
+      border-radius:99px;
+    }
+    .due-overdue  { background:#fef2f2; color:#ef4444; }
+    .due-today    { background:#fefce8; color:#d97706; }
+    .due-soon     { background:#f0fdf4; color:#059669; }
+    .due-upcoming { background:#f8fafc; color:#64748b; }
+    .section-label {
+      font-size:11px; font-weight:700; text-transform:uppercase;
+      letter-spacing:0.08em; color:#94a3b8; margin:20px 0 8px;
+    }
+  </style>
+</head>
+<body class="farmer-portal">
+  <div class="portal-layout">
+    <aside id="farmer-sidebar"></aside>
+    <div class="sidebar-overlay" onclick="KrishiNav.toggleSidebar()"></div>
+    <main class="portal-main">
+      <header id="farmer-topbar"></header>
+      <div class="portal-content" style="max-width:860px;">
+
+        <div style="margin-bottom:24px;">
+          <a href="/farmer/" style="font-size:13px;color:#10b981;font-weight:600;margin-bottom:8px;display:inline-block;">← Dashboard</a>
+          <h1 class="heading-2xl" style="color:#0f372a;">📅 Tasks &amp; Crop Calendar</h1>
+          <p style="color:#64748b;font-size:14px;margin-top:4px;">
+            Upcoming farm activities derived from your crop stages and sowing dates.
+          </p>
+        </div>
+
+        <div id="tasks-container">
+          <div class="tasks-empty">Loading your crop tasks...</div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/shared/api.js"></script>
+  <script src="/shared/nav.js"></script>
+  <script src="/farmer/farmer.js"></script>
+  <script>
+    // ── Crop stage task rule table ──────────────────────────────────────
+    // For each growth stage, define upcoming tasks with day offsets from today.
+    const STAGE_TASKS = {
+      'Seedling':      [
+        { daysFromNow: 0,  label: 'Water seedlings (morning)',       icon: '💧', priority: 'high' },
+        { daysFromNow: 3,  label: 'Apply starter fertilizer (N-P-K 10-26-26)', icon: '🧪', priority: 'medium' },
+        { daysFromNow: 7,  label: 'Check for damping-off symptoms',  icon: '🔍', priority: 'medium' },
+        { daysFromNow: 14, label: 'First weeding operation',         icon: '🌿', priority: 'low' },
+      ],
+      'Vegetative':    [
+        { daysFromNow: 0,  label: 'Apply nitrogen top-dressing (Urea @ 50 kg/acre)', icon: '🧪', priority: 'high' },
+        { daysFromNow: 4,  label: 'Irrigation — check soil moisture', icon: '💧', priority: 'medium' },
+        { daysFromNow: 7,  label: 'Scout for stem borers / early pests', icon: '🦟', priority: 'medium' },
+        { daysFromNow: 10, label: 'Second weeding / inter-cultivation', icon: '🌿', priority: 'low' },
+      ],
+      'Flowering':     [
+        { daysFromNow: 0,  label: 'Stop heavy irrigation (avoid flower drop)', icon: '💧', priority: 'high' },
+        { daysFromNow: 2,  label: 'Apply potassium (MOP @ 25 kg/acre)',  icon: '🧪', priority: 'high' },
+        { daysFromNow: 5,  label: 'Check for fungal disease (grey mould / blight)', icon: '🔍', priority: 'medium' },
+        { daysFromNow: 8,  label: 'Inspect for thrips / whitefly on flowers', icon: '🦟', priority: 'medium' },
+      ],
+      'Grain Filling': [
+        { daysFromNow: 0,  label: 'Light irrigation — critical grain fill stage', icon: '💧', priority: 'high' },
+        { daysFromNow: 3,  label: 'Spray zinc sulphate (0.5%) for grain quality', icon: '🧪', priority: 'medium' },
+        { daysFromNow: 7,  label: 'Monitor for aphids / sucking pests',  icon: '🦟', priority: 'medium' },
+        { daysFromNow: 14, label: 'Assess grain moisture for harvest window', icon: '📊', priority: 'low' },
+      ],
+      'Fruiting':      [
+        { daysFromNow: 0,  label: 'Regular drip irrigation (avoid leaf wet)', icon: '💧', priority: 'high' },
+        { daysFromNow: 2,  label: 'Apply calcium nitrate (fruit firmness)', icon: '🧪', priority: 'medium' },
+        { daysFromNow: 5,  label: 'Scout for fruit borer / powdery mildew', icon: '🔍', priority: 'medium' },
+        { daysFromNow: 10, label: 'Estimate harvest yield and arrange market', icon: '📊', priority: 'low' },
+      ],
+      'Ripening':      [
+        { daysFromNow: 0,  label: 'Withdraw irrigation (improve sugar content)', icon: '💧', priority: 'high' },
+        { daysFromNow: 3,  label: 'Arrange transport / mandi contacts',   icon: '📦', priority: 'high' },
+        { daysFromNow: 5,  label: 'Harvest readiness check (colour / firmness)', icon: '📊', priority: 'medium' },
+      ],
+    };
+
+    const DEFAULT_STAGE_TASKS = [
+      { daysFromNow: 0,  label: 'Regular crop inspection',          icon: '🔍', priority: 'medium' },
+      { daysFromNow: 5,  label: 'Irrigation schedule check',        icon: '💧', priority: 'medium' },
+      { daysFromNow: 10, label: 'Review fertilizer schedule',       icon: '🧪', priority: 'low' },
+    ];
+
+    function dueBadge(daysFromNow) {
+      if (daysFromNow < 0)  return { cls: 'due-overdue',  label: `Overdue by ${Math.abs(daysFromNow)}d` };
+      if (daysFromNow === 0) return { cls: 'due-today',   label: 'Due Today' };
+      if (daysFromNow <= 5)  return { cls: 'due-soon',    label: `In ${daysFromNow}d` };
+      return                         { cls: 'due-upcoming', label: `In ${daysFromNow}d` };
+    }
+
+    function buildTasksHTML(crops) {
+      if (!crops || crops.length === 0) {
+        return `<div class="tasks-empty">
+          <p style="font-size:32px;margin-bottom:8px;">🌱</p>
+          <p>No crops added yet.</p>
+          <a href="/farmer/" class="btn btn-primary btn-sm" style="margin-top:12px;display:inline-block;">
+            Go to Dashboard → Add Crop
+          </a>
+        </div>`;
+      }
+
+      let allTasks = [];
+
+      crops.forEach(crop => {
+        const stage = crop.stage || 'Vegetative';
+        const stageTasks = STAGE_TASKS[stage] || DEFAULT_STAGE_TASKS;
+        const daysToHarvest = Math.max(0, Math.floor((new Date(crop.harvest) - new Date()) / 86400000));
+
+        stageTasks.forEach(t => {
+          allTasks.push({
+            cropName: crop.name,
+            cropIcon: crop.icon || '🌱',
+            daysFromNow: t.daysFromNow,
+            label: t.label,
+            icon: t.icon,
+            priority: t.priority,
+          });
+        });
+
+        // Harvest countdown task
+        if (daysToHarvest <= 21) {
+          allTasks.push({
+            cropName: crop.name,
+            cropIcon: crop.icon || '🌱',
+            daysFromNow: daysToHarvest,
+            label: `Harvest ${crop.name.split('(')[0].trim()} — arrange mandi / transport`,
+            icon: '🚚',
+            priority: daysToHarvest <= 7 ? 'high' : 'medium',
+          });
+        }
+      });
+
+      // Sort by urgency
+      allTasks.sort((a, b) => a.daysFromNow - b.daysFromNow);
+
+      const sections = [
+        { key: 'today',    label: 'Today',              items: allTasks.filter(t => t.daysFromNow <= 0) },
+        { key: 'week',     label: 'Next 7 Days',        items: allTasks.filter(t => t.daysFromNow > 0 && t.daysFromNow <= 7) },
+        { key: 'fortnight',label: 'Next 8–14 Days',     items: allTasks.filter(t => t.daysFromNow > 7 && t.daysFromNow <= 14) },
+        { key: 'later',    label: 'Coming Up (15+ Days)',items: allTasks.filter(t => t.daysFromNow > 14) },
+      ];
+
+      let html = '';
+      sections.forEach(sec => {
+        if (sec.items.length === 0) return;
+        html += `<div class="section-label">${sec.label} (${sec.items.length})</div>`;
+        html += `<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px;">`;
+        sec.items.forEach(t => {
+          const badge = dueBadge(t.daysFromNow);
+          const dotColor = t.priority === 'high' ? '#ef4444' : t.priority === 'medium' ? '#f59e0b' : '#10b981';
+          html += `
+            <div class="task-item">
+              <div class="task-dot" style="background:${dotColor};"></div>
+              <div style="flex:1;">
+                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                  <span style="font-size:16px;">${t.icon}</span>
+                  <span style="font-size:13px;font-weight:600;color:#1e293b;">${t.label}</span>
+                  <span class="task-due-badge ${badge.cls}">${badge.label}</span>
+                </div>
+                <div style="font-size:12px;color:#64748b;margin-top:4px;">
+                  ${t.cropIcon} ${t.cropName}
+                </div>
+              </div>
+              <a href="/ai/?prefill=${encodeURIComponent('Help me with: ' + t.label + ' for ' + t.cropName)}"
+                 style="font-size:12px;color:#8b5cf6;font-weight:600;text-decoration:none;white-space:nowrap;"
+                 title="Ask KrishiMitra AI about this task">Ask AI →</a>
+            </div>
+          `;
+        });
+        html += `</div>`;
+      });
+
+      return html;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      KrishiNav.renderSidebar('farmer-sidebar');
+      KrishiNav.renderTopbar('farmer-topbar', 'Tasks & Crop Calendar');
+
+      // Read crops from localStorage (same key as farmer.js)
+      let crops = [];
+      try {
+        const saved = localStorage.getItem('krishimitra_farmer_crops');
+        if (saved) crops = JSON.parse(saved);
+      } catch (e) {}
+
+      // Fallback to default crops if none saved
+      if (!crops || crops.length === 0) {
+        crops = [
+          { name: 'Wheat (HD-2967)', icon: '🌾', stage: 'Grain Filling', sowing: '2026-06-15', harvest: '2026-10-10' },
+          { name: 'Tomato (Arka Rakshak)', icon: '🍅', stage: 'Flowering',    sowing: '2026-07-01', harvest: '2026-09-15' },
+          { name: 'Maize (DHM-117)',  icon: '🌽', stage: 'Vegetative',   sowing: '2026-07-20', harvest: '2026-11-01' },
+        ];
+      }
+
+      document.getElementById('tasks-container').innerHTML = buildTasksHTML(crops);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bulk Procurement — KrishiMitra AI</title>
+  <meta name="description" content="Manage bulk procurement requests, negotiations, offers, and delivery schedules.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛒</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/common.css">
+  <link rel="stylesheet" href="/buyer/styles.css">
+</head>
+<body class="buyer-portal">
+  <div class="portal-layout">
+    <aside id="buyer-sidebar"></aside>
+    <div class="sidebar-overlay" onclick="KrishiNav.toggleSidebar()"></div>
+
+    <main class="portal-main">
+      <header id="buyer-topbar"></header>
+
+      <div class="portal-content">
+        <div class="card-header" style="margin-bottom:20px;">
+          <div>
+            <h2 class="heading-lg">🛒 Bulk Procurement</h2>
+            <p class="text-sm text-secondary">Create requirements, receive offers from clusters/FPOs, and negotiate contracts.</p>
+          </div>
+          <button class="btn btn-primary" onclick="openNewRequirementModal()">+ New Requirement</button>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Active Procurement Requirements</div>
+          </div>
+          <div id="procurements-list"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/shared/api.js"></script>
+  <script src="/shared/nav.js"></script>
+  <script src="/buyer/buyer.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      KrishiNav.renderSidebar('buyer-sidebar');
+      KrishiNav.renderTopbar('buyer-topbar', 'Bulk Procurement');
+      BuyerPortal.renderProcurements('procurements-list');
+    });
+
+    function openNewRequirementModal() {
+      BuyerPortal.showModal('🛒 Create New Procurement Requirement', `
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div class="form-group">
+            <label class="form-label">Crop Name</label>
+            <input type="text" class="form-input" id="new-proc-crop" placeholder="e.g. Tomato, Rice, Maize" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Target Quantity (Quintals)</label>
+            <input type="number" class="form-input" id="new-proc-qty" placeholder="e.g. 300" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Max Total Budget (₹)</label>
+            <input type="text" class="form-input" id="new-proc-budget" placeholder="e.g. ₹5,50,000" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Procurement Deadline</label>
+            <input type="date" class="form-input" id="new-proc-deadline" value="2026-09-30">
+          </div>
+          <button class="btn btn-primary btn-lg" onclick="
+            const crop = document.getElementById('new-proc-crop').value.trim();
+            const qty = document.getElementById('new-proc-qty').value.trim();
+            const budget = document.getElementById('new-proc-budget').value.trim();
+            const deadline = document.getElementById('new-proc-deadline').value;
+            if (!crop || !qty) { alert('Please enter crop and quantity'); return; }
+            BuyerPortal.PROCUREMENTS.unshift({
+              id: 'PRO-' + String(Math.floor(Math.random() * 900) + 100),
+              crop: crop,
+              qty: qty + ' Quintals',
+              budget: budget.startsWith('₹') ? budget : '₹' + budget,
+              status: 'Open',
+              offers: 0,
+              deadline: deadline || '2026-10-15'
+            });
+            BuyerPortal.renderProcurements('procurements-list');
+            document.getElementById('buyer-modal').remove();
+            alert('✅ New procurement requirement posted! FPOs and farmers will be notified to submit offers.');
+          ">🚀 Publish Requirement</button>
+        </div>
+      `);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Farmer Dashboard — KrishiMitra AI</title>
+  <meta name="description" content="Farmer Dashboard for crop management, disease detection, weather forecasts, and agricultural intelligence.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌾</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/common.css">
+  <link rel="stylesheet" href="/farmer/styles.css">
+</head>
+<body class="farmer-portal">
+  <div class="portal-layout">
+    <!-- Sidebar -->
+    <aside id="farmer-sidebar"></aside>
+    <div class="sidebar-overlay" onclick="KrishiNav.toggleSidebar()"></div>
+
+    <!-- Main Content -->
+    <main class="portal-main">
+      <!-- Topbar -->
+      <header id="farmer-topbar"></header>
+
+      <!-- Dashboard Content -->
+      <div class="portal-content">
+        <!-- Page Header -->
+        <div class="farmer-page-header">
+          <div class="farmer-greeting" id="greeting-text"></div>
+          <div class="farmer-name" id="farmer-name-text"></div>
+        </div>
+
+        <!-- Offline Status -->
+        <div id="offline-status" style="margin-bottom:16px;"></div>
+
+        <!-- Quick Actions -->
+        <div class="section-header">
+          <div class="section-title">Quick Actions</div>
+        </div>
+        <div id="quick-actions" class="quick-actions" style="margin-bottom:24px;"></div>
+
+        <!-- Dashboard Grid -->
+        <div class="farmer-dashboard">
+          <!-- Weather -->
+          <div id="weather-widget" style="grid-column: span 1;"></div>
+
+          <!-- My Crops -->
+          <div class="card" style="grid-column: span 1;">
+            <div class="card-header">
+              <div class="card-title">🌾 My Crops</div>
+              <button class="btn btn-sm btn-secondary" onclick="document.getElementById('add-crop-modal').style.display='flex'">+ Add Crop</button>
+            </div>
+            <div id="crops-list" style="display:flex;flex-direction:column;gap:12px;"></div>
+          </div>
+
+          <!-- Alerts -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">🔔 Alerts</div>
+              <a href="/farmer/alerts.html" class="btn btn-sm btn-ghost" style="color:#10b981;font-weight:600;">View All →</a>
+            </div>
+            <div id="alerts-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+          </div>
+
+          <!-- Recent Activity -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">📋 Recent Activity</div>
+            </div>
+            <div id="activity-list"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Add Crop Modal -->
+  <div id="add-crop-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:500;align-items:center;justify-content:center;">
+    <div class="card" style="width:90%;max-width:400px;padding:24px;">
+      <div class="flex justify-between items-center" style="margin-bottom:16px;">
+        <h3 class="heading-lg">Add New Crop</h3>
+        <button class="btn btn-ghost btn-sm" onclick="this.closest('#add-crop-modal').style.display='none'">✕</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div class="form-group">
+          <label class="form-label">Crop Name</label>
+          <input type="text" class="form-input" id="add-crop-name" placeholder="e.g., Tomato, Rice, Wheat" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Variety</label>
+          <input type="text" class="form-input" id="add-crop-variety" placeholder="e.g., Arka Rakshak">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Field</label>
+          <input type="text" class="form-input" id="add-crop-field" placeholder="e.g., Field A">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Sowing Date</label>
+          <input type="date" class="form-input" id="add-crop-date">
+        </div>
+        <button class="btn btn-primary btn-lg" onclick="
+          const name = document.getElementById('add-crop-name').value.trim();
+          if (!name) { alert('Please enter a crop name'); return; }
+          FarmerPortal.addCrop(name, document.getElementById('add-crop-variety').value.trim(), document.getElementById('add-crop-field').value.trim(), document.getElementById('add-crop-date').value);
+          document.getElementById('add-crop-name').value = '';
+          document.getElementById('add-crop-variety').value = '';
+          document.getElementById('add-crop-field').value = '';
+          document.getElementById('add-crop-date').value = '';
+          this.closest('#add-crop-modal').style.display='none';
+        ">✅ Add Crop</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/shared/api.js"></script>
+  <script src="/shared/nav.js"></script>
+  <script src="/shared/charts.js"></script>
+  <script src="/farmer/farmer.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Navigation
+      KrishiNav.renderSidebar('farmer-sidebar');
+      KrishiNav.renderTopbar('farmer-topbar', 'Farmer Dashboard');
+
+      // Greeting
+      const hour = new Date().getHours();
+      const greet = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+      document.getElementById('greeting-text').textContent = greet;
+      document.getElementById('farmer-name-text').textContent = 'Farmer 👋';
+
+      // Render dashboard sections
+      FarmerPortal.renderWeather('weather-widget');
+      FarmerPortal.renderCrops('crops-list');
+      FarmerPortal.renderQuickActions('quick-actions');
+      FarmerPortal.renderAlerts('alerts-list', 3);
+      FarmerPortal.renderActivity('activity-list');
+      FarmerPortal.renderOfflineStatus('offline-status');
+    });
+  </script>
+</body>
+</html>

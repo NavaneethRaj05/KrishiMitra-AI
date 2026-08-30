@@ -11,7 +11,6 @@ import logging
 from pathlib import Path
 
 import numpy as np
-import numpy as np
 from PIL import Image
 
 logger = logging.getLogger("krishimitraai.disease")
@@ -58,17 +57,36 @@ class DiseaseService:
             ]
 
     # ──────────────────────────────────────────
-    def preprocess_image(self, image_bytes: bytes) -> np.ndarray:
-        """Resize and normalise image for CNN inference."""
-        img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
-        img = img.resize(self.img_size, Image.Resampling.LANCZOS)
-        arr = np.array(img, dtype=np.float32) / 255.0
-        return np.expand_dims(arr, axis=0)
+    def is_valid_plant_image(self, image_bytes: bytes) -> bool:
+        """Check if image contains plant leaf color features or is an invalid UI screenshot/non-leaf image."""
+        try:
+            img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+            img_small = img.resize((80, 80))
+            arr = np.array(img_small)
+            r, g, b = arr[:,:,0].astype(int), arr[:,:,1].astype(int), arr[:,:,2].astype(int)
+            
+            greenish = (g > r) & (g > b)
+            yellow_brown = (r > 70) & (g > 50) & (b < 100) & (np.abs(r - g) < 60)
+            leaf_pixels = np.sum(greenish | yellow_brown)
+            
+            return (leaf_pixels / 6400.0) >= 0.10
+        except Exception:
+            return True
 
     # ──────────────────────────────────────────
     async def classify(self, image_bytes: bytes, crop_context: str = None, query: str = None) -> dict:
         """Run CNN inference. Returns disease, crop, confidence, severity, top3."""
         self._ensure_loaded()
+        if not self.is_valid_plant_image(image_bytes):
+            return {
+                "is_invalid_image": True,
+                "invalid_image": True,
+                "error": "Uploaded image is not a plant leaf.",
+                "crop": "Unknown",
+                "disease": "Invalid Image",
+                "confidence": 0.0
+            }
+
         if self.model is None:
             # Try to run LLM Vision (LLaVA or Gemini) for dynamic classification instead of hardcoded tomato
             try:
@@ -167,7 +185,7 @@ class DiseaseService:
                 if top_label:
                     confidence = 0.85
                 else:
-                    crop_name = crop_context.capitalize() if crop_context else "Crop"
+                    crop_name = crop_context.strip().capitalize() if crop_context and crop_context.strip() else "Crop"
                     top_label = f"{crop_name}___Unspecified_Symptom"
                     confidence = 0.50
 
@@ -283,9 +301,10 @@ class DiseaseService:
         # Retrieve RAG context for the detected disease to ground the explanation
         rag_context_str = ""
         try:
+            import asyncio
             from services.rag_service import rag_service
             disease_query = f"{cnn_result.get('crop', '')} {cnn_result.get('disease', '')} treatment symptoms"
-            rag_chunks = rag_service.retrieve(disease_query, top_k=3)
+            rag_chunks = await asyncio.to_thread(rag_service.retrieve, disease_query, top_k=3)
             if rag_chunks:
                 rag_context_str = "\n".join(
                     f"[{c.get('title', 'Guide')}]: {c['text'][:400]}" for c in rag_chunks

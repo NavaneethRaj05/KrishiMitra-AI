@@ -15,6 +15,12 @@ class TTSRequest(BaseModel):
     language: str = "en"
 
 
+class VoiceAnalysisRequest(BaseModel):
+    transcript: Optional[str] = None
+    audio_b64:  Optional[str] = None
+    language:   Optional[str] = "auto"
+
+
 @router.post("/transcribe")
 async def transcribe_audio(
     file:     UploadFile = File(...),
@@ -100,6 +106,28 @@ async def process_voice_query(
     audio_bytes = await file.read()
     try:
         result = await asyncio.to_thread(voice_service.process_voice_query, audio_bytes, language)
+        return {"success": True, "data": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/analyze")
+async def analyze_voice_query(req: VoiceAnalysisRequest):
+    """
+    Multilingual Vernacular Voice Analyzer powered by Gemini 3.6 Flash.
+    Supports: Kannada (kn), Hindi (hi), Telugu (te), Tamil (ta), Marathi (mr), and English (en).
+    Returns: { detected_language, transcript, english_translation, intent, entities, vernacular_advisory, ... }
+    """
+    try:
+        import base64
+        audio_bytes = None
+        if req.audio_b64:
+            audio_bytes = base64.b64decode(req.audio_b64)
+        result = await voice_service.analyze_with_gemini(
+            transcript=req.transcript,
+            audio_bytes=audio_bytes,
+            language=req.language or "auto"
+        )
         return {"success": True, "data": result}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

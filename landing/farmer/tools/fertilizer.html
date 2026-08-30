@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fertilizer Calculator — KrishiMitra AI</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌾</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/common.css"><link rel="stylesheet" href="/farmer/styles.css">
+</head>
+<body class="farmer-portal">
+  <div class="portal-layout">
+    <aside id="farmer-sidebar"></aside>
+    <div class="sidebar-overlay" onclick="KrishiNav.toggleSidebar()"></div>
+    <main class="portal-main">
+      <header id="farmer-topbar"></header>
+      <div class="portal-content" style="max-width:800px;">
+        <a href="/farmer/tools.html" style="font-size:13px;color:#10b981;font-weight:600;margin-bottom:8px;display:inline-block;">← Tools</a>
+        <h1 class="heading-2xl" style="color:#0f372a;margin-bottom:4px;">🧪 Fertilizer Calculator</h1>
+        <p style="color:#64748b;font-size:14px;margin-bottom:24px;">Calculate the right amount of fertilizer for your crop. Get AI-powered brand recommendations and find nearby shops.</p>
+        <div class="card">
+          <form class="calc-form" onsubmit="calcFertilizer(event)">
+            <div class="form-group"><label class="form-label">Crop</label>
+              <select class="form-select" id="fert-crop"><option>Rice (Paddy)</option><option>Wheat</option><option>Maize</option><option>Tomato</option><option>Cotton</option><option>Sugarcane</option><option>Potato</option><option>Onion</option><option>Chilli</option></select>
+            </div>
+            <div class="form-group"><label class="form-label">Field Area (acres)</label><input type="number" class="form-input" id="fert-area" value="2" min="0.1" step="0.1"></div>
+            <div class="form-group"><label class="form-label">Soil Test N (kg/ha)</label><input type="number" class="form-input" id="fert-n" value="180" min="0"></div>
+            <div class="form-group"><label class="form-label">Soil Test P (kg/ha)</label><input type="number" class="form-input" id="fert-p" value="20" min="0"></div>
+            <div class="form-group"><label class="form-label">Soil Test K (kg/ha)</label><input type="number" class="form-input" id="fert-k" value="150" min="0"></div>
+            <div class="form-group"><label class="form-label">pH Level</label><input type="number" class="form-input" id="fert-ph" value="6.5" min="0" max="14" step="0.1"></div>
+            <div style="grid-column:1/-1;"><button type="submit" class="btn btn-primary btn-lg" style="width:100%;" id="calc-btn">🧪 Calculate Dosage & Get AI Recommendations</button></div>
+          </form>
+        </div>
+        <div id="fert-result" style="margin-top:16px;"></div>
+        <div id="ai-brands" style="margin-top:16px;"></div>
+        <div id="nearby-shops" style="margin-top:16px;"></div>
+      </div>
+    </main>
+  </div>
+  <script src="/shared/api.js"></script><script src="/shared/nav.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => { KrishiNav.renderSidebar('farmer-sidebar'); KrishiNav.renderTopbar('farmer-topbar', 'Fertilizer Calculator'); });
+    const CROP_NPK = { 'Rice (Paddy)': {N:120,P:60,K:60}, 'Wheat': {N:120,P:60,K:40}, 'Maize': {N:120,P:60,K:40}, 'Tomato': {N:150,P:60,K:80}, 'Cotton': {N:100,P:50,K:50}, 'Sugarcane': {N:250,P:100,K:120}, 'Potato': {N:120,P:80,K:100}, 'Onion': {N:100,P:50,K:50}, 'Chilli': {N:120,P:60,K:50} };
+
+    async function calcFertilizer(e) {
+      e.preventDefault();
+      const crop = document.getElementById('fert-crop').value;
+      const area = parseFloat(document.getElementById('fert-area').value);
+      const soilN = parseFloat(document.getElementById('fert-n').value);
+      const soilP = parseFloat(document.getElementById('fert-p').value);
+      const soilK = parseFloat(document.getElementById('fert-k').value);
+      const ph = parseFloat(document.getElementById('fert-ph').value);
+      const req = CROP_NPK[crop] || {N:120,P:60,K:60};
+      const areaHa = area * 0.4047;
+      const defN = Math.max(0, req.N - soilN * 0.5);
+      const defP = Math.max(0, req.P - soilP * 0.5);
+      const defK = Math.max(0, req.K - soilK * 0.5);
+      const urea = Math.round(defN / 0.46 * areaHa);
+      const dap = Math.round(defP / 0.46 * areaHa);
+      const mop = Math.round(defK / 0.6 * areaHa);
+
+      // Render basic calculation result
+      document.getElementById('fert-result').innerHTML = `
+        <div class="calc-result">
+          <div class="heading-lg" style="color:#059669;margin-bottom:12px;">📊 Fertilizer Recommendation for ${crop}</div>
+          <div class="grid grid-3" style="gap:12px;margin-bottom:16px;">
+            <div style="padding:16px;background:#10b98110;border-radius:10px;text-align:center;">
+              <div style="font-size:11px;color:#64748b;">Urea (46% N)</div>
+              <div style="font-size:24px;font-weight:800;color:#059669;">${urea} kg</div>
+              <div style="font-size:11px;color:#94a3b8;">for ${area} acres</div>
+            </div>
+            <div style="padding:16px;background:#3b82f610;border-radius:10px;text-align:center;">
+              <div style="font-size:11px;color:#64748b;">DAP (46% P₂O₅)</div>
+              <div style="font-size:24px;font-weight:800;color:#3b82f6;">${dap} kg</div>
+              <div style="font-size:11px;color:#94a3b8;">for ${area} acres</div>
+            </div>
+            <div style="padding:16px;background:#f59e0b10;border-radius:10px;text-align:center;">
+              <div style="font-size:11px;color:#64748b;">MOP (60% K₂O)</div>
+              <div style="font-size:24px;font-weight:800;color:#f59e0b;">${mop} kg</div>
+              <div style="font-size:11px;color:#94a3b8;">for ${area} acres</div>
+            </div>
+          </div>
+          <div style="font-size:13px;color:#475569;line-height:1.7;">
+            <strong>Application Schedule:</strong><br>
+            • <strong>Basal dose:</strong> Apply full DAP (${dap} kg) + half MOP (${Math.round(mop/2)} kg) at sowing<br>
+            • <strong>First top dress:</strong> Apply half Urea (${Math.round(urea/2)} kg) at 25-30 days after sowing<br>
+            • <strong>Second top dress:</strong> Apply remaining Urea (${Math.round(urea/2)} kg) + MOP (${Math.round(mop/2)} kg) at 45-50 days
+          </div>
+        </div>`;
+
+      // Fetch AI-powered brand recommendations
+      const brandsEl = document.getElementById('ai-brands');
+      brandsEl.innerHTML = '<div class="card" style="text-align:center;padding:20px;"><div class="skeleton" style="width:200px;height:16px;margin:0 auto 8px;"></div><p style="color:#64748b;font-size:12px;">Getting fertilizer brand recommendations from Gemini AI...</p></div>';
+
+      try {
+        const prompt = `You are an Indian agricultural input advisor. For a farmer growing ${crop} on ${area} acres who needs:
+- Urea: ${urea} kg
+- DAP: ${dap} kg
+- MOP: ${mop} kg
+- Soil pH: ${ph}
+
+Provide a table of specific fertilizer brands available in India with:
+1. Brand name and manufacturer
+2. Package size (typically 50kg bags)
+3. Approximate retail price (₹) per bag
+4. Number of bags needed for this farmer
+
+Include brands from: IFFCO, Coromandel, Zuari, RCF, National Fertilizers, Chambal, Tata Chemicals, Nagarjuna, Deepak Fertilisers.
+
+Also recommend any micronutrient supplements (Zinc Sulphate, Boron, etc.) if needed for ${crop} at pH ${ph}.
+
+Format your response as clean HTML with a styled table. Use inline styles for good visual appearance. Make the table responsive.`;
+
+        const rawHtml = await KrishiAPI.callGemini(prompt);
+        // Clean markdown fences from response
+        let cleanHtml = rawHtml.trim();
+        if (cleanHtml.startsWith('```')) {
+          const lines = cleanHtml.split('\n');
+          if (lines[0].startsWith('```')) lines.shift();
+          if (lines[lines.length - 1].startsWith('```')) lines.pop();
+          cleanHtml = lines.join('\n').trim();
+        }
+        brandsEl.innerHTML = `
+          <div class="card">
+            <div class="card-title" style="margin-bottom:12px;">🏷️ AI-Recommended Fertilizer Brands & Prices</div>
+            <div style="overflow-x:auto;">${cleanHtml}</div>
+          </div>`;
+      } catch (err) {
+        brandsEl.innerHTML = `<div class="card" style="padding:16px;color:#dc2626;">Could not load brand recommendations: ${err.message}</div>`;
+      }
+
+      // Show nearby fertilizer shop finder
+      const shopsEl = document.getElementById('nearby-shops');
+      const mapsSearchUrl = `https://www.google.com/maps/search/fertilizer+shop+agricultural+input+store+near+me`;
+      shopsEl.innerHTML = `
+        <div class="card" style="border-color:#3b82f630;">
+          <div class="card-title" style="margin-bottom:12px;">📍 Find Nearby Fertilizer Shops</div>
+          <p style="font-size:13px;color:#64748b;margin-bottom:16px;">Locate agricultural input stores near your location to purchase the recommended fertilizers.</p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <a href="${mapsSearchUrl}" target="_blank" rel="noopener" class="btn btn-primary" style="text-decoration:none;">
+              📍 Open Google Maps — Fertilizer Shops Near Me
+            </a>
+            <a href="https://www.google.com/maps/search/Krishi+Seva+Kendra+near+me" target="_blank" rel="noopener" class="btn btn-secondary" style="text-decoration:none;">
+              🏪 Krishi Seva Kendra Near Me
+            </a>
+            <a href="https://www.google.com/maps/search/IFFCO+dealer+near+me" target="_blank" rel="noopener" class="btn btn-secondary" style="text-decoration:none;">
+              🏭 IFFCO Dealer Near Me
+            </a>
+          </div>
+          <div style="margin-top:16px;padding:12px;background:#eff6ff;border-radius:8px;font-size:12px;color:#1e40af;">
+            💡 <strong>Tip:</strong> Always verify prices at your local dealer. Government subsidized fertilizers (Urea, DAP) have controlled prices. Check your Aadhaar-linked fertilizer subsidy at <strong>dbtbharat.gov.in</strong>
+          </div>
+        </div>`;
+    }
+  </script>
+</body>
+</html>

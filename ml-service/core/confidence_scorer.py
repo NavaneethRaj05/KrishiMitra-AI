@@ -29,12 +29,18 @@ class ConfidenceScorer:
                 
         # 2. Source Authority Analysis
         if sources:
-            has_icar = any(getattr(s, 'source', '') == "Local KB" for s in sources)
+            has_icar = any(
+                (s.get('source') if isinstance(s, dict) else getattr(s, 'source', '')).lower() in ("local kb", "icar")
+                for s in sources
+            )
             if has_icar:
                 score += 15
                 
             # Average authority score
-            auth_scores = [getattr(s, 'authority_score', 0.5) for s in sources if hasattr(s, 'authority_score')]
+            auth_scores = [
+                s.get('authority_score', 0.5) if isinstance(s, dict) else getattr(s, 'authority_score', 0.5)
+                for s in sources
+            ]
             if auth_scores:
                 avg_auth = sum(auth_scores) / len(auth_scores)
                 score += int((avg_auth - 0.5) * 20) # Bonus for high authority

@@ -55,32 +55,25 @@ class KrishiSearchService:
             f'Format: ["question 1", "question 2", "question 3"]'
         )
         try:
-            try:
-                from ollama import AsyncClient
-                client = AsyncClient()
-                res = await client.chat(
-                    model=os.getenv("OLLAMA_CHAT_MODEL", os.getenv("OLLAMA_MODEL", "llama3.1:8b")),
-                    messages=[{"role": "user", "content": prompt}],
-                    options={"temperature": 0.7, "num_predict": 200}
-                )
-            except Exception:
-                import ollama
-                def run_sync_chat():
-                    return ollama.chat(
-                        model=os.getenv("OLLAMA_CHAT_MODEL", os.getenv("OLLAMA_MODEL", "llama3.1:8b")),
-                        messages=[{"role": "user", "content": prompt}],
-                        options={"temperature": 0.7, "num_predict": 200}
-                    )
-                res = await asyncio.to_thread(run_sync_chat)
-
-            text  = res["message"]["content"].strip()
+            text = await unified_llm_service.chat(
+                system_prompt="You generate follow-up agricultural questions. Return ONLY a JSON array.",
+                user_message=prompt,
+                temperature=0.7,
+            )
+            text = text.strip()
             start = text.find("[")
             end   = text.rfind("]") + 1
             if start >= 0 and end > start:
                 return json.loads(text[start:end])
         except Exception as e:
             logger.warning(f"[RelatedQ] {e}")
-        return []
+        # Hardcoded fallback if LLM fails
+        return [
+            "What fertilizer should I use for this crop?",
+            "How to prevent this disease next season?",
+            "What are the current market prices?"
+        ]
+
 
     def _extract_confidence(self, answer: str) -> str:
         """Removes the CONFIDENCE tag from the answer text if present."""
@@ -237,10 +230,19 @@ class KrishiSearchService:
             full_answer = ""
 
             try:
+                context_texts = []
+                for s in sources:
+                    txt = getattr(s, "full_text", None) or (s.get("full_text") if isinstance(s, dict) else "")
+                    if not txt:
+                        txt = getattr(s, "excerpt", None) or (s.get("excerpt") if isinstance(s, dict) else "")
+                    if txt:
+                        context_texts.append(txt)
+
                 stream = unified_llm_service.chat_stream(
                     system_prompt=system,
                     query=query,
-                    history=conversation[-6:]
+                    history=conversation[-6:],
+                    context=context_texts
                 )
                 async for token in stream:
                     full_answer += token

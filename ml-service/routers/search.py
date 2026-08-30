@@ -20,6 +20,7 @@ class SearchRequest(BaseModel):
     longitude:      Optional[float] = None
 
 
+@router.post("")
 @router.post("/ask")
 async def search_ask(req: SearchRequest):
     """SSE stream: status → intent → sources → tokens → related → done."""

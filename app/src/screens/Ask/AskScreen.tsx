@@ -18,7 +18,6 @@ import { useSearchStore } from '../../store/useSearchStore'
 import { useAuthStore } from '../../store/useAuthStore'
 import { spacing, radii, shadows } from '../../theme/tokens'
 import { KMText } from '../../components/ui/Text'
-import { KMCard } from '../../components/ui/Card'
 import { KMStatusBar } from '../../components/ui/StatusBar'
 import { AskBar } from '../../components/search/AskBar'
 import { VoiceModal } from '../../components/search/VoiceModal'
@@ -32,9 +31,9 @@ interface Props {
 
 const PROMPT_CATEGORIES = [
   {
-    category: 'Disease & Pest',
+    category: 'Disease & Pest Diagnostics',
     icon: Leaf,
-    color: '#1D9E75',
+    color: '#10B981',
     prompts: [
       'My paddy leaves are turning yellow — what disease is this?',
       'How to treat tomato leaf curl virus organically?',
@@ -42,9 +41,9 @@ const PROMPT_CATEGORIES = [
     ],
   },
   {
-    category: 'Water & Soil',
+    category: 'Water & Soil Management',
     icon: Droplet,
-    color: '#0284C7',
+    color: '#38BDF8',
     prompts: [
       'How often should I irrigate wheat in winter?',
       'What is the ideal pH for sugarcane soil?',
@@ -52,9 +51,9 @@ const PROMPT_CATEGORIES = [
     ],
   },
   {
-    category: 'Market & Prices',
+    category: 'Market Mandi & MSP',
     icon: TrendingUp,
-    color: '#D4860A',
+    color: '#F59E0B',
     prompts: [
       'What is the MSP for paddy this season?',
       'Current tomato price in Mandya mandi',
@@ -62,9 +61,9 @@ const PROMPT_CATEGORIES = [
     ],
   },
   {
-    category: 'Schemes & Subsidies',
+    category: 'Schemes & ICAR Subsidies',
     icon: BookOpen,
-    color: '#4F46A8',
+    color: '#818CF8',
     prompts: [
       'Am I eligible for PM-KISAN scheme?',
       'What subsidies are available for drip irrigation?',
@@ -108,9 +107,9 @@ export default function AskScreen({ navigation }: Props) {
 
       {/* Header */}
       <View style={[styles.header, { borderBottomColor: theme.border.subtle }]}>
-        <KMText size="2xl" weight="bold">Ask KrishiMitra</KMText>
+        <KMText size="2xl" weight="bold">Ask KrishiMitra AI</KMText>
         <KMText size="base" color={theme.text.secondary} style={{ marginTop: 4 }}>
-          Voice · Image · Text
+          Voice · Image Scanner · Text Advisory
         </KMText>
       </View>
 

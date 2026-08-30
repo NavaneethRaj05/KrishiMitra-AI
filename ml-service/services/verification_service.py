@@ -68,7 +68,7 @@ CHUNKS:
         try:
             compressed = await unified_llm_service.chat(
                 system_prompt="You are a strict data extractor. Return only facts.",
-                user_prompt=prompt,
+                user_message=prompt,
                 temperature=0.0
             )
             

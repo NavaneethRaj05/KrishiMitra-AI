@@ -15,74 +15,74 @@ import type { Theme } from './types'
 export const darkTheme: Theme = {
   // ── Backgrounds ─────────────────────────────────────────────────────────
   bg: {
-    base:        '#141210',            // deepest background — warm dark, not pure black
-    surface:     '#1E1C18',            // cards, inputs
-    elevated:    '#272420',            // modals, sheets, bottom sheets
-    input:       '#1E1C18',
-    overlay:     'rgba(0, 0, 0, 0.70)',
-    subtle:      '#2A2825',            // section dividers
-    tinted:      '#0E2820',            // teal-tinted highlights
-    warning:     '#2A1E06',
-    error:       '#220C08',
-    success:     '#0C2016',
-    info:        '#12103A',
+    base:        '#08100C',            // deep forest obsidian base
+    surface:     '#101C16',            // glassmorphic surface
+    elevated:    '#16281F',            // elevated cards, modals, sheets
+    input:       '#0D1712',
+    overlay:     'rgba(0, 0, 0, 0.75)',
+    subtle:      '#1C2E24',            // section dividers
+    tinted:      '#0F3826',            // emerald-tinted highlights
+    warning:     '#2E1E05',
+    error:       '#2B0C0A',
+    success:     '#0A291A',
+    info:        '#131336',
   },
 
   // ── Text ─────────────────────────────────────────────────────────────────
   text: {
-    primary:     '#F0EDE8',            // warm off-white — not stark white
-    secondary:   '#9A9288',            // subdued text
-    tertiary:    '#5C5750',            // hints, placeholders
-    disabled:    '#3A3530',
-    inverse:     '#141210',            // text on light/colored surfaces
-    accent:      '#34D9A4',            // elevated teal for dark mode
-    warning:     '#F5C842',
-    error:       '#FF6B5B',
-    success:     '#54D68A',
-    info:        '#8B87F5',
+    primary:     '#F2FBF6',            // crisp mint white
+    secondary:   '#94A3B8',            // slate muted
+    tertiary:    '#64748B',            // hints, placeholders
+    disabled:    '#334155',
+    inverse:     '#08100C',            // text on light/colored surfaces
+    accent:      '#34D399',            // vibrant electric emerald
+    warning:     '#FCD34D',
+    error:       '#F87171',
+    success:     '#4ADE80',
+    info:        '#818CF8',
   },
 
   // ── Brand accent ─────────────────────────────────────────────────────────
   accent: {
-    primary:     '#29C08D',            // brighter teal for dark mode visibility
-    primaryHover:'#34D9A4',
-    primaryDim:  '#0D2E20',
-    primaryMid:  '#0F3D28',
-    secondary:   '#F0A42A',
-    secondaryDim:'#2A1C06',
+    primary:     '#10B981',            // Stitch electric emerald
+    primaryHover:'#34D399',
+    primaryDim:  '#064E3B',
+    primaryMid:  '#047857',
+    secondary:   '#F59E0B',            // Harvest gold
+    secondaryDim:'#78350F',
   },
 
   // ── Borders ───────────────────────────────────────────────────────────────
   border: {
-    subtle:      '#252220',
-    default:     '#322F2C',
-    strong:      '#454240',
-    focus:       '#29C08D',
-    accent:      '#1A4D38',
+    subtle:      'rgba(255, 255, 255, 0.08)',
+    default:     'rgba(16, 185, 129, 0.18)',
+    strong:      'rgba(16, 185, 129, 0.35)',
+    focus:       '#10B981',
+    accent:      '#059669',
   },
 
   // ── Status colors ─────────────────────────────────────────────────────────
   status: {
-    success:     '#54D68A',
-    successBg:   '#0C2016',
-    warning:     '#F5C842',
-    warningBg:   '#2A1E06',
-    error:       '#FF6B5B',
-    errorBg:     '#220C08',
-    info:        '#8B87F5',
-    infoBg:      '#12103A',
+    success:     '#34D399',
+    successBg:   '#064E3B40',
+    warning:     '#FBBF24',
+    warningBg:   '#78350F40',
+    error:       '#F87171',
+    errorBg:     '#7F1D1D40',
+    info:        '#818CF8',
+    infoBg:      '#312E8140',
   },
 
   // ── Offline / sync states ─────────────────────────────────────────────────
   sync: {
-    online:      '#54D68A',
-    onlineBg:    '#0C2016',
-    offline:     '#F5C842',
-    offlineBg:   '#2A1E06',
-    syncing:     '#8B87F5',
-    syncingBg:   '#12103A',
-    pending:     '#5C5750',
-    pendingBg:   '#252220',
+    online:      '#34D399',
+    onlineBg:    '#064E3B40',
+    offline:     '#FBBF24',
+    offlineBg:   '#78350F40',
+    syncing:     '#818CF8',
+    syncingBg:   '#312E8140',
+    pending:     '#64748B',
+    pendingBg:   '#1E293B',
   },
 
   // ── Message bubbles ───────────────────────────────────────────────────────

@@ -108,7 +108,7 @@ Output:
         try:
             response = await unified_llm_service.chat(
                 system_prompt=system_prompt,
-                user_prompt=f"Query: {query}",
+                user_message=f"Query: {query}",
                 temperature=0.1
             )
             

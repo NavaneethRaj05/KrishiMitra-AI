@@ -34,6 +34,7 @@ async def _run_diagnosis(image_bytes: bytes) -> dict:
 
 
 @router.post("/diagnose")
+@router.post("/predict")
 async def diagnose(file: UploadFile = File(...)):
     """
     Accept an image upload (multipart) and return:

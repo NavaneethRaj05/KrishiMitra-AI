@@ -63,8 +63,10 @@ class ContextService:
             }
         }
 
+    _weather_cache = {}
+
     async def fetch_weather(self, district: str) -> dict:
-        """Fetch real-time weather from Open-Meteo using geocoding, or return static mock."""
+        """Fetch real-time weather from Open-Meteo using geocoding with 15-min in-memory cache."""
         WEATHER_CODES = {
             0: "Clear Sky",
             1: "Partly Cloudy", 2: "Partly Cloudy", 3: "Partly Cloudy",
@@ -74,15 +76,23 @@ class ContextService:
             80: "Rain Showers", 81: "Rain Showers", 82: "Rain Showers",
             95: "Thunderstorm", 96: "Thunderstorm", 99: "Thunderstorm"
         }
+        
+        cache_key = (district or "default").lower().strip()
+        now_ts = datetime.now().timestamp()
+        if cache_key in self._weather_cache:
+            cached_data, cached_time = self._weather_cache[cache_key]
+            if now_ts - cached_time < 900:  # 15 minutes TTL
+                return cached_data
+
         try:
             # Use neutral global default coordinates
             lat, lng = 20.0, 78.0
             if district:
                 import httpx as _httpx
-                async with _httpx.AsyncClient() as client:
+                async with _httpx.AsyncClient(timeout=2.0) as client:
                     try:
                         geo_url = f"https://geocoding-api.open-meteo.com/v1/search?name={district}&count=1&language=en&format=json"
-                        geo_res = await client.get(geo_url, timeout=3.0)
+                        geo_res = await client.get(geo_url)
                         if geo_res.status_code == 200:
                             geo_data = geo_res.json()
                             results = geo_data.get("results", [])
@@ -94,29 +104,33 @@ class ContextService:
 
             import httpx
             url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lng}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,weather_code"
-            async with httpx.AsyncClient() as client:
-                res = await client.get(url, timeout=3.0)
+            async with httpx.AsyncClient(timeout=2.0) as client:
+                res = await client.get(url)
                 if res.status_code == 200:
                     data = res.json()
                     curr = data.get("current", {})
                     code = curr.get("weather_code", 0)
-                    return {
+                    weather_res = {
                         "temperature": curr.get("temperature_2m", 28.0),
                         "humidity": curr.get("relative_humidity_2m", 65.0),
                         "windspeed": curr.get("wind_speed_10m", 5.0),
                         "description": WEATHER_CODES.get(code, "Overcast"),
                         "rainfall_last_7d": 12.5
                     }
+                    self._weather_cache[cache_key] = (weather_res, now_ts)
+                    return weather_res
         except Exception as e:
             logger.warning("Failed to fetch live weather, using mock: %s", e)
 
-        return {
+        default_res = {
             "temperature": 27.5,
             "humidity": 65,
             "windspeed": 6.0,
             "description": "Clear Sky",
             "rainfall_last_7d": 10.0
         }
+        self._weather_cache[cache_key] = (default_res, now_ts)
+        return default_res
 
     def get_current_season(self) -> str:
         """Kharif (Jun-Oct), Rabi (Nov-Mar), Zaid (Apr-May)"""

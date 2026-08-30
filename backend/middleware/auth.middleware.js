@@ -1,6 +1,12 @@
 import jwt from 'jsonwebtoken';
 import { config } from '../config/env.js';
 
+// ── Demo Mode Guard ──
+// Only active when DEMO_MODE=true AND a DEMO_TOKEN value is set in the environment.
+// Both must be configured — no hardcoded bypass token in source.
+const DEMO_MODE = process.env.DEMO_MODE === 'true';
+const DEMO_TOKEN = process.env.DEMO_TOKEN || null;
+
 export const protect = (req, res, next) => {
   const internalKey = req.headers['x-internal-key'];
   const expectedKey = process.env.INTERNAL_API_KEY || 'internal';
@@ -16,8 +22,8 @@ export const protect = (req, res, next) => {
 
   const token = authHeader.split(' ')[1];
 
-  // Allow 'demo_token' for local development bypass
-  if (token === 'demo_token') {
+  // Allow demo token only when DEMO_MODE=true and DEMO_TOKEN env var is configured
+  if (DEMO_MODE && DEMO_TOKEN && token === DEMO_TOKEN) {
     // Use a valid 24-character hex string so Mongoose doesn't throw CastError
     req.farmer = { id: '000000000000000000000000', name: 'Demo Farmer' };
     return next();

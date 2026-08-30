@@ -122,7 +122,7 @@ class TestThumbnailUrls:
         # Inspect the SIMILAR_DISEASE_MAP embedded in classify() via a mock call
         # by checking the structure directly from the source.
         import inspect
-        source = inspect.getsource(disease_svc.classify)
+        source = inspect.getsource(disease_svc.full_diagnosis)
         # Should not contain old broken local paths
         assert "/assets/diseases/" not in source
 

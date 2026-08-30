@@ -44,7 +44,7 @@ export const RegisterScreen: React.FC<{ navigation: any }> = ({ navigation }) =>
         navigation.replace('MainTabs')
       }
     } else {
-      Alert.alert('Error', 'Invalid OTP. Enter 123456 to bypass offline.')
+      Alert.alert('Error', 'Invalid OTP. Check the console output for the offline bypass OTP (EXPO_PUBLIC_DEMO_OTP).')
     }
   }
 

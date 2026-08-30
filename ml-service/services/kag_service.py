@@ -16,7 +16,7 @@ logger = logging.getLogger("krishimitraai.kag")
 
 URI  = os.getenv("NEO4J_URI",      "bolt://localhost:7687")
 USER = os.getenv("NEO4J_USER",     "neo4j")
-PASS = os.getenv("NEO4J_PASSWORD", "krishimitraai123")
+PASS = os.getenv("NEO4J_PASSWORD", "")  # Do not use a default password — set NEO4J_PASSWORD in .env
 
 # Availability cache — avoid connection hammering when Neo4j is down
 _KAG_AVAILABLE: Optional[bool] = None

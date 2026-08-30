@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alerts — KrishiMitra AI</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌾</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/common.css"><link rel="stylesheet" href="/farmer/styles.css">
+</head>
+<body class="farmer-portal">
+  <div class="portal-layout">
+    <aside id="farmer-sidebar"></aside><div class="sidebar-overlay" onclick="KrishiNav.toggleSidebar()"></div>
+    <main class="portal-main">
+      <header id="farmer-topbar"></header>
+      <div class="portal-content" style="max-width:800px;">
+        <a href="/farmer/" style="font-size:13px;color:#10b981;font-weight:600;margin-bottom:8px;display:inline-block;">← Dashboard</a>
+        <h1 class="heading-2xl" style="color:#0f372a;margin-bottom:4px;">🔔 Pest & Disease Alerts</h1>
+        <p style="color:#64748b;font-size:14px;margin-bottom:24px;">Real-time agricultural alerts for your region and crops.</p>
+
+        <!-- Top action row -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+          <!-- Severity Filter -->
+          <div class="flex gap-2" style="flex-wrap:wrap;">
+            <button class="btn btn-sm btn-primary" onclick="filterAlerts('all',this)">All</button>
+            <button class="btn btn-sm btn-secondary" onclick="filterAlerts('critical',this)">🚨 Critical</button>
+            <button class="btn btn-sm btn-secondary" onclick="filterAlerts('high',this)">🔴 High</button>
+            <button class="btn btn-sm btn-secondary" onclick="filterAlerts('medium',this)">⚠️ Medium</button>
+            <button class="btn btn-sm btn-secondary" onclick="filterAlerts('low',this)">ℹ️ Low</button>
+          </div>
+          <button class="btn btn-sm btn-secondary" onclick="refreshAlerts(this)" id="refresh-alerts-btn" style="color:#059669;font-weight:600;">
+            🔄 Refresh Live Regional Alerts
+          </button>
+        </div>
+
+        <div id="alerts-container" style="display:flex;flex-direction:column;gap:10px;"></div>
+      </div>
+    </main>
+  </div>
+  <script src="/shared/api.js"></script>
+  <script src="/shared/nav.js"></script>
+  <script src="/farmer/farmer.js"></script>
+  <script>
+    let activeFilter = 'all';
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      KrishiNav.renderSidebar('farmer-sidebar');
+      KrishiNav.renderTopbar('farmer-topbar', 'Alerts');
+      await loadAndRenderAlerts('all');
+    });
+
+    async function refreshAlerts(btn) {
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = '⏳ Analyzing Weather & Crop Risks...';
+      }
+      try {
+        if (window.FarmerPortal && FarmerPortal.fetchLiveRegionalAlerts) {
+          await FarmerPortal.fetchLiveRegionalAlerts(true);
+        }
+        await loadAndRenderAlerts(activeFilter);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = '🔄 Refresh Live Regional Alerts';
+        }
+      }
+    }
+
+    function filterAlerts(severity, btn) {
+      activeFilter = severity;
+      document.querySelectorAll('.flex.gap-2 .btn').forEach(b => { b.className = 'btn btn-sm btn-secondary'; });
+      if (btn) btn.className = 'btn btn-sm btn-primary';
+      loadAndRenderAlerts(severity);
+    }
+
+    async function loadAndRenderAlerts(filter) {
+      const el = document.getElementById('alerts-container');
+      let allItems = [];
+      if (window.FarmerPortal && FarmerPortal.fetchLiveRegionalAlerts) {
+        allItems = await FarmerPortal.fetchLiveRegionalAlerts();
+      }
+      if (!allItems || allItems.length === 0) {
+        allItems = [
+          { type: 'pest', severity: 'critical', title: 'Fall Armyworm Outbreak', desc: 'Severe fall armyworm infestation reported in multiple blocks. Immediate scouting and spraying recommended for maize fields.', crop: 'Maize', region: 'District-wide', time: '30 min ago' },
+          { type: 'pest', severity: 'high', title: 'Whitefly Population Surge', desc: 'Whitefly numbers have crossed ETL in tomato fields. Apply imidacloprid or neem oil spray.', crop: 'Tomato', region: 'Nearby Taluks', time: '2h ago' },
+          { type: 'disease', severity: 'high', title: 'Late Blight Warning', desc: 'Cool temperatures and high humidity create ideal conditions for late blight. Preventive copper spray recommended.', crop: 'Tomato, Potato', region: 'District', time: '4h ago' },
+          { type: 'weather', severity: 'medium', title: 'Heavy Rainfall Alert', desc: 'IMD predicts 65-80mm rainfall over next 48 hours. Ensure field drainage.', crop: 'All crops', region: 'State-wide', time: '6h ago' },
+        ];
+      }
+
+      const items = filter === 'all' ? allItems : allItems.filter(a => a.severity === filter);
+      const icons = { pest: '🦟', disease: '🦠', weather: '🌧️', spray: '🧴', farming: '🌾' };
+
+      if (items.length === 0) {
+        el.innerHTML = '<div class="empty-state"><div class="empty-state-icon">✅</div><div class="empty-state-title">No alerts</div><p class="text-muted">No alerts matching this filter.</p></div>';
+        return;
+      }
+
+      el.innerHTML = items.map(a => `
+        <div class="alert-item alert-${a.severity}" style="flex-direction:column;align-items:stretch;">
+          <div class="flex items-center gap-3">
+            <div class="alert-icon">${icons[a.type] || '⚠️'}</div>
+            <div style="flex:1;">
+              <div class="flex items-center gap-2">
+                <span style="font-weight:700;font-size:14px;color:#1e293b;">${a.title}</span>
+                <span class="badge badge-${a.severity === 'critical' ? 'red' : a.severity === 'high' ? 'amber' : a.severity === 'medium' ? 'amber' : 'blue'}" style="text-transform:uppercase;font-size:10px;">${a.severity}</span>
+              </div>
+              <div style="font-size:12px;color:#64748b;margin-top:2px;">${a.desc}</div>
+            </div>
+            <span class="text-xs text-faint" style="flex-shrink:0;">${a.time || 'Live'}</span>
+          </div>
+          <div class="flex gap-2" style="margin-top:8px;margin-left:40px;">
+            <span class="badge badge-slate">📦 ${a.crop || 'All crops'}</span>
+            <span class="badge badge-slate">📍 ${a.region || 'Local'}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+  </script>
+</body>
+</html>

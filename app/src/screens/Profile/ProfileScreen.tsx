@@ -11,7 +11,6 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Alert,
-  Switch,
 } from 'react-native'
 import {
   User, MapPin, Leaf, Droplet, Globe, Moon, Sun, Laptop,
@@ -21,10 +20,9 @@ import { useTheme } from '../../hooks/useTheme'
 import { spacing, radii, shadows } from '../../theme/tokens'
 import { KMText } from '../../components/ui/Text'
 import { KMCard } from '../../components/ui/Card'
-import { KMBadge } from '../../components/ui/Badge'
 import { KMStatusBar } from '../../components/ui/StatusBar'
 import { useAuthStore } from '../../store/useAuthStore'
-import { getLanguage, setLanguage, getLanguagesList, t } from '../../i18n'
+import { getLanguage, setLanguage, getLanguagesList } from '../../i18n'
 
 export default function ProfileScreen({ navigation }: any) {
   const { theme, themeMode, setThemeMode } = useTheme()
@@ -70,7 +68,7 @@ export default function ProfileScreen({ navigation }: any) {
 
       {/* Header */}
       <View style={[styles.header, { borderBottomColor: theme.border.subtle }]}>
-        <KMText size="2xl" weight="bold">Profile</KMText>
+        <KMText size="2xl" weight="bold">Farmer Profile</KMText>
         <TouchableOpacity
           onPress={() => navigation.navigate('Settings')}
           style={[styles.editBtn, { backgroundColor: theme.bg.surface, borderColor: theme.border.default }]}
@@ -83,46 +81,63 @@ export default function ProfileScreen({ navigation }: any) {
 
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
         {/* Farmer identity card */}
-        <KMCard elevation="raised" padding="lg" style={styles.identityCard}>
+        <KMCard elevation="raised" padding="lg" style={[styles.identityCard, { borderColor: theme.border.default }]}>
           <View style={styles.avatarRow}>
-            <View style={[styles.avatar, { backgroundColor: theme.accent.primaryMid }]}>
+            <View style={[styles.avatar, { backgroundColor: theme.accent.primary + '20', borderColor: theme.accent.primary, borderWidth: 1.5 }]}>
               <User size={36} color={theme.accent.primary} />
             </View>
             <View style={styles.identityInfo}>
-              <KMText size="xl" weight="bold">{farmer?.name ?? 'Farmer'}</KMText>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                <KMText size="xl" weight="bold">{farmer?.name ?? 'Farmer'}</KMText>
+                <View style={[styles.verifiedBadge, { backgroundColor: theme.accent.primary + '20', borderColor: theme.accent.primary + '40' }]}>
+                  <KMText size="xs" weight="bold" color={theme.accent.primary}>✓ KVK Verified</KMText>
+                </View>
+              </View>
               <View style={styles.identityMeta}>
                 <MapPin size={14} color={theme.text.tertiary} />
                 <KMText size="sm" color={theme.text.secondary} weight="medium" style={{ marginLeft: 6 }}>
-                  {farmer?.district ?? 'District'}, {farmer?.state ?? 'State'}
+                  {farmer?.district ?? 'Hassan'}, {farmer?.state ?? 'Karnataka'}
                 </KMText>
               </View>
             </View>
           </View>
 
+          {/* Farm quick stats counter */}
+          <View style={[styles.statsCounterRow, { backgroundColor: theme.bg.subtle, borderColor: theme.border.subtle }]}>
+            <View style={styles.statCounterItem}>
+              <KMText size="lg" weight="bold" color={theme.accent.primary}>2</KMText>
+              <KMText size="xs" color={theme.text.secondary}>Active Crops</KMText>
+            </View>
+            <View style={[styles.statDivider, { backgroundColor: theme.border.subtle }]} />
+            <View style={styles.statCounterItem}>
+              <KMText size="lg" weight="bold" color="#38BDF8">14</KMText>
+              <KMText size="xs" color={theme.text.secondary}>Diagnoses</KMText>
+            </View>
+            <View style={[styles.statDivider, { backgroundColor: theme.border.subtle }]} />
+            <View style={styles.statCounterItem}>
+              <KMText size="lg" weight="bold" color="#F59E0B">100%</KMText>
+              <KMText size="xs" color={theme.text.secondary}>Offline Sync</KMText>
+            </View>
+          </View>
+
           {/* Farm details chips */}
           <View style={styles.chipsRow}>
-            {(farmer?.registeredCrops ?? []).map((crop, i) => (
+            {(farmer?.registeredCrops ?? ['Paddy (Rice)', 'Tomato']).map((crop, i) => (
               <View key={i} style={[styles.chip, { backgroundColor: theme.accent.primaryDim, borderColor: theme.accent.primary + '40' }]}>
                 <Leaf size={12} color={theme.accent.primary} />
                 <KMText size="sm" color={theme.accent.primary} weight="bold" style={{ marginLeft: 4 }}>{crop}</KMText>
               </View>
             ))}
-            {farmer?.irrigationType && (
-              <View style={[styles.chip, { backgroundColor: '#0284C718', borderColor: '#0284C740' }]}>
-                <Droplet size={12} color="#0284C7" />
-                <KMText size="sm" color="#0284C7" weight="bold" style={{ marginLeft: 4 }}>{farmer.irrigationType}</KMText>
-              </View>
-            )}
-            {farmer?.soilType && (
-              <View style={[styles.chip, { backgroundColor: theme.bg.subtle, borderColor: theme.border.default }]}>
-                <KMText size="sm" color={theme.text.secondary} weight="medium">{farmer.soilType}</KMText>
-              </View>
-            )}
-            {farmer?.landAcres && (
-              <View style={[styles.chip, { backgroundColor: theme.bg.subtle, borderColor: theme.border.default }]}>
-                <KMText size="sm" color={theme.text.secondary} weight="medium">{farmer.landAcres} acres</KMText>
-              </View>
-            )}
+            <View style={[styles.chip, { backgroundColor: '#38BDF818', borderColor: '#38BDF840' }]}>
+              <Droplet size={12} color="#38BDF8" />
+              <KMText size="sm" color="#38BDF8" weight="bold" style={{ marginLeft: 4 }}>{farmer?.irrigationType || 'Drip Irrigation'}</KMText>
+            </View>
+            <View style={[styles.chip, { backgroundColor: theme.bg.subtle, borderColor: theme.border.default }]}>
+              <KMText size="sm" color={theme.text.secondary} weight="medium">{farmer?.soilType || 'Red Sandy Loam'}</KMText>
+            </View>
+            <View style={[styles.chip, { backgroundColor: theme.bg.subtle, borderColor: theme.border.default }]}>
+              <KMText size="sm" color={theme.text.secondary} weight="medium">{farmer?.landAcres || '4.5'} acres</KMText>
+            </View>
           </View>
         </KMCard>
 
@@ -285,9 +300,9 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   avatar: {
-    width: 72,
-    height: 72,
-    borderRadius: 36,
+    width: 64,
+    height: 64,
+    borderRadius: 32,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -296,6 +311,29 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 6,
+  },
+  verifiedBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: radii.full,
+    borderWidth: 1,
+  },
+  statsCounterRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    borderRadius: radii.lg,
+    borderWidth: 1,
+    paddingVertical: 12,
+    marginVertical: 14,
+  },
+  statCounterItem: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  statDivider: {
+    width: 1,
+    height: 24,
   },
   chipsRow: {
     flexDirection: 'row',

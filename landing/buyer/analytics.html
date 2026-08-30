@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buyer Analytics — KrishiMitra AI</title>
+  <meta name="description" content="Procurement analytics, price trends, volume metrics, and supplier performance reporting.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/common.css">
+  <link rel="stylesheet" href="/buyer/styles.css">
+</head>
+<body class="buyer-portal">
+  <div class="portal-layout">
+    <aside id="buyer-sidebar"></aside>
+    <div class="sidebar-overlay" onclick="KrishiNav.toggleSidebar()"></div>
+
+    <main class="portal-main">
+      <header id="buyer-topbar"></header>
+
+      <div class="portal-content">
+        <div id="analytics-metrics" class="metric-cards"></div>
+
+        <div class="buyer-dashboard">
+          <div class="card">
+            <div class="card-header"><div class="card-title">📈 Sourcing Volume by Crop</div></div>
+            <div id="volume-chart" class="chart-container"></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">💰 Price Variance vs Mandi Benchmark</div></div>
+            <div id="price-variance-chart" class="chart-container"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/shared/api.js"></script>
+  <script src="/shared/nav.js"></script>
+  <script src="/shared/charts.js"></script>
+  <script src="/buyer/buyer.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      KrishiNav.renderSidebar('buyer-sidebar');
+      KrishiNav.renderTopbar('buyer-topbar', 'Buyer Analytics');
+      BuyerPortal.renderMetrics('analytics-metrics');
+
+      setTimeout(() => {
+        KrishiCharts.barChart('volume-chart', {
+          labels: ['Tomato', 'Rice', 'Maize', 'Onion', 'Cotton', 'Wheat'],
+          datasets: [{ label: 'Volume (Quintals)', data: [450, 1200, 680, 890, 310, 520], color: '#3b82f6' }],
+          width: 450, height: 260
+        });
+        KrishiCharts.lineChart('price-variance-chart', {
+          labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6'],
+          datasets: [
+            { label: 'Contract Price', data: [1800, 1800, 1800, 1800, 1800, 1800], color: '#10b981' },
+            { label: 'Mandi Price', data: [1750, 1820, 1890, 1950, 1860, 1810], color: '#3b82f6', dashed: true }
+          ],
+          width: 450, height: 260
+        });
+      }, 100);
+    });
+  </script>
+</body>
+</html>

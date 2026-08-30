@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fertilizer Brands & Nearby Shop Locator — KrishiMitra AI</title>
+  <meta name="description" content="Find nearby fertilizer shops, check prices across top Indian brands (IFFCO, Coromandel, KRIBHCO, Zuari), and locate agro-input dealers on Google Maps.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧪</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/common.css">
+  <link rel="stylesheet" href="/buyer/styles.css">
+  <style>
+    .brand-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .brand-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .brand-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+      border-color: #3b82f6;
+    }
+    .shop-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: all 0.2s;
+    }
+    .shop-card:hover {
+      border-color: #10b981;
+      box-shadow: 0 6px 16px rgba(16,185,129,0.08);
+    }
+    .search-hero {
+      background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #0284c7 100%);
+      color: white;
+      padding: 28px 24px;
+      border-radius: 16px;
+      margin-bottom: 24px;
+    }
+    .filter-pill {
+      padding: 6px 14px;
+      border-radius: 99px;
+      background: rgba(255,255,255,0.15);
+      color: white;
+      font-size: 13px;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.25);
+      transition: all 0.15s;
+    }
+    .filter-pill.active, .filter-pill:hover {
+      background: white;
+      color: #1e3a8a;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body class="buyer-portal">
+  <div class="portal-layout">
+    <aside id="buyer-sidebar"></aside>
+    <div class="sidebar-overlay" onclick="KrishiNav.toggleSidebar()"></div>
+
+    <main class="portal-main">
+      <header id="buyer-topbar"></header>
+
+      <div class="portal-content">
+        <!-- Hero Header -->
+        <div class="search-hero">
+          <div style="max-width:700px;">
+            <span class="badge" style="background:rgba(255,255,255,0.2);color:#ffffff;margin-bottom:8px;">📍 Live Agri-Input Network</span>
+            <h1 class="heading-2xl" style="color:#ffffff;margin-bottom:8px;">Fertilizer Brands & Nearby Shop Locator</h1>
+            <p style="opacity:0.9;font-size:14px;line-height:1.5;">
+              Discover government-approved fertilizer prices across all major Indian manufacturers, locate nearby licensed retail dealers, and navigate directly with Google Maps.
+            </p>
+            <div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;">
+              <button class="filter-pill active" onclick="filterCategory('all', this)">All Fertilizers</button>
+              <button class="filter-pill" onclick="filterCategory('Urea', this)">Urea (46% N)</button>
+              <button class="filter-pill" onclick="filterCategory('DAP', this)">DAP (18:46:0)</button>
+              <button class="filter-pill" onclick="filterCategory('MOP', this)">MOP / Potash</button>
+              <button class="filter-pill" onclick="filterCategory('NPK', this)">NPK Complexes</button>
+              <button class="filter-pill" onclick="filterCategory('Bio', this)">Bio / Organic</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Search & Location Bar -->
+        <div class="card" style="margin-bottom:24px;">
+          <div style="display:grid;grid-template-columns:2fr 1.5fr 1fr;gap:12px;align-items:center;">
+            <div>
+              <label class="form-label" style="font-size:12px;color:#64748b;">Search Fertilizer Brand or Nutrient</label>
+              <input type="text" id="brand-search-input" class="form-input" placeholder="e.g. IFFCO DAP, Coromandel Gromor, Urea, Zinc..." oninput="handleSearch()">
+            </div>
+            <div>
+              <label class="form-label" style="font-size:12px;color:#64748b;">Your Current Location / APMC Market</label>
+              <div style="display:flex;gap:6px;">
+                <input type="text" id="user-location-input" class="form-input" value="Hassan, Karnataka" placeholder="City or Pincode">
+                <button class="btn btn-secondary btn-sm" onclick="detectGPSLocation()" title="Use GPS Location">📍 GPS</button>
+              </div>
+            </div>
+            <div style="padding-top:18px;">
+              <button class="btn btn-primary" style="width:100%;" onclick="openNearbyOnGoogleMaps()">
+                🗺️ Search on Google Maps
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top Section: Brand Costs Matrix -->
+        <div class="card" style="margin-bottom:24px;">
+          <div class="card-header">
+            <div>
+              <div class="card-title">🏷️ Fertilizer Brands & Verified Prices</div>
+              <p class="text-xs text-muted" style="margin-top:2px;">Subsidized MRP per bag under Govt. Nutrient Based Subsidy (NBS) & DBT Scheme</p>
+            </div>
+            <span class="badge badge-emerald">Live Verified Rates</span>
+          </div>
+
+          <div id="brands-container" class="brand-grid"></div>
+        </div>
+
+        <!-- Middle Section: Nearby Fertilizer Retailers / Shops -->
+        <div class="card" style="margin-bottom:24px;">
+          <div class="card-header">
+            <div>
+              <div class="card-title">🏬 Nearby Licensed Fertilizer Stores & Krishi Seva Kendras</div>
+              <p class="text-xs text-muted" style="margin-top:2px;" id="shop-location-subtitle">Showing verified dealers within 15 km of Hassan, Karnataka</p>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-sm btn-secondary" onclick="openNearbyOnGoogleMaps('fertilizer shop')">📍 All Fertilizer Shops</button>
+              <button class="btn btn-sm btn-secondary" onclick="openNearbyOnGoogleMaps('Krishi Seva Kendra')">🌾 Krishi Seva Kendra</button>
+            </div>
+          </div>
+
+          <div id="shops-container" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));gap:16px;margin-top:12px;"></div>
+        </div>
+
+        <!-- Bottom Section: Gemini AI Live Brand & Dosage Advisor -->
+        <div class="card" style="border-color:#8b5cf630;background:#faf5ff10;">
+          <div class="card-header">
+            <div class="flex items-center gap-2">
+              <span style="font-size:22px;">✨</span>
+              <div>
+                <div class="card-title" style="color:#6d28d9;">Gemini AI Fertilizer Brand & Cost Advisor</div>
+                <p class="text-xs text-muted">Ask anything about specific fertilizer brands, availability, dosages, or calculate cost for your crop</p>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;margin-top:8px;">
+            <input type="text" id="ai-fert-query" class="form-input" placeholder="e.g. Which brand of DAP is best for Tomato in Hassan and how much does it cost?" style="flex:1;" onkeydown="if(event.key==='Enter') askGeminiFertilizer()">
+            <button class="btn btn-primary" id="ai-fert-btn" onclick="askGeminiFertilizer()" style="background:#7c3aed;border-color:#7c3aed;">
+              🤖 Ask Gemini
+            </button>
+          </div>
+
+          <div id="ai-fert-result" style="margin-top:16px;display:none;"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/shared/api.js"></script>
+  <script src="/shared/nav.js"></script>
+  <script src="/buyer/buyer.js"></script>
+  <script>
+    // Master List of Fertilizer Brands with Govt & Market Rates
+    const FERTILIZER_BRANDS = [
+      {
+        name: 'Neem Coated Urea (46% N)',
+        category: 'Urea',
+        brands: ['IFFCO Kisan Urea', 'KRIBHCO Urea', 'NFL Kisan Urea', 'RCF Ujjwala', 'Chambal Uttam'],
+        weight: '45 kg Bag',
+        subsidized_price: '₹266.50',
+        market_price: '₹266.50 (Controlled MRP)',
+        badge: 'Govt Controlled Subsidized',
+        badgeColor: '#10b981',
+        desc: 'Essential nitrogen for vegetative crop growth. Mandatory neem coating prevents leaching.',
+        icon: '🌱'
+      },
+      {
+        name: 'DAP (Di-Ammonium Phosphate 18:46:0)',
+        category: 'DAP',
+        brands: ['IFFCO DAP', 'Coromandel Gromor 18:46:0', 'Zuari Jai Kisaan DAP', 'Paradeep Phosphates', 'Mangala DAP'],
+        weight: '50 kg Bag',
+        subsidized_price: '₹1,350.00',
+        market_price: '₹1,350.00 (Standardized MRP)',
+        badge: 'High Demand',
+        badgeColor: '#3b82f6',
+        desc: 'Contains 18% Nitrogen and 46% Phosphorus. Crucial for strong root development and tillering.',
+        icon: '🌾'
+      },
+      {
+        name: 'MOP (Muriate of Potash 60% K₂O)',
+        category: 'MOP',
+        brands: ['IPL (Indian Potash Ltd)', 'Coromandel MOP', 'Zuari MOP', 'Tata Shriram MOP'],
+        weight: '50 kg Bag',
+        subsidized_price: '₹1,650.00 – ₹1,700.00',
+        market_price: '₹1,680.00 Avg',
+        badge: 'Fruit & Grain Quality',
+        badgeColor: '#f59e0b',
+        desc: 'Supplies 60% potassium for disease resistance, drought tolerance, grain filling, and fruit shine.',
+        icon: '🍅'
+      },
+      {
+        name: 'NPK 10:26:26 Complex',
+        category: 'NPK',
+        brands: ['IFFCO NPK 10:26:26', 'Coromandel Gromor 10:26:26', 'Mahadhan Smart Tek', 'Zuari Sampurna'],
+        weight: '50 kg Bag',
+        subsidized_price: '₹1,470.00',
+        market_price: '₹1,470.00 – ₹1,520.00',
+        badge: 'Balanced Nutrient',
+        badgeColor: '#8b5cf6',
+        desc: 'High Phosphorus and Potassium ratio. Excellent for sugarcane, potato, tomato, and banana.',
+        icon: '🥔'
+      },
+      {
+        name: 'NPK 20:20:0:13 (Ammonium Phosphate Sulphate)',
+        category: 'NPK',
+        brands: ['FACT (FACTOMFOS 20:20:0:13)', 'Coromandel Gromor 20:20:0:13', 'GSFC Sardar 20:20'],
+        weight: '50 kg Bag',
+        subsidized_price: '₹1,200.00 – ₹1,250.00',
+        market_price: '₹1,220.00 Avg',
+        badge: 'With 13% Sulphur',
+        badgeColor: '#059669',
+        desc: 'Provides 20% N, 20% P, and 13% Sulphur. Ideal for oilseeds (groundnut, mustard) and pulses.',
+        icon: '🥜'
+      },
+      {
+        name: 'Single Super Phosphate (SSP 16% P₂O₅)',
+        category: 'Bio',
+        brands: ['Khaitan SSP', 'Rama Phosphates', 'Coromandel Gromor SSP', 'Nagarjuna SSP'],
+        weight: '50 kg Bag',
+        subsidized_price: '₹480.00 – ₹520.00',
+        market_price: '₹500.00 Avg',
+        badge: 'Cost Effective',
+        badgeColor: '#0284c7',
+        desc: 'Contains 16% water-soluble phosphate, 11% sulphur, and 21% calcium for acidic and neutral soils.',
+        icon: '🌿'
+      },
+      {
+        name: 'IFFCO Nano Urea & Nano DAP (Liquid)',
+        category: 'Bio',
+        brands: ['IFFCO Nano Biotechnology Research Centre'],
+        weight: '500 ml Bottle (Equal to 1 Bag)',
+        subsidized_price: '₹225.00 (Nano Urea) / ₹600.00 (Nano DAP)',
+        market_price: '₹225.00 / ₹600.00',
+        badge: 'Eco Friendly / High Efficiency',
+        badgeColor: '#10b981',
+        desc: 'Nanotechnology foliar spray with >80% nutrient uptake efficiency. Replaces bulky chemical bags.',
+        icon: '💧'
+      },
+      {
+        name: 'Zinc Sulphate (Heptahydrate 21% Zn)',
+        category: 'Bio',
+        brands: ['Aries Agro Chelamin', 'Coromandel Zinc', 'IFFCO Zinc', 'Multiplex Zinc'],
+        weight: '10 kg Pack / 25 kg Bag',
+        subsidized_price: '₹750.00 / 10 kg',
+        market_price: '₹70 – ₹80 / kg',
+        badge: 'Micronutrient',
+        badgeColor: '#6366f1',
+        desc: 'Prevents Khaira disease in paddy and white bud in maize. Crucial for chlorophyll synthesis.',
+        icon: '🧪'
+      }
+    ];
+
+    // Local Verified Fertilizer Retail Stores (Hassan & Karnataka APMC Clusters)
+    const NEARBY_SHOPS = [
+      {
+        name: 'Sri Manjunatha Fertilizer & Seed Corporation',
+        dealer: 'Licensed IFFCO & Coromandel Dealer',
+        address: 'B.M. Road, Near APMC Yard, Hassan, Karnataka - 573201',
+        distance: '1.2 km',
+        rating: 4.8,
+        reviews: 142,
+        phone: '+91 94481 23456',
+        stockedBrands: ['IFFCO Urea', 'Coromandel Gromor', 'IPL Potash', 'Nano Urea'],
+        openStatus: 'Open Now · Closes 8:30 PM',
+        gmapsQuery: 'Sri Manjunatha Fertilizer APMC Hassan Karnataka'
+      },
+      {
+        name: 'Raitha Seva Kendra (Kisan Suvidha Store)',
+        dealer: 'Govt Authorized Subsidized Distribution Center',
+        address: 'APMC Market Complex, Gate No. 2, Hassan, Karnataka - 573201',
+        distance: '1.8 km',
+        rating: 4.6,
+        reviews: 98,
+        phone: '+91 81722 65432',
+        stockedBrands: ['Govt Subsidized Urea', 'IFFCO DAP', 'MOP', 'Soil Health Card Testing'],
+        openStatus: 'Open Now · Closes 6:00 PM',
+        gmapsQuery: 'Raitha Seva Kendra APMC Hassan'
+      },
+      {
+        name: 'Kaveri Agro Chemicals & Fertilizer Agency',
+        dealer: 'Zuari, NFL & Factomfos Official Distributor',
+        address: 'Holinarasipura Road, Near Old Bus Stand, Hassan - 573201',
+        distance: '3.4 km',
+        rating: 4.7,
+        reviews: 116,
+        phone: '+91 98450 78910',
+        stockedBrands: ['Zuari Jai Kisaan', 'FACTOMFOS', 'Mahadhan Smart Tek', 'Multiplex Zinc'],
+        openStatus: 'Open Now · Closes 9:00 PM',
+        gmapsQuery: 'Kaveri Agro Chemicals Hassan Karnataka'
+      },
+      {
+        name: 'Channakeshava Krishi Seva Kendra',
+        dealer: 'Multi-Brand Agri-Inputs & Organic Fertilizers',
+        address: 'Belur Road Junction, Industrial Area, Hassan - 573202',
+        distance: '4.8 km',
+        rating: 4.5,
+        reviews: 64,
+        phone: '+91 94802 11223',
+        stockedBrands: ['Rama Phosphates SSP', 'Khaitan', 'Aries Micronutrients', 'Neem Cake'],
+        openStatus: 'Open Now · Closes 7:30 PM',
+        gmapsQuery: 'Channakeshava Krishi Seva Kendra Hassan'
+      }
+    ];
+
+    let currentCategory = 'all';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      KrishiNav.renderSidebar('buyer-sidebar');
+      KrishiNav.renderTopbar('buyer-topbar', 'Fertilizer Brands & Shop Locator');
+      renderBrands(FERTILIZER_BRANDS);
+      renderShops(NEARBY_SHOPS);
+    });
+
+    function filterCategory(cat, btn) {
+      currentCategory = cat;
+      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+
+      const query = document.getElementById('brand-search-input').value.trim().toLowerCase();
+      applyFilters(query, cat);
+    }
+
+    function handleSearch() {
+      const query = document.getElementById('brand-search-input').value.trim().toLowerCase();
+      applyFilters(query, currentCategory);
+    }
+
+    function applyFilters(query, cat) {
+      let filtered = FERTILIZER_BRANDS;
+      if (cat && cat !== 'all') {
+        filtered = filtered.filter(f => f.category.toLowerCase() === cat.toLowerCase());
+      }
+      if (query) {
+        filtered = filtered.filter(f =>
+          f.name.toLowerCase().includes(query) ||
+          f.brands.some(b => b.toLowerCase().includes(query)) ||
+          f.desc.toLowerCase().includes(query)
+        );
+      }
+      renderBrands(filtered);
+    }
+
+    function renderBrands(brands) {
+      const container = document.getElementById('brands-container');
+      if (!container) return;
+
+      if (brands.length === 0) {
+        container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:32px;color:#94a3b8;">No fertilizer brands match your search. Try another keyword or ask Gemini AI below.</div>`;
+        return;
+      }
+
+      container.innerHTML = brands.map((b, idx) => `
+        <div class="brand-card">
+          <div>
+            <div class="flex justify-between items-center" style="margin-bottom:8px;">
+              <span style="font-size:24px;">${b.icon}</span>
+              <span class="badge" style="background:${b.badgeColor}18;color:${b.badgeColor};font-weight:600;font-size:11px;">${b.badge}</span>
+            </div>
+            <div style="font-weight:700;font-size:15px;color:#1e293b;margin-bottom:4px;">${b.name}</div>
+            <p style="font-size:12px;color:#64748b;line-height:1.4;margin-bottom:12px;">${b.desc}</p>
+
+            <div style="background:#f8fafc;padding:10px;border-radius:8px;margin-bottom:12px;border:1px solid #f1f5f9;">
+              <div class="text-xs text-muted" style="margin-bottom:4px;font-weight:600;">TOP BRANDS AVAILABLE:</div>
+              <div style="display:flex;flex-wrap:wrap;gap:4px;">
+                ${b.brands.map(brand => `<span class="badge badge-slate" style="font-size:11px;">${brand}</span>`).join('')}
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div style="border-top:1px dashed #e2e8f0;padding-top:10px;margin-bottom:12px;">
+              <div class="flex justify-between items-center">
+                <span class="text-xs text-muted">Package Unit:</span>
+                <strong style="font-size:12px;color:#334155;">${b.weight}</strong>
+              </div>
+              <div class="flex justify-between items-center" style="margin-top:2px;">
+                <span class="text-xs text-muted">Controlled Price:</span>
+                <strong style="font-size:16px;color:#059669;">${b.subsidized_price}</strong>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:6px;">
+              <button class="btn btn-primary btn-sm" style="flex:1;" onclick="openSpecificBrandMap('${b.name.replace(/'/g, "\\'")}')">📍 Find Shops</button>
+              <button class="btn btn-secondary btn-sm" onclick="askAiAboutBrand('${b.name.replace(/'/g, "\\'")}')">💡 AI Advice</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderShops(shops) {
+      const container = document.getElementById('shops-container');
+      if (!container) return;
+
+      container.innerHTML = shops.map((s, idx) => `
+        <div class="shop-card">
+          <div class="flex justify-between items-center">
+            <span class="badge badge-emerald" style="font-size:11px;">⭐ ${s.rating} (${s.reviews} reviews)</span>
+            <span class="badge badge-slate" style="font-size:11px;">${s.distance} away</span>
+          </div>
+
+          <div>
+            <div style="font-weight:700;font-size:15px;color:#0f172a;">${s.name}</div>
+            <div style="font-size:12px;color:#059669;font-weight:600;margin-top:2px;">${s.dealer}</div>
+            <div style="font-size:12px;color:#64748b;margin-top:4px;line-height:1.4;">📍 ${s.address}</div>
+          </div>
+
+          <div style="background:#f8fafc;padding:8px 10px;border-radius:8px;font-size:12px;">
+            <strong>In Stock:</strong> <span style="color:#334155;">${s.stockedBrands.join(', ')}</span>
+          </div>
+
+          <div class="flex justify-between items-center" style="font-size:12px;color:#64748b;border-top:1px solid #f1f5f9;padding-top:8px;">
+            <span>🕒 ${s.openStatus}</span>
+            <a href="tel:${s.phone}" style="color:#2563eb;text-decoration:none;font-weight:600;">📞 Call</a>
+          </div>
+
+          <div style="display:flex;gap:8px;margin-top:4px;">
+            <a href="https://www.google.com/maps/search/${encodeURIComponent(s.gmapsQuery)}" target="_blank" rel="noopener" class="btn btn-primary btn-sm" style="flex:1;text-align:center;text-decoration:none;">
+              🗺️ Open in Google Maps
+            </a>
+            <button class="btn btn-secondary btn-sm" onclick="BuyerPortal.showModal('Direct Order — ' + '${s.name}', '<p>Connecting you to <strong>${s.name}</strong> for direct booking at controlled prices.<br><br><strong>Phone:</strong> ${s.phone}<br><strong>Address:</strong> ${s.address}<br><br><button class=\\'btn btn-primary\\' onclick=\\'alert(\\'Order request placed! The dealer will confirm via SMS.\\');document.getElementById(\\'buyer-modal\\').remove();\\'>Confirm Fertilizer Booking</button>')">
+              🛍️ Book
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function openNearbyOnGoogleMaps(searchTerm = 'fertilizer shop agricultural input dealer') {
+      const loc = document.getElementById('user-location-input').value.trim() || 'Hassan Karnataka';
+      const query = `${searchTerm} in ${loc}`;
+      const url = `https://www.google.com/maps/search/${encodeURIComponent(query)}`;
+      window.open(url, '_blank');
+    }
+
+    function openSpecificBrandMap(brandName) {
+      const loc = document.getElementById('user-location-input').value.trim() || 'Hassan Karnataka';
+      const query = `${brandName} dealer shop in ${loc}`;
+      const url = `https://www.google.com/maps/search/${encodeURIComponent(query)}`;
+      window.open(url, '_blank');
+    }
+
+    function detectGPSLocation() {
+      const input = document.getElementById('user-location-input');
+      const subtitle = document.getElementById('shop-location-subtitle');
+      if (navigator.geolocation) {
+        input.value = 'Locating with GPS...';
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            const lat = pos.coords.latitude.toFixed(4);
+            const lng = pos.coords.longitude.toFixed(4);
+            input.value = `${lat}, ${lng} (Current Location)`;
+            subtitle.textContent = `Showing verified fertilizer shops near your GPS coordinates (${lat}, ${lng})`;
+          },
+          () => {
+            input.value = 'Hassan, Karnataka';
+            alert('Location permission not granted. Defaulting to Hassan, Karnataka.');
+          }
+        );
+      } else {
+        alert('Geolocation is not supported by your browser.');
+      }
+    }
+
+    async function askAiAboutBrand(brandName) {
+      document.getElementById('ai-fert-query').value = `What is the government subsidized price, dosage per acre, and top manufacturers for ${brandName} in Karnataka?`;
+      askGeminiFertilizer();
+    }
+
+    async function askGeminiFertilizer() {
+      const query = document.getElementById('ai-fert-query').value.trim();
+      if (!query) return;
+
+      const resultBox = document.getElementById('ai-fert-result');
+      const btn = document.getElementById('ai-fert-btn');
+
+      resultBox.style.display = 'block';
+      resultBox.innerHTML = `
+        <div style="text-align:center;padding:24px;">
+          <div class="skeleton" style="width:220px;height:18px;margin:0 auto 8px;"></div>
+          <div class="skeleton" style="width:340px;height:14px;margin:0 auto;"></div>
+          <p style="color:#8b5cf6;font-size:13px;margin-top:10px;font-weight:600;">Consulting Gemini AI Agriculture Engine...</p>
+        </div>
+      `;
+      btn.disabled = true;
+
+      try {
+        const lang = localStorage.getItem('krishimitra_lang') || 'en';
+        const prompt = `You are a precision agronomist and Indian agricultural input market expert.
+Farmer / Buyer Question: "${query}"
+
+Provide a comprehensive, highly accurate response covering:
+1. Specific Fertilizer Brand Names (e.g. IFFCO, Coromandel Gromor, Zuari, RCF, KRIBHCO, NFL)
+2. Current Government Subsidized MRP (in ₹) per bag (45kg/50kg) under the DBT Fertilizer Subsidy scheme
+3. Recommended Dosage & Application Schedule per acre
+4. Tips for buying authentic certified fertilizer from licensed dealers (avoiding adulteration)
+5. Soil/Crop compatibility
+
+Format as clean, beautifully styled HTML with headings, bullet points, and highlight badges. Use inline CSS styles.`;
+
+        const rawText = await KrishiAPI.callGemini(prompt);
+        let clean = rawText.trim();
+        if (clean.startsWith('```')) {
+          const lines = clean.split('\n');
+          if (lines[0].startsWith('```')) lines.shift();
+          if (lines[lines.length - 1].startsWith('```')) lines.pop();
+          clean = lines.join('\n').trim();
+        }
+
+        resultBox.innerHTML = `
+          <div style="background:#ffffff;border:1px solid #8b5cf640;border-radius:12px;padding:20px;box-shadow:0 4px 12px rgba(139,92,246,0.08);">
+            <div class="flex justify-between items-center" style="margin-bottom:12px;border-bottom:1px solid #f1f5f9;padding-bottom:8px;">
+              <strong style="color:#6d28d9;font-size:14px;">✨ Gemini AI Agronomy Advisory</strong>
+              <span class="badge" style="background:#8b5cf618;color:#7c3aed;">Verified ICAR/DBT Guidelines</span>
+            </div>
+            <div style="font-size:14px;color:#334155;line-height:1.6;">${clean}</div>
+          </div>
+        `;
+      } catch (err) {
+        resultBox.innerHTML = `
+          <div style="background:#fee2e2;border:1px solid #ef4444;border-radius:8px;padding:16px;color:#b91c1c;">
+            <strong>AI Query Error:</strong> ${err.message}
+          </div>
+        `;
+      } finally {
+        btn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>

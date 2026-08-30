@@ -47,7 +47,8 @@ const TABS = [
   { name: 'ProfileTab', label: 'Profile', Icon: User        },
 ] as const
 
-const TEAL = '#1D9E75'
+const EMERALD = '#10B981'
+const EMERALD_GLOW = 'rgba(16, 185, 129, 0.45)'
 
 // ── Tab Button ─────────────────────────────────────────────────────────────────
 function TabButton({ isFocused, isAsk, tabConfig, onPress, isDark, isDesktop }: any) {
@@ -57,10 +58,10 @@ function TabButton({ isFocused, isAsk, tabConfig, onPress, isDark, isDesktop }: 
   const onIn  = () => Animated.spring(scale, { toValue: 0.88, useNativeDriver: true, speed: 50 }).start()
   const onOut = () => Animated.spring(scale, { toValue: 1,    useNativeDriver: true, speed: 50 }).start()
 
-  const INACTIVE  = isDark ? '#6B6760' : '#9E9B96'
-  const ACTIVE    = TEAL
-  const BG        = isDark ? '#1E1C18' : '#FFFFFF'
-  const SUBTLE    = isDark ? '#252320' : '#F5F2EE'
+  const INACTIVE  = isDark ? '#64748B' : '#94A3B8'
+  const ACTIVE    = EMERALD
+  const BG        = isDark ? '#101C16' : '#FFFFFF'
+  const SUBTLE    = isDark ? '#16281F' : '#F0FDF4'
 
   if (isAsk) {
     // Floating mic FAB — mobile only
@@ -71,15 +72,15 @@ function TabButton({ isFocused, isAsk, tabConfig, onPress, isDark, isDesktop }: 
           onPress={onPress}
           onPressIn={onIn}
           onPressOut={onOut}
-          style={[styles.fab, { backgroundColor: TEAL,
+          style={[styles.fab, { backgroundColor: EMERALD,
             ...Platform.select({
-              ios:     { shadowColor: TEAL, shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.45, shadowRadius: 16 },
+              ios:     { shadowColor: EMERALD, shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.5, shadowRadius: 18 },
               android: { elevation: 12 },
-              web:     { boxShadow: `0 8px 24px ${TEAL}60` },
+              web:     { boxShadow: `0 8px 28px ${EMERALD_GLOW}` },
             }),
           }]}
         >
-          <Icon size={26} color="#fff" strokeWidth={2} />
+          <Icon size={26} color="#fff" strokeWidth={2.4} />
         </Pressable>
       </Animated.View>
     )
@@ -90,19 +91,19 @@ function TabButton({ isFocused, isAsk, tabConfig, onPress, isDark, isDesktop }: 
     return (
       <Pressable onPress={onPress} style={({ pressed }) => [
         styles.sideNavItem,
-        isFocused && { backgroundColor: TEAL + '12' },
+        isFocused && { backgroundColor: EMERALD + '18' },
         pressed && { opacity: 0.75 },
       ]}>
         <View style={[styles.sideNavIcon,
-          isFocused && { backgroundColor: TEAL + '20' },
+          isFocused && { backgroundColor: EMERALD + '25' },
         ]}>
           <Icon size={19} color={isFocused ? ACTIVE : INACTIVE} strokeWidth={isFocused ? 2.5 : 1.8} />
         </View>
-        <KMText size="sm" weight={isFocused ? 'semibold' : 'medium'}
+        <KMText size="sm" weight={isFocused ? 'bold' : 'medium'}
           color={isFocused ? ACTIVE : INACTIVE}
         >{label}</KMText>
         {isFocused && (
-          <View style={[styles.sideActiveBar, { backgroundColor: TEAL }]} />
+          <View style={[styles.sideActiveBar, { backgroundColor: EMERALD }]} />
         )}
       </Pressable>
     )
@@ -115,11 +116,11 @@ function TabButton({ isFocused, isAsk, tabConfig, onPress, isDark, isDesktop }: 
         style={styles.tabItemInner}
       >
         <View style={[styles.tabIconWrap,
-          isFocused && { backgroundColor: TEAL + '14' },
+          isFocused && { backgroundColor: EMERALD + '18' },
         ]}>
-          <Icon size={22} color={isFocused ? ACTIVE : INACTIVE} strokeWidth={isFocused ? 2.5 : 1.8} />
+          <Icon size={21} color={isFocused ? ACTIVE : INACTIVE} strokeWidth={isFocused ? 2.5 : 1.8} />
         </View>
-        <KMText size="xs" weight={isFocused ? 'semibold' : 'medium'}
+        <KMText size="xs" weight={isFocused ? 'bold' : 'medium'}
           color={isFocused ? ACTIVE : INACTIVE}
           style={styles.tabLabel}
         >{label}</KMText>
@@ -136,9 +137,9 @@ function KMTabBar({ state, descriptors, navigation }: any) {
   const { width } = useWindowDimensions()
   const isDesktop = width >= 768
 
-  const BG      = isDark ? '#161512' : '#FFFFFF'
-  const BORDER  = isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)'
-  const SUBTLE  = isDark ? '#252320' : '#F5F2EE'
+  const BG      = isDark ? '#0A130E' : '#FFFFFF'
+  const BORDER  = isDark ? 'rgba(16, 185, 129, 0.15)' : 'rgba(0,0,0,0.06)'
+  const SUBTLE  = isDark ? '#111D16' : '#F0FDF4'
 
   const tabs = state.routes.map((route: any, index: number) => {
     const isFocused = state.index === index
@@ -155,12 +156,12 @@ function KMTabBar({ state, descriptors, navigation }: any) {
       <View style={[styles.sidebar, { backgroundColor: BG, borderRightColor: BORDER }]}>
         {/* Logo */}
         <View style={styles.sideLogoRow}>
-          <View style={[styles.sideLogoMark, { backgroundColor: TEAL }]}>
+          <View style={[styles.sideLogoMark, { backgroundColor: EMERALD }]}>
             <KMText style={{ fontSize: 18 }}>🌾</KMText>
           </View>
           <View>
-            <KMText size="base" weight="bold" color={TEAL} style={{ letterSpacing: -0.3 }}>KrishiMitra</KMText>
-            <KMText size="xs" color={isDark ? '#6B6760' : '#9E9B96'} style={{ marginTop: -1 }}>AI Companion</KMText>
+            <KMText size="base" weight="bold" color={EMERALD} style={{ letterSpacing: -0.3 }}>KrishiMitra</KMText>
+            <KMText size="xs" color={isDark ? '#94A3B8' : '#64748B'} style={{ marginTop: -1 }}>AI Companion</KMText>
           </View>
         </View>
 
@@ -179,7 +180,7 @@ function KMTabBar({ state, descriptors, navigation }: any) {
 
         {/* Ask button in sidebar */}
         <Pressable onPress={() => navigation.navigate('AskTab')}
-          style={[styles.sideAskBtn, { backgroundColor: TEAL }]}
+          style={[styles.sideAskBtn, { backgroundColor: EMERALD }]}
         >
           <Mic size={18} color="#fff" strokeWidth={2} />
           <KMText size="sm" weight="bold" color="#fff" style={{ marginLeft: 8 }}>Ask KrishiMitra</KMText>
@@ -191,18 +192,18 @@ function KMTabBar({ state, descriptors, navigation }: any) {
         <Pressable onPress={() => navigation.navigate('ProfileTab')}
           style={[styles.sideUserCard, { backgroundColor: SUBTLE, borderColor: BORDER }]}
         >
-          <View style={[styles.sideAvatar, { backgroundColor: TEAL + '20' }]}>
+          <View style={[styles.sideAvatar, { backgroundColor: EMERALD + '20' }]}>
             <KMText style={{ fontSize: 18 }}>👨‍🌾</KMText>
           </View>
           <View style={{ flex: 1 }}>
-            <KMText size="sm" weight="semibold" color={isDark ? '#F0EDE8' : '#1A1A18'} numberOfLines={1}>
+            <KMText size="sm" weight="semibold" color={isDark ? '#F2FBF6' : '#1A1A18'} numberOfLines={1}>
               {farmer?.name ?? 'Demo Farmer'}
             </KMText>
-            <KMText size="xs" color={isDark ? '#6B6760' : '#9E9B96'} numberOfLines={1}>
+            <KMText size="xs" color={isDark ? '#94A3B8' : '#64748B'} numberOfLines={1}>
               {farmer?.district ?? 'Your Farm'}
             </KMText>
           </View>
-          <KMText size="sm" color={isDark ? '#6B6760' : '#9E9B96'}>›</KMText>
+          <KMText size="sm" color={isDark ? '#94A3B8' : '#64748B'}>›</KMText>
         </Pressable>
       </View>
     )

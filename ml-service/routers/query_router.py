@@ -22,6 +22,8 @@ from services.intent_service import intent_service
 from services.unified_llm_service import unified_llm_service
 from services.context_service import context_service
 from services.location_service import location_service
+from services.validation_service import validation_service
+from core.confidence_scorer import confidence_scorer
 
 logger = logging.getLogger("krishimitra_ai.query")
 
@@ -144,29 +146,15 @@ async def llm_vision(system_prompt: str, image_b64: str, user_prompt: str = "Ana
 
 async def chromadb_search(query: str, soil_type: str = None, district: str = None) -> list:
     try:
-        # 1. Primary semantic search
-        primary_chunks = rag_service.retrieve(query, top_k=4)
-        
-        # 2. Location-expanded semantic search if location details are available
+        import asyncio
+        # Single-pass semantic search for optimal latency on CPU
+        search_query = query
         if soil_type or district:
-            loc_details = []
-            if soil_type: loc_details.append(soil_type)
-            if district: loc_details.append(district)
-            expanded_query = f"{query} for {' '.join(loc_details)}"
+            loc_parts = [p for p in [soil_type, district] if p]
+            search_query = f"{query} {' '.join(loc_parts)}"
             
-            expanded_chunks = rag_service.retrieve(expanded_query, top_k=3)
-            
-            # Merge and de-duplicate based on content signatures
-            seen_sigs = set()
-            merged = []
-            for chunk in primary_chunks + expanded_chunks:
-                txt_sig = chunk.get("text", "").strip().lower()[:100]
-                if txt_sig and txt_sig not in seen_sigs:
-                    seen_sigs.add(txt_sig)
-                    merged.append(chunk)
-            return merged[:5]
-            
-        return primary_chunks
+        chunks = await asyncio.to_thread(rag_service.retrieve, search_query, top_k=5)
+        return chunks
     except Exception as e:
         logger.error("ChromaDB search failed: %s", e)
         return []
@@ -174,45 +162,46 @@ async def chromadb_search(query: str, soil_type: str = None, district: str = Non
 
 async def neo4j_lookup(query: str, agro_zone: str = None, soil_type: str = None) -> list:
     try:
-        from shared.constants import KNOWN_CROPS
-        q = query.lower()
-        mentioned_crops = [c for c in KNOWN_CROPS if c in q]
-        
-        context = []
-        # 1. Standard crop-specific profile lookup
-        if mentioned_crops:
-            crop_name = mentioned_crops[0].title()
-            profile = kag_service.get_full_crop_profile(crop_name)
-            if profile.get("crop"):
-                info = profile["crop"]
-                soils = ", ".join(info.get("soils", []))
-                climates = ", ".join(info.get("climates", []))
-                context.append(f"Crop {crop_name} grows in soils ({soils}) and thrives in climate ({climates}).")
-            
-            for d in profile.get("diseases", []):
-                disease_name = d["disease"]
-                cause = d.get("cause", "Unknown")
-                context.append(f"Crop {crop_name} is vulnerable to disease '{disease_name}' caused by {cause}.")
-                treatments = [t["treatment"] for t in d.get("treatments", [])]
-                if treatments:
-                    context.append(f"Disease '{disease_name}' is treated by: {', '.join(treatments)}.")
-                    
-        # 2. Location-based structured crop suitability lookup
-        if agro_zone:
-            suited_crops = kag_service.get_crops_for_climate(agro_zone, soil_type)
-            if suited_crops:
-                names = [c["crop"] for c in suited_crops]
-                context.append(
-                    f"Structured Knowledge Graph: Suited crops for {agro_zone} zone "
-                    f"with {soil_type or 'any'} soil: {', '.join(names)}."
-                )
-                # Append micro-details for top 3 matching crops
-                for c in suited_crops[:3]:
-                    context.append(
-                        f"Crop {c['crop']} thrives in {agro_zone} (temp range: {c.get('min_temp')}°C-{c.get('max_temp')}°C, "
-                        f"water req: {c.get('water_req')}, duration: {c.get('duration')} days)."
-                    )
-        return context
+         import asyncio
+         from shared.constants import KNOWN_CROPS
+         q = query.lower()
+         mentioned_crops = [c for c in KNOWN_CROPS if c in q]
+         
+         context = []
+         # 1. Standard crop-specific profile lookup
+         if mentioned_crops:
+             crop_name = mentioned_crops[0].title()
+             profile = await asyncio.to_thread(kag_service.get_full_crop_profile, crop_name)
+             if profile.get("crop"):
+                 info = profile["crop"]
+                 soils = ", ".join(info.get("soils", []))
+                 climates = ", ".join(info.get("climates", []))
+                 context.append(f"Crop {crop_name} grows in soils ({soils}) and thrives in climate ({climates}).")
+             
+             for d in profile.get("diseases", []):
+                 disease_name = d["disease"]
+                 cause = d.get("cause", "Unknown")
+                 context.append(f"Crop {crop_name} is vulnerable to disease '{disease_name}' caused by {cause}.")
+                 treatments = [t["treatment"] for t in d.get("treatments", [])]
+                 if treatments:
+                     context.append(f"Disease '{disease_name}' is treated by: {', '.join(treatments)}.")
+                     
+         # 2. Location-based structured crop suitability lookup
+         if agro_zone:
+             suited_crops = await asyncio.to_thread(kag_service.get_crops_for_climate, agro_zone, soil_type)
+             if suited_crops:
+                 names = [c["crop"] for c in suited_crops]
+                 context.append(
+                     f"Structured Knowledge Graph: Suited crops for {agro_zone} zone "
+                     f"with {soil_type or 'any'} soil: {', '.join(names)}."
+                 )
+                 # Append micro-details for top 3 matching crops
+                 for c in suited_crops[:3]:
+                     context.append(
+                         f"Crop {c['crop']} thrives in {agro_zone} (temp range: {c.get('min_temp')}°C-{c.get('max_temp')}°C, "
+                         f"water req: {c.get('water_req')}, duration: {c.get('duration')} days)."
+                     )
+         return context
     except Exception as e:
         logger.error("Neo4j lookup failed: %s", e)
         return []
@@ -243,7 +232,42 @@ async def handle_text_query(request: TextQueryRequest, gps_ctx: dict = Depends(g
         # Auto-translate greeting response if needed
         res["answer"] = translate_fallback_text(res["answer"], user.get("preferredLanguage", "en"))
         return res
-    
+
+    # ── Phase 3: Tool redirect for structured intents without required payload ──
+    # If the classified intent requires visual or structured input (disease photo, NPK form),
+    # and neither is attached, redirect to the dedicated tool rather than answering inline.
+    # Comparative / "why" / "compare" queries are explicitly allowed through.
+    _COMPARATIVE_SIGNALS = ["compare", "vs", "versus", "difference", "why", "which is better",
+                            "organic", "chemical", "season", "changed", "should i", "better option"]
+    _q_lower = request.query.lower()
+    _is_comparative = any(sig in _q_lower for sig in _COMPARATIVE_SIGNALS)
+
+    if not _is_comparative:
+        if intent_result.intent == "disease_diagnosis" and not request.image_b64:
+            return {
+                "type": "tool_redirect",
+                "suggested_tool": "disease-scanner",
+                "message": (
+                    "For an accurate diagnosis, I need a **photo of the affected leaves**. "
+                    "The Disease Scanner tool will let you upload a photo and I'll analyse it immediately.\n\n"
+                    "If you'd like to discuss treatments conceptually (e.g., compare organic vs chemical), just ask that directly here!"
+                ),
+            }
+
+        if intent_result.intent in ("crop_recommendation", "crop_advise") and not request.image_b64:
+            # Check if query has soil parameters (N, P, K, pH values mentioned)
+            _has_soil_params = any(term in _q_lower for term in ["n:", "p:", "k:", "ph:", "npk", "nitrogen", "phosphorus", "potassium", "soil test"])
+            if not _has_soil_params:
+                return {
+                    "type": "tool_redirect",
+                    "suggested_tool": "recommendation",
+                    "message": (
+                        "For the most accurate crop recommendation, the **Crop Advisor tool** uses your exact soil N-P-K values, "
+                        "pH, and location to give a data-driven suggestion with SHAP explainability.\n\n"
+                        "If you'd like to understand *why* crops change between seasons or compare options conceptually, just ask me here!"
+                    ),
+                }
+
     context_injection = (
         f"\n\n--- FARMER LOCATION & WEATHER CONTEXT (GPS-Based) ---\n"
         f"Location: {district}, {state}\n"
@@ -258,6 +282,16 @@ async def handle_text_query(request: TextQueryRequest, gps_ctx: dict = Depends(g
     if location_ctx_str:
         context_injection += f"\n{location_ctx_str}\n"
 
+    loc_ctx = {
+        "district": district,
+        "state": state,
+        "soil_type": soil_type,
+        "weather": weather,
+        "season": season,
+        "agro_zone": agro_zone,
+        "major_crops": major_crops or ["Paddy", "Tomato", "Maize", "Ragi", "Sugarcane"],
+    }
+
     # ── Image Diagnosis Branch (if image_b64 attached) ──
     if request.image_b64:
         try:
@@ -269,11 +303,14 @@ async def handle_text_query(request: TextQueryRequest, gps_ctx: dict = Depends(g
             res = await llm_vision(img_system, request.image_b64, user_prompt=user_prompt, cnn_result=diag)
             preferred_lang = user.get("preferredLanguage", "en")
             translated_answer = translate_fallback_text(res["answer"], preferred_lang)
+            # Run validation & compute confidence
+            _, validated_answer = validation_service.validate_response(translated_answer, "disease_diagnosis", loc_ctx)
+            conf_score = confidence_scorer.compute_score(validated_answer, [], {"vision_confidence": diag.get("confidence")})
             return {
-                "answer": translated_answer,
+                "answer": validated_answer,
                 "crop": diag.get("crop"),
                 "disease": diag.get("disease"),
-                "confidence_score": diag.get("confidence", 90.0) / 100.0,
+                "confidence_score": conf_score / 100.0,
                 "severity": diag.get("severity"),
                 "intent": "disease_diagnosis",
                 "location": {"district": district, "state": state, "soil_type": soil_type},
@@ -283,23 +320,16 @@ async def handle_text_query(request: TextQueryRequest, gps_ctx: dict = Depends(g
 
     system = build_system_prompt(TEXT_QUERY_PROMPT + context_injection, user)
     
-    # Retrieve semantic context with location expansion and Structured KG matching
-    chunks = await chromadb_search(request.query, soil_type=soil_type, district=district)
-    kg_context = await neo4j_lookup(request.query, agro_zone=agro_zone, soil_type=soil_type)
+    # Retrieve semantic context and KG in parallel
+    import asyncio
+    chunks, kg_context = await asyncio.gather(
+        chromadb_search(request.query, soil_type=soil_type, district=district),
+        neo4j_lookup(request.query, agro_zone=agro_zone, soil_type=soil_type)
+    )
     
     # Build RAG context strings from retrieved chunks (FIX: was rag_context, undefined)
     rag_context = [f"[Source: {c.get('title', 'Agricultural Guide')}]\n{c['text']}" for c in chunks]
     
-    loc_ctx = {
-        "district": district,
-        "state": state,
-        "soil_type": soil_type,
-        "weather": weather,
-        "season": season,
-        "agro_zone": agro_zone,
-        "major_crops": major_crops or ["Paddy", "Tomato", "Maize", "Ragi", "Sugarcane"],
-    }
-
     # Run unified LLM chat (Ollama-first, Gemini fallback)
     res = await llm_chat(system, request.query, context=rag_context + kg_context, location_ctx=loc_ctx)
     
@@ -316,6 +346,10 @@ async def handle_text_query(request: TextQueryRequest, gps_ctx: dict = Depends(g
     
     # Auto-translate answer if needed
     translated_answer = translate_fallback_text(res["answer"], target_lang)
+    
+    # Run validation & compute confidence
+    _, validated_answer = validation_service.validate_response(translated_answer, intent_result.intent, loc_ctx)
+    conf_score = confidence_scorer.compute_score(validated_answer, chunks)
     
     # Map sources to standard citations payload for frontend chips
     citations = [
@@ -336,10 +370,10 @@ async def handle_text_query(request: TextQueryRequest, gps_ctx: dict = Depends(g
         follow_up_questions = [translate_fallback_text(q, target_lang) for q in follow_up_questions]
     
     return {
-        "answer": translated_answer,
+        "answer": validated_answer,
         "citations": citations,
         "follow_up_questions": follow_up_questions,
-        "confidence_score": 0.85 if citations else 0.60,
+        "confidence_score": conf_score / 100.0,
         "intent": intent_result.intent,
         "location": {"district": district, "state": state, "soil_type": soil_type},
     }
@@ -428,6 +462,18 @@ async def handle_image_query(
     # Auto-translate answer if needed
     translated_answer = translate_fallback_text(res["answer"], target_lang)
 
+    # Run validation & compute confidence
+    loc_ctx = {
+        "district": district,
+        "state": state,
+        "soil_type": soil_type,
+        "weather": weather,
+        "season": season,
+        "agro_zone": agro_zone,
+    }
+    _, validated_answer = validation_service.validate_response(translated_answer, "disease_diagnosis", loc_ctx)
+    conf_score = confidence_scorer.compute_score(validated_answer, rag_chunks, {"vision_confidence": diag.get("confidence")})
+
     # 4. Query treatments from Knowledge Graph
     kag_treatments = []
     try:
@@ -436,10 +482,10 @@ async def handle_image_query(
         pass
 
     return {
-        "answer": translated_answer,
+        "answer": validated_answer,
         "crop": detected_crop,
         "disease": detected_disease,
-        "confidence_score": diag.get("confidence", 90.0) / 100.0,
+        "confidence_score": conf_score / 100.0,
         "severity": diag.get("severity"),
         "kag_treatments": kag_treatments,
         "rag_sources": [c.get("title") for c in rag_chunks],
@@ -522,12 +568,29 @@ async def handle_soil_query(data: SoilData, request: Request, gps_ctx: dict = De
         f"\nFarmer Location: {district}, {state} | Agro Zone: {agro_zone} | Soil Type: {soil_type}"
     )
 
-    res = await llm_chat(system, user_message, location_ctx=loc_ctx)
+    # Retrieve RAG + KAG context based on predicted crop and soil type
+    chunks = []
+    kg_context = []
+    if xgb_result and xgb_result != "unknown":
+        rag_query = f"{xgb_result} cultivation {soil_type or ''} soil fertilizer NPK requirement"
+        chunks = await chromadb_search(rag_query, soil_type=soil_type, district=district)
+        kg_context = await neo4j_lookup(f"{xgb_result} soil", agro_zone=agro_zone, soil_type=soil_type)
+        
+    rag_context = [f"[Source: {c.get('title', 'Agricultural Guide')}]\n{c['text']}" for c in chunks]
+
+    res = await llm_chat(system, user_message, context=rag_context + kg_context, location_ctx=loc_ctx)
+    
+    preferred_lang = user.get("preferredLanguage", "en")
+    translated_answer = translate_fallback_text(res["answer"], preferred_lang)
+    
+    # Run validation & compute confidence
+    _, validated_answer = validation_service.validate_response(translated_answer, "soil_analysis", loc_ctx)
+    conf_score = confidence_scorer.compute_score(validated_answer, chunks)
     
     return {
-        "answer": res["answer"],
+        "answer": validated_answer,
         "recommended_crop": xgb_result,
-        "confidence_score": 0.92,
+        "confidence_score": conf_score / 100.0,
         "shap_values": shap_values,
         "location": {"district": district, "state": state, "soil_type": soil_type},
     }
@@ -599,10 +662,23 @@ async def handle_voice_query(request: VoiceQueryRequest, req: Request, gps_ctx: 
     # Auto-translate answer if needed
     translated_answer = translate_fallback_text(res["answer"], target_lang)
     
+    # Detect voice intent for validation
+    voice_intent = "general_farming"
+    try:
+        voice_intent = voice_service.detect_intent(request.transcript)
+    except Exception:
+        pass
+        
+    # Run validation & compute confidence
+    _, validated_answer = validation_service.validate_response(translated_answer, voice_intent, loc_ctx)
+    conf_score = confidence_scorer.compute_score(validated_answer, voice_chunks)
+    
     return {
-        "answer": translated_answer,
+        "answer": validated_answer,
         "transcript": request.transcript,
         "entities": entities,
+        "confidence_score": conf_score / 100.0,
+        "intent": voice_intent,
         "location": {"district": district, "state": state},
     }
 

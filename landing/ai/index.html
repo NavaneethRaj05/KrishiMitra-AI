@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KrishiMitra AI Workspace — AI Agronomist & Chat</title>
+  <meta name="description" content="AI Workspace powered by RAG, Knowledge Graph (KAG), and Multilingual Voice Agronomy.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/common.css">
+  <link rel="stylesheet" href="/ai/styles.css">
+</head>
+<body class="ai-portal">
+  <div class="portal-layout">
+    <!-- Sidebar -->
+    <aside id="ai-sidebar"></aside>
+    <div class="sidebar-overlay" onclick="KrishiNav.toggleSidebar()"></div>
+
+    <!-- Main Content -->
+    <main class="portal-main">
+      <header id="ai-topbar"></header>
+
+      <div class="ai-chat-layout">
+        <div class="ai-chat-main">
+          <!-- Messages -->
+          <div id="chat-messages" class="ai-messages-container"></div>
+
+          <!-- Input Bar -->
+          <div class="ai-input-wrapper">
+            <div class="ai-input-bar">
+              <textarea id="ai-input-text" class="ai-textarea" rows="1" placeholder="Ask KrishiMitra AI anything (e.g. crop recommendation, disease treatment, market MSP)..." onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault();AIPortal.sendMessage();}"></textarea>
+              
+              <button id="voice-mic-btn" class="ai-action-btn" title="Voice Input (Speaks Any Indian Language)" onclick="AIPortal.toggleVoiceRecord()">
+                🎤
+              </button>
+
+              <button class="ai-action-btn ai-send-btn" title="Send Message" onclick="AIPortal.sendMessage()">
+                ➔
+              </button>
+            </div>
+            
+            <div class="flex justify-between items-center" style="margin-top:8px;padding:0 4px;font-size:12px;color:var(--ai-text-muted);">
+              <span>Powered by RAG + Knowledge Graph (ChromaDB + Neo4j)</span>
+              <button onclick="AIPortal.clearHistory()" style="background:none;border:none;color:var(--ai-text-muted);cursor:pointer;">Clear Chat History</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/shared/api.js"></script>
+  <script src="/shared/nav.js"></script>
+  <script src="/ai/ai.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      KrishiNav.renderSidebar('ai-sidebar');
+      KrishiNav.renderTopbar('ai-topbar', 'KrishiMitra AI Workspace');
+      AIPortal.init();
+    });
+  </script>
+</body>
+</html>

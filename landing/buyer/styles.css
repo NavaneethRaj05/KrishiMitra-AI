@@ -1,0 +1,241 @@
+/* ═══════════════════════════════════════════════════════════════════
+   KrishiMitra AI — Buyer & Trader Portal Styles
+   Professional B2B, data-driven, navy/slate palette, desktop-optimized
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+  --buyer-bg: #f8fafc;
+  --buyer-card: #ffffff;
+  --buyer-accent: #3b82f6;
+  --buyer-accent-dark: #2563eb;
+  --buyer-border: #e2e8f0;
+  --buyer-text: #0f172a;
+  --buyer-text-secondary: #475569;
+  --buyer-text-muted: #94a3b8;
+  --buyer-navy: #1e293b;
+}
+
+body.buyer-portal { background: var(--buyer-bg); }
+.buyer-portal .portal-sidebar { background: #f8fafc; border-right: 1px solid var(--buyer-border); }
+
+/* ── Metric Cards Row ──────────────────────────────────────────── */
+.metric-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-6);
+}
+@media (max-width: 1024px) { .metric-cards { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px) { .metric-cards { grid-template-columns: 1fr; } }
+
+.metric-card {
+  background: var(--buyer-card);
+  border: 1px solid var(--buyer-border);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-5);
+}
+.metric-card-label {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--buyer-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.metric-card-value {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  color: var(--buyer-text);
+  margin-top: 4px;
+}
+.metric-card-change {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  margin-top: 4px;
+}
+.metric-card-change.positive { color: var(--emerald-500); }
+.metric-card-change.negative { color: var(--red-500); }
+
+/* ── Price Table ───────────────────────────────────────────────── */
+.price-table-wrapper {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--buyer-border);
+  background: var(--buyer-card);
+}
+.price-row-positive { color: var(--emerald-600); }
+.price-row-negative { color: var(--red-500); }
+
+/* ── Harvest Lot Cards ─────────────────────────────────────────── */
+.lot-card {
+  background: var(--buyer-card);
+  border: 1px solid var(--buyer-border);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  transition: box-shadow var(--duration-normal);
+}
+.lot-card:hover { box-shadow: var(--shadow-md); }
+
+.lot-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.lot-crop {
+  font-weight: 700;
+  font-size: var(--text-md);
+  color: var(--buyer-text);
+}
+.lot-meta {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--sp-2);
+  font-size: var(--text-sm);
+}
+.lot-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.lot-meta-label { font-size: var(--text-xs); color: var(--buyer-text-muted); }
+.lot-meta-value { font-weight: 600; color: var(--buyer-text-secondary); }
+
+.lot-actions {
+  display: flex;
+  gap: var(--sp-2);
+  margin-top: auto;
+}
+
+/* ── Procurement Status ────────────────────────────────────────── */
+.procurement-status {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+.procurement-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--text-xs);
+  color: var(--buyer-text-muted);
+  flex: 1;
+  text-align: center;
+}
+.procurement-step.active { color: var(--buyer-accent); font-weight: 600; }
+.procurement-step.completed { color: var(--emerald-600); font-weight: 600; }
+
+.procurement-dot {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  border: 2px solid var(--buyer-border);
+  background: var(--buyer-card);
+}
+.procurement-step.active .procurement-dot { border-color: var(--buyer-accent); background: var(--buyer-accent); color: white; }
+.procurement-step.completed .procurement-dot { border-color: var(--emerald-500); background: var(--emerald-500); color: white; }
+
+.procurement-line {
+  height: 2px;
+  flex: 1;
+  background: var(--buyer-border);
+}
+.procurement-line.filled { background: var(--emerald-500); }
+
+/* ── Contract Progress ─────────────────────────────────────────── */
+.contract-card {
+  background: var(--buyer-card);
+  border: 1px solid var(--buyer-border);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-5);
+}
+.contract-progress-bar {
+  height: 8px;
+  background: var(--slate-200);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: var(--sp-3);
+}
+.contract-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--buyer-accent), var(--emerald-500));
+  border-radius: 4px;
+  transition: width var(--duration-slow) var(--ease-out);
+}
+
+/* ── Traceability Timeline ─────────────────────────────────────── */
+.trace-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding-left: var(--sp-6);
+  border-left: 2px solid var(--buyer-border);
+}
+.trace-step {
+  position: relative;
+  padding: var(--sp-4) 0 var(--sp-4) var(--sp-5);
+}
+.trace-step::before {
+  content: '';
+  position: absolute;
+  left: calc(-1 * var(--sp-6) - 1px);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--buyer-accent);
+  border: 3px solid var(--buyer-bg);
+}
+.trace-step.completed::before { background: var(--emerald-500); }
+.trace-step.pending::before { background: var(--slate-300); }
+
+/* ── Chart Container ───────────────────────────────────────────── */
+.chart-container {
+  width: 100%;
+  min-height: 250px;
+}
+
+/* ── Filter Bar ────────────────────────────────────────────────── */
+.filter-bar {
+  display: flex;
+  gap: var(--sp-3);
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-4);
+}
+.filter-bar .form-select, .filter-bar .form-input {
+  height: 36px;
+  font-size: var(--text-sm);
+  min-width: 120px;
+}
+
+/* ── Buyer Dashboard Grid ──────────────────────────────────────── */
+.buyer-dashboard {
+  display: grid;
+  gap: var(--sp-4);
+  grid-template-columns: repeat(2, 1fr);
+}
+@media (max-width: 768px) { 
+  .buyer-dashboard { grid-template-columns: 1fr; }
+  .filter-bar { flex-direction: column; align-items: stretch; }
+  .filter-bar .form-select, .filter-bar .form-input { width: 100%; min-height: 44px; }
+  .price-table-wrapper { -webkit-overflow-scrolling: touch; }
+  .lot-card { padding: var(--sp-3); }
+}
+
+@media (max-width: 480px) {
+  .metric-cards { grid-template-columns: 1fr !important; }
+  .data-table th, .data-table td { padding: 8px 10px; font-size: 12px; }
+  /* iOS Safe Area Padding */
+  body.buyer-portal {
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+}
+

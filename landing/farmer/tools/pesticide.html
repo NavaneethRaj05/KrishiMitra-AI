@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pesticide Calculator — KrishiMitra AI</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌾</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/common.css"><link rel="stylesheet" href="/farmer/styles.css">
+</head>
+<body class="farmer-portal">
+  <div class="portal-layout">
+    <aside id="farmer-sidebar"></aside>
+    <div class="sidebar-overlay" onclick="KrishiNav.toggleSidebar()"></div>
+    <main class="portal-main">
+      <header id="farmer-topbar"></header>
+      <div class="portal-content" style="max-width:800px;">
+        <a href="/farmer/tools.html" style="font-size:13px;color:#10b981;font-weight:600;margin-bottom:8px;display:inline-block;">← Tools</a>
+        <h1 class="heading-2xl" style="color:#0f372a;margin-bottom:4px;">🦟 Pesticide Calculator</h1>
+        <p style="color:#64748b;font-size:14px;margin-bottom:24px;">Calculate the correct pesticide concentration and spray volume for your field.</p>
+        <div class="card">
+          <form class="calc-form" onsubmit="calcPesticide(event)">
+            <div class="form-group"><label class="form-label">Pesticide Product</label>
+              <select class="form-select" id="pest-product"><option value="2">Chlorpyrifos 20% EC</option><option value="1.5">Imidacloprid 17.8% SL</option><option value="2">Mancozeb 75% WP</option><option value="1">Carbendazim 50% WP</option><option value="0.5">Lambda-cyhalothrin 5% EC</option><option value="3">Copper Oxychloride 50% WP</option></select>
+            </div>
+            <div class="form-group"><label class="form-label">Recommended Dose (ml or g per L)</label><input type="number" class="form-input" id="pest-dose" value="2" min="0.1" step="0.1"></div>
+            <div class="form-group"><label class="form-label">Spray Tank Size (Litres)</label><input type="number" class="form-input" id="pest-tank" value="16" min="1"></div>
+            <div class="form-group"><label class="form-label">Number of Tanks per Acre</label><input type="number" class="form-input" id="pest-tanks-acre" value="5" min="1"></div>
+            <div class="form-group"><label class="form-label">Field Area (acres)</label><input type="number" class="form-input" id="pest-area" value="2" min="0.1" step="0.1"></div>
+            <div style="grid-column:1/-1;"><button type="submit" class="btn btn-primary btn-lg" style="width:100%;">Calculate Spray Volume</button></div>
+          </form>
+        </div>
+        <div id="pest-result" style="margin-top:16px;"></div>
+        <div id="pest-ai-advice" style="margin-top:16px;"></div>
+      </div>
+    </main>
+  </div>
+  <script src="/shared/api.js"></script><script src="/shared/nav.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => { KrishiNav.renderSidebar('farmer-sidebar'); KrishiNav.renderTopbar('farmer-topbar', 'Pesticide Calculator'); });
+    async function calcPesticide(e) {
+      e.preventDefault();
+      const product = document.getElementById('pest-product');
+      const productName = product.options[product.selectedIndex].text;
+      const dose = parseFloat(document.getElementById('pest-dose').value);
+      const tankSize = parseFloat(document.getElementById('pest-tank').value);
+      const tanksPerAcre = parseFloat(document.getElementById('pest-tanks-acre').value);
+      const area = parseFloat(document.getElementById('pest-area').value);
+      const perTank = dose * tankSize;
+      const totalTanks = tanksPerAcre * area;
+      const totalProduct = perTank * totalTanks;
+      const totalWater = tankSize * totalTanks;
+      document.getElementById('pest-result').innerHTML = `
+        <div class="calc-result">
+          <div class="heading-lg" style="color:#f97316;margin-bottom:12px;">🧴 Spray Calculation — ${productName}</div>
+          <div class="grid grid-2" style="gap:12px;margin-bottom:16px;">
+            <div style="padding:16px;background:#f9731610;border-radius:10px;text-align:center;">
+              <div style="font-size:11px;color:#64748b;">Per Tank (${tankSize}L)</div>
+              <div style="font-size:24px;font-weight:800;color:#f97316;">${perTank} ml/g</div>
+            </div>
+            <div style="padding:16px;background:#3b82f610;border-radius:10px;text-align:center;">
+              <div style="font-size:11px;color:#64748b;">Total Tanks Needed</div>
+              <div style="font-size:24px;font-weight:800;color:#3b82f6;">${totalTanks}</div>
+            </div>
+            <div style="padding:16px;background:#10b98110;border-radius:10px;text-align:center;">
+              <div style="font-size:11px;color:#64748b;">Total Product</div>
+              <div style="font-size:24px;font-weight:800;color:#059669;">${Math.round(totalProduct)} ml/g</div>
+            </div>
+            <div style="padding:16px;background:#8b5cf610;border-radius:10px;text-align:center;">
+              <div style="font-size:11px;color:#64748b;">Total Water</div>
+              <div style="font-size:24px;font-weight:800;color:#8b5cf6;">${totalWater} L</div>
+            </div>
+          </div>
+          <div style="padding:12px;background:#fffbeb;border:1px solid #fbbf2430;border-radius:8px;font-size:13px;color:#92400e;">
+            <strong>⚠️ Safety:</strong> Wear PPE (gloves, mask, goggles). Spray during cool morning/evening hours. Maintain PHI (Pre-Harvest Interval). Do not spray near water bodies.
+          </div>
+        </div>`;
+
+      // Get AI-powered pesticide advice
+      const aiEl = document.getElementById('pest-ai-advice');
+      aiEl.innerHTML = '<div class="card" style="text-align:center;padding:20px;"><div class="skeleton" style="width:200px;height:16px;margin:0 auto 8px;"></div><p style="color:#64748b;font-size:12px;">Getting AI pesticide brand info & safety details...</p></div>';
+      try {
+        const prompt = `For the pesticide ${productName}, provide:
+1. Available brands in India with approximate prices (₹) for common pack sizes
+2. Recommended crops and target pests/diseases for this pesticide
+3. Pre-Harvest Interval (PHI) in days
+4. Organic/biological alternatives (IPM approach)
+5. Safety precautions specific to this chemical
+
+Format as clean HTML with styled sections. Use inline CSS.`;
+        const rawHtml = await KrishiAPI.callGemini(prompt);
+        let cleanHtml = rawHtml.trim();
+        if (cleanHtml.startsWith('```')) { const lines = cleanHtml.split('\n'); if (lines[0].startsWith('```')) lines.shift(); if (lines[lines.length-1].startsWith('```')) lines.pop(); cleanHtml = lines.join('\n').trim(); }
+        aiEl.innerHTML = `<div class="card"><div class="card-title" style="margin-bottom:12px;">🤖 AI Pesticide Intelligence — ${productName}</div>${cleanHtml}</div>`;
+      } catch (err) {
+        aiEl.innerHTML = '';
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Farming Tools — KrishiMitra AI</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌾</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/common.css">
+  <link rel="stylesheet" href="/farmer/styles.css">
+</head>
+<body class="farmer-portal">
+  <div class="portal-layout">
+    <aside id="farmer-sidebar"></aside>
+    <div class="sidebar-overlay" onclick="KrishiNav.toggleSidebar()"></div>
+    <main class="portal-main">
+      <header id="farmer-topbar"></header>
+      <div class="portal-content" style="max-width:900px;">
+        <div style="margin-bottom:24px;">
+          <a href="/farmer/" style="font-size:13px;color:#10b981;font-weight:600;margin-bottom:8px;display:inline-block;">← Dashboard</a>
+          <h1 class="heading-2xl" style="color:#0f372a;">🛠️ Farming Tools</h1>
+          <p style="color:#64748b;font-size:14px;margin-top:4px;">Agricultural calculators and planning tools for precision farming.</p>
+        </div>
+
+        <div class="grid grid-2" style="gap:16px;margin-bottom:16px;">
+          <a href="/farmer/tools/fertilizer.html" class="quick-action-btn" style="padding:24px;text-decoration:none;">
+            <div class="quick-action-icon" style="background:#3b82f615;font-size:32px;">🧪</div>
+            <div class="heading-md" style="margin-top:8px;">Fertilizer Calculator</div>
+            <p class="text-sm text-muted" style="margin-top:4px;">Calculate NPK dosage based on soil test results and crop requirements</p>
+          </a>
+        </div>
+
+        <div class="grid grid-2" style="gap:16px;">
+          <a href="/farmer/tools/pesticide.html" class="quick-action-btn" style="padding:24px;text-decoration:none;">
+            <div class="quick-action-icon" style="background:#f9731615;font-size:32px;">🦟</div>
+            <div class="heading-md" style="margin-top:8px;">Pesticide Calculator</div>
+            <p class="text-sm text-muted" style="margin-top:4px;">Determine correct pesticide dosage and spray concentration</p>
+          </a>
+          <a href="/farmer/tools/farming.html" class="quick-action-btn" style="padding:24px;text-decoration:none;">
+            <div class="quick-action-icon" style="background:#f59e0b15;font-size:32px;">🔢</div>
+            <div class="heading-md" style="margin-top:8px;">Farming Calculator</div>
+            <p class="text-sm text-muted" style="margin-top:4px;">Seed rate, plant spacing, yield estimation, and area conversions</p>
+          </a>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="/shared/api.js"></script>
+  <script src="/shared/nav.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      KrishiNav.renderSidebar('farmer-sidebar');
+      KrishiNav.renderTopbar('farmer-topbar', 'Farming Tools');
+    });
+  </script>
+</body>
+</html>

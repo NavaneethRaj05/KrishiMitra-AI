@@ -4,13 +4,18 @@ import { useAuthStore } from '../store/useAuthStore'
 import { offlineSearch } from './offlineSearch'
 import { Q } from '@nozbe/watermelondb'
 
-// Auto-detect API URL based on environment/platform
+import { Platform } from 'react-native'
+
+// Auto-detect API URL based on environment/platform (iOS, Android, Web)
 const getApiBase = () => {
   if (process.env.EXPO_PUBLIC_API_URL) return process.env.EXPO_PUBLIC_API_URL
-  if (typeof window !== 'undefined' && window.location?.hostname) {
+  if (typeof window !== 'undefined' && window.location?.hostname && window.location?.hostname !== 'localhost') {
     return `http://${window.location.hostname}:5000/api`
   }
-  return 'http://10.0.2.2:5000/api'
+  if (Platform.OS === 'android') {
+    return 'http://10.0.2.2:5000/api'
+  }
+  return 'http://localhost:5000/api'
 }
 const API_BASE = getApiBase()
 const API_TIMEOUT = 30000

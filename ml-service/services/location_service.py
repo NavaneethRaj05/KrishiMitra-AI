@@ -96,25 +96,33 @@ class LocationService:
         Find the nearest district or global region to the given GPS coordinates.
         Works completely offline.
         """
+        # Prune candidates using fast Euclidean distance approximation
+        candidates = []
+        for district in self.districts:
+            d_approx = (lat - district["lat"])**2 + (lon - district["lon"])**2
+            candidates.append((d_approx, district, "india"))
+            
+        for region in self.global_regions:
+            d_approx = (lat - region["lat"])**2 + (lon - region["lon"])**2
+            candidates.append((d_approx, region, "global"))
+            
+        if not candidates:
+            return None
+            
+        # Sort by Euclidean approximation and take top 10
+        candidates.sort(key=lambda x: x[0])
+        top_candidates = candidates[:10]
+        
         nearest = None
         min_dist = float("inf")
         source = "india"
-
-        # Check India districts first
-        for district in self.districts:
-            d = _haversine_km(lat, lon, district["lat"], district["lon"])
+        
+        for _, item, item_source in top_candidates:
+            d = _haversine_km(lat, lon, item["lat"], item["lon"])
             if d < min_dist:
                 min_dist = d
-                nearest = district
-                source = "india"
-
-        # Check global regions
-        for region in self.global_regions:
-            d = _haversine_km(lat, lon, region["lat"], region["lon"])
-            if d < min_dist:
-                min_dist = d
-                nearest = region
-                source = "global"
+                nearest = item
+                source = item_source
 
         if nearest and min_dist < 1000:  # Within 1000km of a known centroid
             result = dict(nearest)
@@ -212,7 +220,7 @@ class LocationService:
             return {"temperature": 28.0, "humidity": 80.0, "windspeed": 8.0,
                     "precipitation": 5.0, "description": "Monsoon Season",
                     "weather_code": 61, "forecast_3day": {}, "source": "estimated"}
-        elif 10 <= month <= 2:  # Winter
+        elif month >= 10 or month <= 2:  # Winter
             return {"temperature": 20.0, "humidity": 55.0, "windspeed": 4.0,
                     "precipitation": 0.0, "description": "Winter Season",
                     "weather_code": 0, "forecast_3day": {}, "source": "estimated"}

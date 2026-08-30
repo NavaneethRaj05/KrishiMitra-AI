@@ -42,6 +42,7 @@ class TestModelAvailability:
         assert len(crop_svc.labels) >= 10  # Dataset has 22 crop classes
 
     def test_explainer_loaded(self, crop_svc):
+        crop_svc._get_explainer()
         assert crop_svc.explainer is not None
 
 

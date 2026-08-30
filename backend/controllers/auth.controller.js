@@ -5,6 +5,14 @@ import { config } from '../config/env.js';
 const signToken = (id) =>
   jwt.sign({ id }, config.JWT_SECRET, { expiresIn: '90d' });
 
+// ── Demo Mode Guard ──
+// DEMO_MODE=true enables bypass OTP for local development ONLY.
+// It MUST be disabled in any staging/production deployment.
+const DEMO_MODE = process.env.DEMO_MODE === 'true';
+if (DEMO_MODE) {
+  console.warn('\n⚠️  [SECURITY WARNING] DEMO_MODE=true is enabled — OTP bypass is active. NEVER deploy with this setting.\n');
+}
+
 // Simple in-memory cache fallback for OTPs
 const otpMemoryCache = new Map();
 
@@ -126,8 +134,9 @@ export const verifyOTP = async (req, res, next) => {
       } catch (e) {}
     }
 
-    // Support a dev/demo bypass OTP: '123456'
-    if (otp === '123456') {
+    // Support a dev/demo bypass OTP only when DEMO_MODE=true in environment
+    // This must never be enabled in production
+    if (DEMO_MODE && otp === (process.env.DEMO_OTP || '000000')) {
       isValid = true;
     }
 

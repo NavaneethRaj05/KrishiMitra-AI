@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Produce Traceability — KrishiMitra AI</title>
+  <meta name="description" content="Farm-to-fork supply chain traceability with lot history, certifications, and quality inspection records.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌱</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/common.css">
+  <link rel="stylesheet" href="/buyer/styles.css">
+</head>
+<body class="buyer-portal">
+  <div class="portal-layout">
+    <aside id="buyer-sidebar"></aside>
+    <div class="sidebar-overlay" onclick="KrishiNav.toggleSidebar()"></div>
+
+    <main class="portal-main">
+      <header id="buyer-topbar"></header>
+
+      <div class="portal-content">
+        <div class="card-header" style="margin-bottom:20px;">
+          <div>
+            <h2 class="heading-lg">🔍 Farm-to-Fork Traceability</h2>
+            <p class="text-sm text-secondary">Complete transparent supply chain verification from farm origin to buyer delivery.</p>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <input type="text" id="lot-search-input" class="form-input" placeholder="Enter Batch or Lot ID (e.g. LOT-2024-1247)" style="width:280px;" onkeydown="if(event.key==='Enter') searchLotTrace()">
+            <button class="btn btn-primary" onclick="searchLotTrace()">Track</button>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+          <span class="text-xs text-muted" style="align-self:center;">Try Sample Lots:</span>
+          <button class="btn btn-sm btn-secondary" onclick="loadSampleLot('LOT-2024-1247')">🍅 LOT-2024-1247 (Tomato)</button>
+          <button class="btn btn-sm btn-secondary" onclick="loadSampleLot('LOT-2024-1245')">🌾 LOT-2024-1245 (Rice)</button>
+          <button class="btn btn-sm btn-secondary" onclick="loadSampleLot('LOT-2024-1243')">🌽 LOT-2024-1243 (Maize)</button>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title" id="lot-trace-title">Lot Traceability Chain — #LOT-2024-1247</div>
+            <span class="badge badge-emerald">Verified Authentic</span>
+          </div>
+          <div id="traceability-timeline"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/shared/api.js"></script>
+  <script src="/shared/nav.js"></script>
+  <script src="/buyer/buyer.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      KrishiNav.renderSidebar('buyer-sidebar');
+      KrishiNav.renderTopbar('buyer-topbar', 'Produce Traceability');
+      BuyerPortal.renderTraceability('traceability-timeline');
+    });
+
+    function searchLotTrace() {
+      const val = document.getElementById('lot-search-input').value.trim();
+      if (!val) return;
+      loadSampleLot(val);
+    }
+
+    function loadSampleLot(lotId) {
+      document.getElementById('lot-search-input').value = lotId;
+      document.getElementById('lot-trace-title').textContent = 'Lot Traceability Chain — #' + lotId;
+      BuyerPortal.renderTraceability('traceability-timeline');
+    }
+  </script>
+</body>
+</html>

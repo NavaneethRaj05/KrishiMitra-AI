@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contract Farming — KrishiMitra AI</title>
+  <meta name="description" content="Manage contract farming agreements with farmers, track delivery progress, and schedule payments.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📄</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/common.css">
+  <link rel="stylesheet" href="/buyer/styles.css">
+</head>
+<body class="buyer-portal">
+  <div class="portal-layout">
+    <aside id="buyer-sidebar"></aside>
+    <div class="sidebar-overlay" onclick="KrishiNav.toggleSidebar()"></div>
+
+    <main class="portal-main">
+      <header id="buyer-topbar"></header>
+
+      <div class="portal-content">
+        <div class="card-header" style="margin-bottom:20px;">
+          <div>
+            <h2 class="heading-lg">📄 Contract Farming</h2>
+            <p class="text-sm text-secondary">Track active contracts, fulfillment percentages, and upcoming harvest deliveries.</p>
+          </div>
+          <button class="btn btn-primary" onclick="openNewContractModal()">+ Create New Contract</button>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Active Farming Contracts</div>
+          </div>
+          <div id="contracts-list"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/shared/api.js"></script>
+  <script src="/shared/nav.js"></script>
+  <script src="/buyer/buyer.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      KrishiNav.renderSidebar('buyer-sidebar');
+      KrishiNav.renderTopbar('buyer-topbar', 'Contract Farming');
+      BuyerPortal.renderContracts('contracts-list');
+    });
+
+    function openNewContractModal() {
+      BuyerPortal.showModal('📄 Draft New Farming Contract', `
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div class="form-group">
+            <label class="form-label">Crop Name & Variety</label>
+            <input type="text" class="form-input" id="new-con-crop" placeholder="e.g. Tomato (Arka Rakshak)" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Farmer / FPO Name</label>
+            <input type="text" class="form-input" id="new-con-farmer" placeholder="e.g. Suresh Kumar (Hassan)" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Contracted Quantity (Quintals)</label>
+            <input type="number" class="form-input" id="new-con-qty" placeholder="e.g. 200" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Agreed Purchase Price (₹/quintal)</label>
+            <input type="number" class="form-input" id="new-con-price" placeholder="e.g. 1850" required>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div class="form-group">
+              <label class="form-label">Start Date</label>
+              <input type="date" class="form-input" id="new-con-start" value="2026-09-01">
+            </div>
+            <div class="form-group">
+              <label class="form-label">End Date</label>
+              <input type="date" class="form-input" id="new-con-end" value="2026-12-31">
+            </div>
+          </div>
+          <button class="btn btn-primary btn-lg" onclick="
+            const crop = document.getElementById('new-con-crop').value.trim();
+            const farmer = document.getElementById('new-con-farmer').value.trim();
+            const qty = parseInt(document.getElementById('new-con-qty').value.trim()) || 100;
+            const price = document.getElementById('new-con-price').value.trim();
+            const start = document.getElementById('new-con-start').value;
+            const end = document.getElementById('new-con-end').value;
+            if (!crop || !farmer || !price) { alert('Please fill in all contract details'); return; }
+            BuyerPortal.showModal('Legal Contract Confirmation', '<div style=\\'padding:12px;\\'><h3>✅ Contract Successfully Executed!</h3><p style=\\'margin-top:8px;line-height:1.6;\\'>Contract ID: <strong>CON-2026-' + Math.floor(Math.random()*900+100) + '</strong><br>Farmer: <strong>' + farmer + '</strong><br>Crop: <strong>' + crop + '</strong><br>Agreed Price: <strong>₹' + price + '/q</strong><br>Total Lot: <strong>' + qty + ' Quintals</strong></p><button class=\\'btn btn-primary\\' style=\\'margin-top:12px;\\' onclick=\\'document.getElementById(\\\'buyer-modal\\\').remove();\\'>Done</button></div>');
+          ">✍️ Sign & Execute Contract</button>
+        </div>
+      `);
+    }
+  </script>
+</body>
+</html>
