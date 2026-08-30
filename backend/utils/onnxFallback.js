@@ -1,5 +1,28 @@
+/**
+ * Server-Side Failover Crop Recommender (Express Gateway)
+ *
+ * ARCHITECTURAL ROLE:
+ * This module provides emergency server-side failover for the Express API gateway
+ * (invoked in routes/query.js -> POST /query/soil) when the Python FastAPI ml-service
+ * container is offline, restarting, or unreachable.
+ *
+ * RUNTIME BEHAVIOR:
+ * 1. Primary server path: Express proxies to FastAPI ml-service (port 8000).
+ * 2. Secondary failover path: If ml-service returns ECONNREFUSED/503 and onnxruntime-node
+ *    is installed, it evaluates ../../ml-service/models/crop_model.onnx directly.
+ * 3. Tertiary failover path: If onnxruntime-node is absent or model loading fails,
+ *    it gracefully falls back to getRuleBasedCropRecommendation() so farmer queries
+ *    never fail with an unhandled 500 error.
+ *
+ * NOTE: Client-side on-device inference in the mobile app is handled independently
+ * by app/src/services/ using onnxruntime-react-native and bundled assets.
+ */
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 let ort = null;
 let session = null;
@@ -17,11 +40,23 @@ async function loadONNXRuntime() {
 }
 
 async function initSession() {
-  const modelPath = path.resolve('../ml-service/models/crop_model.onnx');
-  const labelsPath = path.resolve('../ml-service/models/crop_labels.json');
+  const modelPath = path.resolve(__dirname, '../../ml-service/models/crop_model.onnx');
+  const labelsPath = path.resolve(__dirname, '../../ml-service/models/crop_labels.json');
 
   if (!fs.existsSync(modelPath) || !fs.existsSync(labelsPath)) {
     console.warn(`⚠️  ONNX model or labels file missing at:\nModel: ${modelPath}\nLabels: ${labelsPath}\nUsing rule-based fallback.`);
+    return false;
+  }
+
+  // Validate model file size and integrity (>1KB)
+  try {
+    const stats = fs.statSync(modelPath);
+    if (stats.size < 1024) {
+      console.warn(`⚠️  ONNX model file at ${modelPath} is only ${stats.size} bytes (invalid/placeholder). Using rule-based fallback.`);
+      return false;
+    }
+  } catch (statErr) {
+    console.warn('Could not inspect ONNX file size:', statErr.message);
     return false;
   }
 
@@ -32,7 +67,7 @@ async function initSession() {
     if (!session) {
       session = await ort.InferenceSession.create(modelPath);
       labels = JSON.parse(fs.readFileSync(labelsPath, 'utf8'));
-      console.log('✅ Local ONNX crop recommendation model loaded in Express gateway');
+      console.log('✅ Real local ONNX crop recommendation model loaded in Express gateway');
     }
     return true;
   } catch (err) {

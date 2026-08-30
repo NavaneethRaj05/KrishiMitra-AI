@@ -170,10 +170,19 @@ Respond in ${langName} language.`;
       `;
     }
 
+    let offlineBanner = '';
+    if (!isUser && (msg.source === 'offline_knowledge' || msg.source === 'offline' || msg.isOffline)) {
+      offlineBanner = `
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;padding:6px 10px;border-radius:6px;background:#f59e0b18;border:1px solid #f59e0b40;color:#fbbf24;font-size:11px;font-weight:600;">
+          📴 Answering from on-device knowledge — reconnect for full AI analysis
+        </div>
+      `;
+    }
+
     let sourceTag = '';
     if (!isUser && msg.source) {
-      const sourceColors = { gemini: '#8b5cf6', gemini_voice: '#8b5cf6', ml_service: '#3b82f6', offline: '#f59e0b' };
-      const sourceLabels = { gemini: '⚡ Gemini AI', gemini_voice: '🎙️ Gemini Vernacular Engine', ml_service: '🧠 ML Service + RAG', offline: '📦 Offline' };
+      const sourceColors = { gemini: '#8b5cf6', gemini_voice: '#8b5cf6', ml_service: '#3b82f6', offline_knowledge: '#f59e0b', offline: '#f59e0b' };
+      const sourceLabels = { gemini: '⚡ Gemini AI', gemini_voice: '🎙️ Gemini Vernacular Engine', ml_service: '🧠 ML Service + RAG', offline_knowledge: '📴 ICAR On-Device Corpus', offline: '📦 Offline' };
       sourceTag = `<span style="display:inline-block;font-size:10px;padding:2px 8px;border-radius:10px;background:${sourceColors[msg.source] || '#64748b'}20;color:${sourceColors[msg.source] || '#64748b'};font-weight:600;margin-top:4px;">${sourceLabels[msg.source] || msg.source}</span>`;
     }
 
@@ -252,6 +261,7 @@ Respond in ${langName} language.`;
       <div class="chat-message ${isUser ? 'user' : 'assistant'}">
         <div class="chat-avatar">${avatar}</div>
         <div class="chat-bubble">
+          ${offlineBanner}
           ${voiceHeader}
           <div>${formatMarkdown(msg.content)}</div>
           ${englishSub}
@@ -280,6 +290,50 @@ Respond in ${langName} language.`;
   function scrollToBottom() {
     const container = document.getElementById('chat-messages');
     if (container) container.scrollTop = container.scrollHeight;
+  }
+
+  // ── Offline On-Device ICAR Corpus Search Engine ──
+  let cachedOfflineCorpus = null;
+  async function loadOfflineCorpus() {
+    if (cachedOfflineCorpus) return cachedOfflineCorpus;
+    try {
+      const res = await fetch('/assets/corpus/agri_fts.json');
+      if (res.ok) {
+        cachedOfflineCorpus = await res.json();
+      }
+    } catch (e) {
+      console.warn('Could not load offline corpus JSON:', e);
+    }
+    return cachedOfflineCorpus || [];
+  }
+
+  async function searchOfflineKnowledge(query) {
+    const corpus = await loadOfflineCorpus();
+    if (!corpus || corpus.length === 0) return null;
+
+    const clean = query.replace(/['"*^]/g, '').trim().toLowerCase();
+    const tokens = clean.split(/\s+/).filter(w => w.length > 2);
+    if (tokens.length === 0) return null;
+
+    const scored = corpus.map(item => {
+      let score = 0;
+      const fullText = `${item.title} ${item.content} ${item.crop_tags} ${item.topic_tags}`.toLowerCase();
+      for (const t of tokens) {
+        if (fullText.includes(t)) score += 1;
+      }
+      return { item, score };
+    });
+
+    const matches = scored.filter(s => s.score > 0).sort((a, b) => b.score - a.score);
+    if (matches.length === 0) return null;
+
+    const top = matches[0].item;
+    return {
+      answer: `### 📴 On-Device ICAR Advisory: ${top.title}\n\n${top.content}\n\n---\n*Authority Source: ${top.source} (ICAR Package of Practices)*`,
+      citations: matches.slice(0, 3).map(m => `${m.item.title} — ${m.item.source}`),
+      source: 'offline_knowledge',
+      intent: top.topic_tags.split(',')[0].trim() || 'agronomy'
+    };
   }
 
   async function sendMessage(text) {
@@ -349,14 +403,21 @@ Respond in ${langName} language.`;
           citations = ['Gemini AI — Agricultural Knowledge Base', 'ICAR Best Practices Reference'];
           source = 'gemini';
         } catch (geminiErr) {
-          console.warn('Gemini direct also failed:', geminiErr.message);
+          console.warn('Gemini direct also failed, trying on-device ICAR corpus:', geminiErr.message);
         }
       }
 
-      // Attempt 3: Last resort hardcoded fallback
+      // Attempt 3: On-Device ICAR Knowledge Corpus Fallback (real 21-document FTS)
       if (!botReply && !toolRedirect) {
-        botReply = `I apologize, but I'm unable to connect to the AI service right now. Please check your internet connection and try again.\n\nIn the meantime, you can:\n- Visit your local **Krishi Vigyan Kendra (KVK)** for expert advice\n- Call the **Kisan Call Center** at **1800-180-1551** (toll-free)\n- Check **farmer.gov.in** for government schemes and advisories`;
-        source = 'offline';
+        const offlineMatch = await searchOfflineKnowledge(queryText);
+        if (offlineMatch) {
+          botReply = offlineMatch.answer;
+          citations = offlineMatch.citations;
+          source = 'offline_knowledge';
+        } else {
+          botReply = `No on-device ICAR document directly matched your query: "${queryText}".\n\n*Note: You are currently offline. Reconnect to the internet for full AI analysis with Gemini & live RAG.*`;
+          source = 'offline_knowledge';
+        }
       }
 
     } catch (err) {

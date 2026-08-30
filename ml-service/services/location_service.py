@@ -2,12 +2,12 @@
 Location Service — GPS-based Offline Reverse Geocoding & Agricultural Context
 
 Converts GPS coordinates (lat/lon) into agricultural intelligence:
-  - Nearest district & state (offline, using bundled district database)
+  - Nearest district & state (offline, using bundled database of 58 major agricultural districts across 18 states/UTs)
   - Agro-climatic zone, typical soil, major crops
   - Weather (live from Open-Meteo when online, cached when offline)
   - Nearest KVK center
 
-Works 100% offline after initial weather cache is built.
+Works 100% offline using haversine lookup against the 58-district geo dataset.
 """
 import json
 import math

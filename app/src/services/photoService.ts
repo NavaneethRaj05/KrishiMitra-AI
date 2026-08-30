@@ -20,14 +20,37 @@ class PhotoService {
     if (this.session || Platform.OS === 'web') return
 
     try {
+      let modelModule: any = null
+      try {
+        modelModule = require('../../assets/models/disease_detector.onnx')
+      } catch (modErr) {
+        console.info('ℹ️ disease_detector.onnx asset not bundled (see models/disease_model/README.md). Local CNN offline inference disabled.')
+        return
+      }
+
+      const { Asset } = require('expo-asset')
       const { InferenceSession } = require('onnxruntime-react-native')
+      
+      const modelAsset = Asset.fromModule(modelModule)
+      await modelAsset.downloadAsync()
+
+      // Validate asset size (>1KB) to avoid attempting to parse placeholder files
+      const { getInfoAsync } = require('expo-file-system')
+      if (modelAsset.localUri) {
+        const info = await getInfoAsync(modelAsset.localUri)
+        if (info.exists && info.size && info.size < 1024) {
+          console.warn(`⚠️ Offline disease ONNX model asset is under 1KB (${info.size} bytes). Local CNN inference is unavailable offline.`)
+          return
+        }
+      }
+
       // Load bundled ONNX model
       this.session = await InferenceSession.create(
-        require('../../assets/models/disease_detector.onnx')
+        modelAsset.localUri || modelModule
       )
       console.log('✅ Disease detector ONNX model loaded successfully.')
     } catch (e) {
-      console.warn('ONNX Runtime not initialized (might be running in simulator or assets missing). Using mock inference.', e)
+      console.warn('Disease detector ONNX model unavailable offline (requires trained CNN artifact). Using agronomic knowledge fallback.', e)
     }
   }
 
@@ -102,16 +125,16 @@ class PhotoService {
   }
 
   private getMockDetectionResult(imageUri: string): DiseaseDetectionResult {
-    // Return typical diseases based on current selected crop
+    // Return honest offline state explaining that on-device CNN is unavailable
     return {
-      disease: 'Paddy Blast (Magnaporthe oryzae)',
-      confidence: 0.91,
+      disease: 'General ICAR Agronomic Advisory (Photo Not Analyzed Offline)',
+      confidence: 0.0,
       severity: 'moderate',
       treatmentPlan: {
-        immediate: 'Remove infected tillers immediately and drain the field for 2 days to reduce humidity.',
-        chemical: 'Tricyclazole 75WP at 0.6g/L or Isoprothiolane 40EC at 1.5ml/L.',
-        organic: 'Pseudomonas fluorescens formulation at 5g/L or spray neem oil (5ml/L).',
-        costEstimate: '₹160–₹220 per acre'
+        immediate: '📴 Offline mode: photo analysis needs internet (Gemini Vision). Here is general ICAR guidance for common foliar conditions.',
+        chemical: 'For common fungal leaf spots: Tricyclazole 75% WP @ 0.6g/L or Mancozeb 75% WP @ 2g/L as standard ICAR recommendation.',
+        organic: 'Spray Neem Oil (3000 ppm) @ 5ml/L or Pseudomonas fluorescens @ 5g/L during early morning hours.',
+        costEstimate: '₹160–₹220 per acre (Standard ICAR estimate)'
       }
     }
   }

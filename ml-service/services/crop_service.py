@@ -47,15 +47,19 @@ class CropService:
         self.explainer = None
 
     def _get_explainer(self):
-        """Lazy-load SHAP explainer on first use (catches version-compat errors)."""
+        """Lazy-load SHAP explainer on first use."""
         if self.explainer is None and self.model is not None:
             try:
-                self.explainer = shap.TreeExplainer(self.model)
+                # Use modern shap.Explainer with fallback to TreeExplainer
+                try:
+                    self.explainer = shap.Explainer(self.model)
+                except Exception:
+                    self.explainer = shap.TreeExplainer(self.model)
             except Exception as e:
                 import logging
-                logging.getLogger("krishimitraai").warning("SHAP explainer unavailable: %s", e)
-                self.explainer = False  # sentinel: tried and failed
-        return self.explainer if self.explainer else None
+                logging.getLogger("krishimitraai.crop").error("SHAP explainer initialization failed: %s", e, exc_info=True)
+                raise RuntimeError(f"SHAP explainer initialization failed: {e}") from e
+        return self.explainer
 
     # ──────────────────────────────────────────
     def predict(self, soil_data: dict) -> dict:
@@ -68,39 +72,49 @@ class CropService:
         pred_proba = self.model.predict_proba(X)[0]
         top3_idx   = np.argsort(pred_proba)[::-1][:3]
 
-        explainer   = self._get_explainer()
-        shap_dict   = {}
-        sorted_shap = []
-        chart_b64   = None
+        explainer = self._get_explainer()
+        if explainer is None:
+            raise RuntimeError("SHAP explainer is unavailable for crop recommendation.")
 
-        if explainer is not None:
-            shap_values = explainer.shap_values(X)
+        try:
+            if hasattr(explainer, "shap_values"):
+                shap_values = explainer.shap_values(X)
+            else:
+                shap_obj = explainer(X)
+                shap_values = shap_obj.values
+
             if isinstance(shap_values, list):
                 sv = shap_values[pred_idx][0]
             elif isinstance(shap_values, np.ndarray) and len(shap_values.shape) == 3:
                 # Standard tree explainer multi-class output shape: (N, F, C) or (C, N, F)
-                if shap_values.shape[0] == X.shape[0]: # N matches
+                if shap_values.shape[0] == X.shape[0]:  # (N, F, C)
                     sv = shap_values[0, :, pred_idx]
-                else: # C matches
+                else:  # (C, N, F)
                     sv = shap_values[pred_idx, 0, :]
+            elif isinstance(shap_values, np.ndarray) and len(shap_values.shape) == 2:
+                sv = shap_values[0]
             else:
                 sv = shap_values[0]
-                
-            shap_dict = {
-                FEATURES[i]: {
-                    "shap_value":    round(float(sv[i]), 4),
-                    "feature_value": round(float(X[0][i]), 2),
-                    "label":         FEATURE_LABELS[FEATURES[i]],
-                    "impact":        "positive" if sv[i] > 0 else "negative",
-                }
-                for i in range(len(FEATURES))
+        except Exception as e:
+            import logging
+            logging.getLogger("krishimitraai.crop").error("SHAP calculation failed for input %s: %s", soil_data, e, exc_info=True)
+            raise RuntimeError(f"SHAP explanation calculation failed: {e}") from e
+
+        shap_dict = {
+            FEATURES[i]: {
+                "shap_value":    round(float(sv[i]), 4),
+                "feature_value": round(float(X[0][i]), 2),
+                "label":         FEATURE_LABELS[FEATURES[i]],
+                "impact":        "positive" if sv[i] > 0 else "negative",
             }
-            sorted_shap = sorted(
-                shap_dict.items(),
-                key=lambda x: abs(x[1]["shap_value"]),
-                reverse=True,
-            )
-            chart_b64 = self._generate_shap_chart(sorted_shap, self.labels[pred_idx])
+            for i in range(len(FEATURES))
+        }
+        sorted_shap = sorted(
+            shap_dict.items(),
+            key=lambda x: abs(x[1]["shap_value"]),
+            reverse=True,
+        )
+        chart_b64 = self._generate_shap_chart(sorted_shap, self.labels[pred_idx])
 
         explanation = self._generate_explanation(self.labels[pred_idx], sorted_shap)
 

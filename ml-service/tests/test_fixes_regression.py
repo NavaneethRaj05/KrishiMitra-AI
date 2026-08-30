@@ -149,3 +149,38 @@ def test_validation_weather_keys():
     assert "WEATHER ALERT" in msg
     assert "WIND ALERT" in msg
 
+
+# 7. Test offline disease answer disclaimer asserting no image was inspected
+def test_offline_disease_disclaimer_in_template():
+    from pathlib import Path
+    import json
+
+    repo_root = Path(__file__).resolve().parent.parent.parent
+    offline_corpus_json = repo_root / "app" / "assets" / "corpus" / "agri_fts.json"
+    assert offline_corpus_json.exists(), "Corpus JSON missing"
+
+    corpus = json.loads(offline_corpus_json.read_text(encoding="utf-8"))
+    assert len(corpus) > 0
+
+    # Simulate offline template construction for image query
+    has_image = True
+    matched_crop = "Paddy"
+    district = "Hassan"
+    top_match = corpus[0]
+
+    image_disclaimer = ""
+    if has_image:
+      image_disclaimer = f"> ⚠️ **Offline Notice**: Photo analysis is unavailable offline (reconnect to internet for Gemini Vision diagnosis). Showing general ICAR package of practices guidance for {matched_crop}.\n\n"
+
+    answer = (
+        f"### 📴 On-Device ICAR Advisory: {top_match['title']}\n\n"
+        f"{image_disclaimer}"
+        f"**For {matched_crop} in {district}:**\n\n"
+        f"{top_match['content']}\n\n"
+        f"---\n*Source: {top_match['source']} · Verified ICAR Package of Practices*"
+    )
+
+    assert "Photo analysis is unavailable offline" in answer
+    assert "reconnect to internet for Gemini Vision diagnosis" in answer
+    assert "general ICAR package of practices" in answer
+

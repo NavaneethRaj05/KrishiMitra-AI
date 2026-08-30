@@ -56,6 +56,13 @@ class DiseaseService:
                 "Tomato___healthy", "Pepper___Bacterial_spot",
             ]
 
+    def preprocess_image(self, image_bytes: bytes) -> np.ndarray:
+        """Preprocess raw image bytes into normalized (1, 224, 224, 3) float32 tensor."""
+        img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+        img = img.resize(self.img_size)
+        arr = np.array(img, dtype=np.float32) / 255.0
+        return np.expand_dims(arr, axis=0)
+
     # ──────────────────────────────────────────
     def is_valid_plant_image(self, image_bytes: bytes) -> bool:
         """Check if image contains plant leaf color features or is an invalid UI screenshot/non-leaf image."""

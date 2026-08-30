@@ -201,10 +201,29 @@ export const AnswerBlock: React.FC<AnswerBlockProps> = ({
           </KMText>
           <ConfidencePill score={confidenceScore} theme={theme} />
           {offlineFallback && (
-            <KMBadge label="Cached" variant="warning" size="xs" icon="⚡" />
+            <KMBadge label="Offline Knowledge" variant="warning" size="xs" icon="📴" />
           )}
         </View>
       </View>
+
+      {/* Persistent Offline Banner */}
+      {offlineFallback && (
+        <View style={{
+          backgroundColor: isDark ? '#f59e0b15' : '#fef3c7',
+          borderColor: '#f59e0b40',
+          borderWidth: 1,
+          borderRadius: radii.md,
+          paddingHorizontal: spacing.md,
+          paddingVertical: spacing.sm,
+          marginBottom: spacing.md,
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}>
+          <KMText size="xs" weight="semibold" style={{ color: isDark ? '#fbbf24' : '#b45309', flex: 1 }}>
+            📴 Answering from on-device knowledge — reconnect for full AI analysis
+          </KMText>
+        </View>
+      )}
 
       {/* Citation chips */}
       {citations.length > 0 && (

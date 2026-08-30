@@ -192,7 +192,9 @@ class SearchService {
     }
 
     // ── Last resort: local SQLite FTS search ─────────────────────────────────
-    const ftsResult = await offlineSearch.search(query, farmerContext.registeredCrops[0], !!imageB64)
+    const lat = gpsHeaders['x-gps-latitude'] ? parseFloat(gpsHeaders['x-gps-latitude']) : undefined
+    const lon = gpsHeaders['x-gps-longitude'] ? parseFloat(gpsHeaders['x-gps-longitude']) : undefined
+    const ftsResult = await offlineSearch.search(query, farmerContext.registeredCrops[0], !!imageB64, lat, lon)
     return {
       answer:             ftsResult.answer,
       citations:          (ftsResult.citations || []).map((c: any) => ({
